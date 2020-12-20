@@ -28,6 +28,7 @@ app.use((req, res, next) => {
 });
 // ________________________________________________
 app.use("/user", require("./routers/user")());
+app.use("/data", require("./routers/data")());
 // ________________________________________________
 server.listen(config.sever.port, config.sever.host, () => {
     console.log(

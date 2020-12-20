@@ -2,18 +2,21 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const dataSchema = new Schema({
-    user: String,
+    _id: Schema.Types.ObjectId,
+    user: {
+        type: Schema.Types.Mixed,
+    },
     time: {
         type: Date,
         default: Date.now(),
     },
     socket: {
-        id: String,
-        device: String,
-        address: String,
+        type: Schema.Types.Mixed,
     },
     data: {
-        data: String,
+        data: {
+            type: Schema.Types.Mixed,
+        },
         time: String,
     },
 });

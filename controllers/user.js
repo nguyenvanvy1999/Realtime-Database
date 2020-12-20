@@ -1,5 +1,5 @@
 const UserService = require("./../services/user.js");
-const config = require("./../config");
+const config = require("../config/constants");
 const User = require("../models/user");
 const jwtHelper = require("../helpers/jwt");
 const { APIError } = require("../helpers/ErrorHandler");
@@ -57,7 +57,6 @@ async function getAllUser(req, res, next) {
                 users: users,
                 request: {
                     type: "GET",
-                    url: config.getUrl() + "get-all-users",
                     description: "Get All Users",
                 },
             });
@@ -73,7 +72,7 @@ async function editUser(req, res, next) {
         newPassword = await bcrypt.hash(newPassword, 8);
         const newUser = await UserService.editUser(email, newUsername, newPassword);
         const token = await jwtHelper.returnToken(newUser);
-        return res.status(200).send({ token, newUser });
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ token, newUser });
     } catch (error) {
         next(error);
     }
@@ -83,7 +82,7 @@ async function deleteUser(req, res, next) {
         const email = req.body.email || req.jwtDecoded.data.email;
         console.log(email);
         UserService.deleteUserByEmail(email);
-        return res.status(200).send("Delete Successfully!");
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send("Delete Successfully!");
     } catch (error) {
         next(error);
     }
@@ -95,7 +94,7 @@ async function getUserProfile(req, res, next) {
         if (user === null) {
             throw new APIError({ message: "Not Found User" });
         } else {
-            return res.status(200).send(user);
+            return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(user);
         }
     } catch (error) {
         next(error);
@@ -111,19 +110,19 @@ async function refreshToken(req, res, next) {
         if (refreshToken) {
             const decoded = await jwtHelper.verifyToken(
                 refreshToken,
-                config.jwt.refreshToken.tokenSecret
+                config.jwt.accessSecret
             );
             const accessToken = await jwtHelper.generateToken(
                 decoded.data,
-                config.jwt.accessToken.tokenSecret,
-                config.jwt.accessToken.tokenLife
+                config.jwt.accessSecret,
+                config.jwt.accessLife
             );
-            return res.status(200).send({
+            return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
                 accessToken: accessToken,
                 refreshToken: refreshToken,
             });
         } else {
-            return res.status(403).send({
+            return res.status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED).send({
                 message: "No token provided.",
             });
         }

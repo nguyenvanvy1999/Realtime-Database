@@ -4,8 +4,7 @@ const authSignUp = require("../middleware/authSignUp");
 const authMiddleware = require("../middleware/authMiddleware");
 const { handleError } = require("../middleware/error");
 const authEditUser = require("../middleware/authEditUser");
-const upload = require("../helpers/upload").upload;
-
+const upload = require("../helpers/multer/index").upload;
 // ________________________________________________
 module.exports = () => {
     router

@@ -1,11 +1,5 @@
-const { response } = require("express");
 const User = require("./../models/user");
 const mongoose = require("mongoose");
-const express = require("express");
-const bcrypt = require("./../middleware/bcrypt");
-const jwtHelper = require("../helpers/jwt");
-const jwt = require("../helpers/jwt");
-const config = require("../config");
 
 // ________________________________________________
 function newUser(email, username, password) {

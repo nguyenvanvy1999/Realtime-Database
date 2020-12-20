@@ -3,16 +3,17 @@ const mongoose = require("mongoose");
 
 function newData(socket, document) {
     const newData = {
+        _id: mongoose.Types.ObjectId(),
         user: document.user,
         time: Date.now(),
         socket: {
             id: socket.id,
-            device: "win10",
+            device: document.device,
             address: socket.handshake.address,
         },
         data: {
-            data: document.data,
             time: socket.handshake.time,
+            data: document.data,
         },
     };
     return newData;
@@ -30,10 +31,10 @@ function insert(newData) {
     });
 }
 
-function getData(user) {
+function getData(email) {
     return new Promise((resolve, reject) => {
         try {
-            const dataDocuments = Data.find({ user: user });
+            const dataDocuments = Data.find({ user: { email: email } });
             return resolve(dataDocuments);
         } catch (error) {
             return reject(error);

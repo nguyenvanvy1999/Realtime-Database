@@ -31,6 +31,7 @@ const config = {
         accessLife: 900,
         refreshSecret: "refresh",
         refreshLife: 86400,
+        deviceSecret: "device",
     },
 };
 

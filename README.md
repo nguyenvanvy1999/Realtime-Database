@@ -17,12 +17,8 @@ Sockets khởi tạo sockets để giao tiếp bằng RESTful API ???
 ________________________________________________________
 requier từ views,mongo
 ________________________________________________________
-các module thường sử dụng và phải cài
-mongoose: npm i mongoose --save
-express: npm i express --save
-body-parser: npm i body-parser --save
-http: npm i http --save
-socket.io: npm i socket.io --save
+các module sử dụng
+mongoose,express,body-parser,http,socket.io,
 ________________________________________________________
 khi nhận được 1 req từ client thì giải mã ở index,sau đó gửi đến routers
 routers sẽ tùy vào router được nhận mà gọi đến controllers

@@ -1,14 +1,15 @@
 const jwtHelper = require("../helpers/jwt");
-const config = require("../config");
+const config = require("../config/constants");
 
 let isAuth = async(req, res, next) => {
     const tokenFromClient =
         req.body.token || req.query.token || req.header["token"];
+    console.log(tokenFromClient);
     if (tokenFromClient) {
         try {
             const decoded = await jwtHelper.verifyToken(
                 tokenFromClient,
-                config.jwt.accessToken.tokenSecret
+                config.jwt.accessSecret
             );
             req.jwtDecoded = decoded;
             next();
