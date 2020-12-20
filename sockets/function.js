@@ -30,7 +30,7 @@ async function checkSocketToken(document) {
 
 function socketFunction(socket) {
     console.log("Device connected", socket.id);
-    socket.join(socket.id);
+    socket.join(socket.id.toString());
     socket.on("disconnect", () => {
         console.log("Device disconnected", socket.id);
     });
@@ -42,9 +42,11 @@ function socketFunction(socket) {
             } else {
                 saveData(socket, document).then((data, error) => {
                     if (error) {
-                        socket.emit("return-from-server", "Save data failed !");
+                        socket
+                            .to(socket.id.toString())
+                            .emit("return-from-server", "Save data failed !");
                     } else {
-                        socket.emit("return-from-server", data);
+                        socket.to(socket.id.toString()).emit("return-from-server", data);
                     }
                 });
             }
