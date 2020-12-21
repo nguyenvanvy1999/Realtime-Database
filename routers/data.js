@@ -1,3 +1,4 @@
+"user strict";
 const express = require("express");
 const dataController = require("../controllers/data");
 const router = express.Router();
@@ -16,5 +17,8 @@ module.exports = () => {
     router
         .route("/get-all-data")
         .get(upload.single(), dataController.getAllData, handleError);
+    router
+        .route("/delete-data")
+        .delete(upload.single(), authMiddleware.isAuth, dataController.deleteData);
     return router;
 };

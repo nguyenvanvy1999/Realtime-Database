@@ -4,6 +4,7 @@ const { APIError } = require("../helpers/ErrorHandler");
 async function getData(req, res, next) {
     try {
         let user = req.jwtDecoded.data;
+        console.log(user);
         if (!user) {
             throw new APIError({ message: "User wrong" });
         }
@@ -25,8 +26,18 @@ async function getAllData(req, res, next) {
         next(error);
     }
 }
+async function deleteData(req, res, next) {
+    try {
+        let user = req.jwtDecoded.data;
+        let result = await dataService.deleteData(user.email);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send("delete successfully!");
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     getData,
     getAllData,
+    deleteData,
 };

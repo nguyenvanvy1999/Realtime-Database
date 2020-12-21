@@ -2,7 +2,7 @@ const Data = require("../models/data");
 const mongoose = require("mongoose");
 
 function newData(socket, document) {
-    const newData = {
+    newData={
         _id: mongoose.Types.ObjectId(),
         user: document.user,
         time: Date.now(),
@@ -15,25 +15,25 @@ function newData(socket, document) {
             time: socket.handshake.time,
             data: document.data,
         },
-    };
+    }
     return newData;
 }
 
 function insert(newData) {
     return new Promise((resolve, reject) => {
         try {
-            const data = new Data(newData);
-            const result = data.save();
-            return resolve(result);
+            const data = new Data(newData)
+            const result = data.save()
+            return resolve(result)
         } catch (error) {
-            return reject(error);
+            return reject(error)
         }
-    });
+    })
 }
 
-function getData(email) {
-    return new Promise((resolve, reject) => {
-        try {
+function getData (email) {
+  return new Promise((resolve, reject) => {
+  try {
             const dataDocuments = Data.find({ user: { email: email } });
             return resolve(dataDocuments);
         } catch (error) {
@@ -42,7 +42,7 @@ function getData(email) {
     });
 }
 
-function getAllData() {
+function getAllData(){
     return new Promise((resolve, reject) => {
         try {
             const dataDocuments = Data.find();

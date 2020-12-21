@@ -4,6 +4,8 @@ const config = require("../config/constants");
 let isAuth = async(req, res, next) => {
     const tokenFromClient =
         req.body.token || req.query.token || req.header["token"];
+    const test = req.body.test;
+    console.log(test);
     console.log(tokenFromClient);
     if (tokenFromClient) {
         try {
