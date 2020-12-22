@@ -1,25 +1,60 @@
-const UserService = require("./../services/user.js");
-const config = require("../config/constants");
-const User = require("../models/user");
-const jwtHelper = require("../helpers/jwt");
-const { APIError } = require("../helpers/ErrorHandler");
-const bcrypt = require("../middleware/bcrypt.js");
-const HTTP_STATUS_CODE = require("../config/constants").HTTP_STATUS_CODE;
+const UserService = require('./../services/user.js');
+const config = require('../config/constants');
+const User = require('../models/user');
+const jwtHelper = require('../helpers/jwt');
+const { APIError } = require('../helpers/ErrorHandler');
+const bcrypt = require('../middleware/bcrypt.js');
+const HTTP_STATUS_CODE = require('../config/constants').HTTP_STATUS_CODE;
+const mailHelper = require('../helpers/mailer');
 // ________________________________________________
-
+let userPassword = [];
 async function signUp(req, res, next) {
     try {
         const { email, username, password } = req.body;
-        const user = UserService.newUser(email, username, password);
-        const result = await UserService.insert(user);
+        userPassword.push(password);
+        let user = {
+            _id: null,
+            username: username,
+            email: email,
+            password: password,
+        };
+        let token = await jwtHelper.generateToken(
+            user,
+            config.jwt.verifySecret,
+            config.jwt.verifyLife
+        );
+        let mailOption = mailHelper.newMailOption(
+            config.nodeMailer.auth.user,
+            email,
+            'Mail send from NodeJS server',
+            token
+        );
+        let result = await mailHelper.sendMail(mailOption);
         res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: "SignUp Successfully!", result });
+            .send({ message: 'Check your email and verify account!', result });
     } catch (error) {
         next(error);
     }
 }
-
+async function verifyAccount(req, res, next) {
+    try {
+        const token = req.body.token || req.query.token || req.header['token'];
+        let decoded = await jwtHelper.verifyToken(token, config.jwt.verifySecret);
+        let newUser = UserService.newUser(
+            decoded.data.email,
+            decoded.data.username,
+            userPassword[0]
+        );
+        userPassword.pop();
+        let user = await UserService.insert(newUser);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'SignUp successfully !', user });
+    } catch (error) {
+        next(error);
+    }
+}
 async function signIn(req, res, next) {
     try {
         let { email, password } = req.body;
@@ -27,13 +62,13 @@ async function signIn(req, res, next) {
         if (!user) {
             res
                 .status(HTTP_STATUS_CODE.ERROR.NOT_FOUND)
-                .send({ error: "Email was wrong" });
+                .send({ error: 'Email was wrong' });
         } else {
             const checkPass = await bcrypt.compare(password, user.password);
             if (checkPass === false) {
                 res
                     .status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED)
-                    .send({ error: "Password was wrong" });
+                    .send({ error: 'Password was wrong' });
             } else {
                 const token = await jwtHelper.returnToken(user);
                 return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
@@ -50,14 +85,14 @@ async function getAllUser(req, res, next) {
         if (users.length === 0) {
             return res
                 .status(HTTP_STATUS_CODE.SUCCESS.OK)
-                .send({ message: "No user found" });
+                .send({ message: 'No user found' });
         } else {
             return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
                 count: users.length,
                 users: users,
                 request: {
-                    type: "GET",
-                    description: "Get All Users",
+                    type: 'GET',
+                    description: 'Get All Users',
                 },
             });
         }
@@ -82,7 +117,7 @@ async function deleteUser(req, res, next) {
         const email = req.body.email || req.jwtDecoded.data.email;
         console.log(email);
         UserService.deleteUserByEmail(email);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send("Delete Successfully!");
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Delete Successfully!');
     } catch (error) {
         next(error);
     }
@@ -92,7 +127,7 @@ async function getUserProfile(req, res, next) {
         const email = req.jwtDecoded.data.email;
         const user = await UserService.getUserByEmail(email);
         if (user === null) {
-            throw new APIError({ message: "Not Found User" });
+            throw new APIError({ message: 'Not Found User' });
         } else {
             return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(user);
         }
@@ -106,7 +141,7 @@ async function refreshToken(req, res, next) {
         const refreshToken =
             req.body.refreshToken ||
             req.query.refreshToken ||
-            req.header["refreshToken"];
+            req.header['refreshToken'];
         if (refreshToken) {
             const decoded = await jwtHelper.verifyToken(
                 refreshToken,
@@ -123,7 +158,7 @@ async function refreshToken(req, res, next) {
             });
         } else {
             return res.status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED).send({
-                message: "No token provided.",
+                message: 'No token provided.',
             });
         }
     } catch (error) {
@@ -139,4 +174,5 @@ module.exports = {
     deleteUser: deleteUser,
     getUserProfile: getUserProfile,
     refreshToken: refreshToken,
+    verifyAccount: verifyAccount,
 };

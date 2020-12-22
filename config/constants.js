@@ -32,6 +32,17 @@ const config = {
         refreshSecret: "refresh",
         refreshLife: 86400,
         deviceSecret: "device",
+        verifySecret: "verify",
+        verifyLife: 900,
+    },
+    nodeMailer: {
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: "nguyenvanvy619619@gmail.com",
+            pass: "619619vyvy",
+        },
     },
 };
 

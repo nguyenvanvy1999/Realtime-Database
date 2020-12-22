@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
-const config = require("../constants");
+const mongoose = require('mongoose');
+const config = require('../constants');
 
 // ________________________________________________
 
 function connectMongo() {
     mongoose.Promise = global.Promise;
-    mongoose.set("useFindAndModify", false);
+    mongoose.set('useFindAndModify', false);
     mongoose.connect(
         config.mongo.host, {
             useCreateIndex: true,
@@ -16,7 +16,7 @@ function connectMongo() {
             if (err) {
                 return;
             } else {
-                console.log("connect successfully to db: ", config.mongo.host);
+                console.log('connect successfully to db: ', config.mongo.host);
             }
         }
     );

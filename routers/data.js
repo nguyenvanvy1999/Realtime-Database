@@ -1,13 +1,13 @@
-"user strict";
-const express = require("express");
-const dataController = require("../controllers/data");
+'user strict';
+const express = require('express');
+const dataController = require('../controllers/data');
 const router = express.Router();
-const upload = require("../helpers/multer/index").upload;
-const { handleError } = require("../middleware/error");
-const authMiddleware = require("../middleware/authMiddleware");
+const upload = require('../helpers/multer/index').upload;
+const { handleError } = require('../middleware/error');
+const authMiddleware = require('../middleware/authMiddleware');
 module.exports = () => {
     router
-        .route("/get-data")
+        .route('/get-data')
         .get(
             upload.single(),
             authMiddleware.isAuth,
@@ -15,10 +15,10 @@ module.exports = () => {
             handleError
         );
     router
-        .route("/get-all-data")
+        .route('/get-all-data')
         .get(upload.single(), dataController.getAllData, handleError);
     router
-        .route("/delete-data")
+        .route('/delete-data')
         .delete(upload.single(), authMiddleware.isAuth, dataController.deleteData);
     return router;
 };

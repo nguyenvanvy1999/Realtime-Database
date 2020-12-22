@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const config = require("../config/constants");
+const jwt = require('jsonwebtoken');
+const config = require('../config/constants');
 
 let generateToken = (user, secretSignature, tokenLife) => {
     return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ let generateToken = (user, secretSignature, tokenLife) => {
                 username: user.username,
             };
             const token = jwt.sign({ data: userData }, secretSignature, {
-                algorithm: "HS256",
+                algorithm: 'HS256',
                 expiresIn: tokenLife,
             });
             return resolve(token);

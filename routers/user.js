@@ -1,28 +1,31 @@
-const router = require("express").Router();
-const UserController = require("../controllers/user");
-const authSignUp = require("../middleware/authSignUp");
-const authMiddleware = require("../middleware/authMiddleware");
-const { handleError } = require("../middleware/error");
-const authEditUser = require("../middleware/authEditUser");
-const upload = require("../helpers/multer/index").upload;
+const router = require('express').Router();
+const UserController = require('../controllers/user');
+const authSignUp = require('../middleware/authSignUp');
+const authMiddleware = require('../middleware/authMiddleware');
+const { handleError } = require('../middleware/error');
+const authEditUser = require('../middleware/authEditUser');
+const upload = require('../helpers/multer/index').upload;
 // ________________________________________________
 module.exports = () => {
     router
-        .route("/sign-in")
+        .route('/sign-in')
         .post(upload.single(), UserController.signIn, handleError);
     router
-        .route("/sign-up")
+        .route('/sign-up')
         .post(
-            upload.single("userImage"),
+            upload.single('userImage'),
             authSignUp.checkDuplicateUsernameOrEmail,
             UserController.signUp,
             handleError
         );
     router
-        .route("/get-all-users")
+        .route('/verify-account')
+        .post(upload.single(), UserController.verifyAccount, handleError);
+    router
+        .route('/get-all-users')
         .get(upload.single(), UserController.getAllUser, handleError);
     router
-        .route("/edit-user")
+        .route('/edit-user')
         .patch(
             upload.single(),
             authMiddleware.isAuth,
@@ -31,7 +34,7 @@ module.exports = () => {
             handleError
         );
     router
-        .route("/delete-user")
+        .route('/delete-user')
         .delete(
             upload.single(),
             authMiddleware.isAuth,
@@ -39,7 +42,7 @@ module.exports = () => {
             handleError
         );
     router
-        .route("/user-profile")
+        .route('/user-profile')
         .post(
             upload.single(),
             authMiddleware.isAuth,
@@ -47,7 +50,7 @@ module.exports = () => {
             handleError
         );
     router
-        .route("/token")
+        .route('/token')
         .get(upload.single(), UserController.refreshToken, handleError);
     return router;
 };

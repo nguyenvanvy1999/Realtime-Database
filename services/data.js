@@ -1,40 +1,40 @@
-const Data = require("../models/data");
-const mongoose = require("mongoose");
+const Data = require('../models/data');
+const mongoose = require('mongoose');
 
 function newData(socket, document) {
-    newData={
+    newData = {
         _id: mongoose.Types.ObjectId(),
         user: document.user,
         time: Date.now(),
-        socket: {
-            id: socket.id,
-            device: document.device,
-            address: socket.handshake.address,
-        },
+        device: document.device,
         data: {
+            socket: {
+                id: socket.id,
+                address: socket.handshake.address,
+            },
             time: socket.handshake.time,
             data: document.data,
         },
-    }
+    };
     return newData;
 }
 
 function insert(newData) {
     return new Promise((resolve, reject) => {
         try {
-            const data = new Data(newData)
-            const result = data.save()
-            return resolve(result)
+            const data = new Data(newData);
+            const result = data.save();
+            return resolve(result);
         } catch (error) {
-            return reject(error)
+            return reject(error);
         }
-    })
+    });
 }
 
-function getData (email) {
-  return new Promise((resolve, reject) => {
-  try {
-            const dataDocuments = Data.find({ user: { email: email } });
+function getDataDevice(device) {
+    return new Promise((resolve, reject) => {
+        try {
+            const dataDocuments = Data.find({ device: device });
             return resolve(dataDocuments);
         } catch (error) {
             return reject(error);
@@ -42,10 +42,10 @@ function getData (email) {
     });
 }
 
-function getAllData(){
+function getDataUser(email) {
     return new Promise((resolve, reject) => {
         try {
-            const dataDocuments = Data.find();
+            const dataDocuments = Data.find({ user });
             return resolve(dataDocuments);
         } catch (error) {
             return reject(error);
@@ -65,9 +65,9 @@ function deleteData(id) {
 }
 
 module.exports = {
-    newData,
-    insert,
-    getData,
-    getAllData,
-    deleteData,
+    newData: newData,
+    insert: insert,
+    getDataDevice: getDataDevice,
+    getDataUser: getDataUser,
+    deleteData: deleteData,
 };

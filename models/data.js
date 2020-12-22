@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dataSchema = new Schema({
@@ -10,7 +10,7 @@ const dataSchema = new Schema({
         type: Date,
         default: Date.now(),
     },
-    socket: {
+    device: {
         type: Schema.Types.Mixed,
     },
     data: {
@@ -21,6 +21,6 @@ const dataSchema = new Schema({
     },
 });
 
-const Data = mongoose.model("Data", dataSchema);
+const Data = mongoose.model('Data', dataSchema);
 
 module.exports = Data;
