@@ -2,14 +2,14 @@ var io = null;
 // ________________________________________________
 
 function getIO() {
-  return io;
+    return io;
 }
 
 function setIO(IO) {
-  io = IO;
+    io = IO;
 }
 // ________________________________________________
 module.exports = {
-  getIO: getIO,
-  setIO: setIO,
+    getIO: getIO,
+    setIO: setIO,
 };

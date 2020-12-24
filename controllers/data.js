@@ -34,18 +34,9 @@ async function deleteData(req, res, next) {
         next(error);
     }
 }
-async function uploadFile(req, res, next) {
-    try {
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Upload done !' });
-    } catch (error) {
-        next(error);
-    }
-}
+
 module.exports = {
     getData: getData,
     getAllData: getAllData,
     deleteData: deleteData,
-    uploadFile: uploadFile,
 };
