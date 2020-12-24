@@ -1,7 +1,8 @@
 const jwtHelper = require('../helpers/jwt');
 const config = require('../config/constants');
-
-let isAuth = async(req, res, next) => {
+const User = require('../models/user');
+const HTTP_STATUS_CODE = require('../config/constants').HTTP_STATUS_CODE;
+let isAuth = async function(req, res, next) {
     const tokenFromClient =
         req.body.token || req.query.token || req.header['token'];
     if (tokenFromClient) {
@@ -13,15 +14,31 @@ let isAuth = async(req, res, next) => {
             req.jwtDecoded = decoded;
             next();
         } catch (error) {
-            return res.status(401).json({ message: 'Unauthorized.' });
+            return res
+                .status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED)
+                .json({ message: 'Unauthorized.' });
         }
     } else {
-        return res.status(403).send({
+        return res.status(HTTP_STATUS_CODE.ERROR.FORBIDDEN).send({
             message: 'No token provided.',
         });
+    }
+};
+let isActive = async function(req, res, next) {
+    let email = req.body.email;
+    let user = await User.findOne({ email: email });
+    if (user) {
+        if (user.isActive === true) {
+            next();
+        } else {
+            return res
+                .status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED)
+                .send({ message: 'Account not active. Please active first' });
+        }
     }
 };
 
 module.exports = {
     isAuth: isAuth,
+    isActive: isActive,
 };

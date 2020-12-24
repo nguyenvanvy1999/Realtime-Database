@@ -8,9 +8,6 @@ const upload = require('../helpers/multer/index').upload;
 // ________________________________________________
 module.exports = () => {
     router
-        .route('/sign-in')
-        .post(upload.single(), UserController.signIn, handleError);
-    router
         .route('/sign-up')
         .post(
             upload.single('userImage'),
@@ -18,6 +15,15 @@ module.exports = () => {
             UserController.signUp,
             handleError
         );
+    router
+        .route('/sign-in')
+        .post(
+            upload.single(),
+            authMiddleware.isActive,
+            UserController.signIn,
+            handleError
+        );
+
     router
         .route('/verify-account')
         .post(upload.single(), UserController.verifyAccount, handleError);
@@ -28,6 +34,7 @@ module.exports = () => {
         .route('/edit-user')
         .patch(
             upload.single(),
+            authMiddleware.isActive,
             authMiddleware.isAuth,
             authEditUser.checkUsernameAndPassword,
             UserController.editUser,
@@ -37,6 +44,7 @@ module.exports = () => {
         .route('/delete-user')
         .delete(
             upload.single(),
+            authMiddleware.isActive,
             authMiddleware.isAuth,
             UserController.deleteUser,
             handleError
@@ -45,6 +53,7 @@ module.exports = () => {
         .route('/user-profile')
         .post(
             upload.single(),
+            authMiddleware.isActive,
             authMiddleware.isAuth,
             UserController.getUserProfile,
             handleError

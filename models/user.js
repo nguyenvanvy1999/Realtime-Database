@@ -22,6 +22,10 @@ const userSchema = mongoose.Schema({
         required: true,
         minLength: [4, 'Password must be at least 4'],
     },
+    isActive: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 userSchema.pre('save', async function(next) {

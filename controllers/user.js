@@ -6,18 +6,13 @@ const { APIError } = require('../helpers/ErrorHandler');
 const bcrypt = require('../middleware/bcrypt.js');
 const HTTP_STATUS_CODE = require('../config/constants').HTTP_STATUS_CODE;
 const mailHelper = require('../helpers/mailer');
+const { decode } = require('jsonwebtoken');
 // ________________________________________________
-let userPassword = [];
 async function signUp(req, res, next) {
     try {
         const { email, username, password } = req.body;
-        userPassword.push(password);
-        let user = {
-            _id: null,
-            username: username,
-            email: email,
-            password: password,
-        };
+        let newUser = UserService.newUser(email, username, password);
+        let user = await UserService.insert(newUser);
         let token = await jwtHelper.generateToken(
             user,
             config.jwt.verifySecret,
@@ -41,16 +36,11 @@ async function verifyAccount(req, res, next) {
     try {
         const token = req.body.token || req.query.token || req.header['token'];
         let decoded = await jwtHelper.verifyToken(token, config.jwt.verifySecret);
-        let newUser = UserService.newUser(
-            decoded.data.email,
-            decoded.data.username,
-            userPassword[0]
-        );
-        userPassword.pop();
-        let user = await UserService.insert(newUser);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'SignUp successfully !', user });
+        let result = await UserService.activeAccount(decoded.data.email);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+            message: 'Active successfully !.Now you can using out function',
+            result,
+        });
     } catch (error) {
         next(error);
     }

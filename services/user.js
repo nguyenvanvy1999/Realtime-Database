@@ -8,6 +8,7 @@ function newUser(email, username, password) {
         email: email,
         username: username,
         password: password,
+        isActive: false,
     };
     return newUser;
 }
@@ -69,6 +70,16 @@ function deleteUserByEmail(email) {
     });
 }
 
+function activeAccount(email) {
+    return new Promise((resolve, reject) => {
+        try {
+            const result = User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
+            return result;
+        } catch (error) {
+            return reject(error);
+        }
+    });
+}
 // ________________________________________________
 module.exports = {
     newUser: newUser,
@@ -77,4 +88,5 @@ module.exports = {
     getAllUser: getAllUser,
     editUser: editUser,
     deleteUserByEmail: deleteUserByEmail,
+    activeAccount: activeAccount,
 };
