@@ -12,6 +12,14 @@ _________________________________________________________
 - Sockets khởi tạo sockets để giao tiếp realtime bằng socketIO
 ________________________________________________________
 some module used:
-- mongoose,express,body-parser,http,socket.io,bcrypt,...
+- mongoose: Thao tác với MongoDB
+- express: web application framework cho NodeJS
+- body-parser: Làm việc với data-form
+- socket.io:Giúp kết nối realtime giữa các bên ở những địa điểm khác nhau nhờ server trung gian
+- bcrypt:Hash mật khẩu trước khi lưu
+- multer: xử lý dữ liệu multipart/form-data khi người dùng upload file
+- morgan: middleware dùng để request logger
+- jsonwebtoken: Tạo và xác thực JWT khi user đăng nhập
+- nodemailer: Gửi email
 _________________________________________________________
 - install: clone repo and open folder in terminal and :npm -i

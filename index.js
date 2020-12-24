@@ -15,25 +15,25 @@ app.use('/uploads', express.static('uploads'));
 app.use(cors());
 // ________________________________________________
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-        'Access-Control-Allow-Headers',
-        'Origin,X-Requested-With,Content-Type,Accept,Authorization'
-    );
-    if (req.method === 'OPTIONS') {
-        req.headers('Access-Control-Allow-Methods', 'PUT,POST,PATH,DELETE,GET');
-        return res.status(200).json({});
-    }
-    next();
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin,X-Requested-With,Content-Type,Accept,Authorization'
+  );
+  if (req.method === 'OPTIONS') {
+    req.headers('Access-Control-Allow-Methods', 'PUT,POST,PATH,DELETE,GET');
+    return res.status(200).json({});
+  }
+  next();
 });
 // ________________________________________________
 app.use('/user', require('./routers/user')());
 app.use('/data', require('./routers/data')());
 // ________________________________________________
 server.listen(config.sever.port, config.sever.host, () => {
-    console.log(
-        'server on: http://' + config.sever.host + ':' + config.sever.port
-    );
+  console.log(
+    'server on: http://' + config.sever.host + ':' + config.sever.port
+  );
 });
 // ________________________________________________
 const socketFunction = require('./sockets/function').socketFunction;

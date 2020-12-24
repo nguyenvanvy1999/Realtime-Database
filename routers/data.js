@@ -1,6 +1,6 @@
 'user strict';
 const express = require('express');
-const dataController = require('../controllers/data');
+const DataController = require('../controllers/data');
 const router = express.Router();
 const upload = require('../helpers/multer/index').upload;
 const { handleError } = require('../middleware/error');
@@ -11,14 +11,39 @@ module.exports = () => {
         .get(
             upload.single(),
             authMiddleware.isAuth,
-            dataController.getData,
+            authMiddleware.isActive,
+            DataController.getData,
             handleError
         );
     router
         .route('/get-all-data')
-        .get(upload.single(), dataController.getAllData, handleError);
+        .get(upload.single(), DataController.getAllData, handleError);
     router
         .route('/delete-data')
-        .delete(upload.single(), authMiddleware.isAuth, dataController.deleteData);
+        .delete(
+            upload.single(),
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            DataController.deleteData,
+            handleError
+        );
+    router
+        .route('/upload/single')
+        .post(
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            upload.single('file'),
+            DataController.uploadFile,
+            handleError
+        );
+    router
+        .route('/upload/multi')
+        .post(
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            upload.array('files'),
+            DataController.uploadFile,
+            handleError
+        );
     return router;
 };
