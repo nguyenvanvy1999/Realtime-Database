@@ -1,21 +1,26 @@
 const User = require('../models/user');
-
+const { APIError } = require('../helpers/ErrorHandler');
+async function validateEmail(email) {
+    let user = await User.findOne({ email: email });
+    return user ? false : true;
+}
+async function validateUsername(username) {
+    let user = await User.findOne({ username: username });
+    return user ? false : true;
+}
 async function checkDuplicateUsernameOrEmail(req, res, next) {
-    //Username
-    const isUsername = await User.findOne({ username: req.body.username });
-    const isEmail = await User.findOne({ email: req.body.email });
-    if (isUsername) {
-        return res
-            .status(400)
-            .send({ message: 'Failed! Username is already in use!' });
-    } else {
-        if (isEmail) {
-            return res
-                .status(400)
-                .send({ message: 'Failed! Email is already in use!' });
-        } else {
-            next();
+    try {
+        let checkEmail = await validateEmail(req.body.email);
+        if (!checkEmail) {
+            throw new APIError({ message: 'Failed! Email is already in use!' });
         }
+        let checkUsername = await validateUsername(req.body.username);
+        if (!checkUsername) {
+            throw new APIError({ message: 'Failed! Username is already in use!' });
+        }
+        next();
+    } catch (error) {
+        next(error);
     }
 }
 

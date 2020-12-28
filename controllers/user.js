@@ -55,20 +55,14 @@ async function signIn(req, res, next) {
         let { email, password } = req.body;
         const user = await User.findOne({ email: email });
         if (!user) {
-            res
-                .status(HTTP_STATUS_CODE.ERROR.NOT_FOUND)
-                .send({ error: 'Email was wrong' });
-        } else {
-            const checkPass = await bcryptHelper.compare(password, user.password);
-            if (checkPass === false) {
-                res
-                    .status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED)
-                    .send({ error: 'Password was wrong' });
-            } else {
-                const token = await jwtHelper.returnToken(user);
-                return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
-            }
+            throw new APIError({ message: 'Email wrong !' });
         }
+        const checkPass = await bcryptHelper.compare(password, user.password);
+        if (checkPass === false) {
+            throw new APIError({ message: 'password wrong !' });
+        }
+        const token = await jwtHelper.returnToken(user);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
     } catch (error) {
         next(error);
     }
@@ -78,15 +72,12 @@ async function getAllUser(req, res, next) {
     try {
         const users = await UserService.getAllUser();
         if (users.length === 0) {
-            return res
-                .status(HTTP_STATUS_CODE.SUCCESS.OK)
-                .send({ message: 'No user found' });
-        } else {
-            return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-                count: users.length,
-                users: users,
-            });
+            throw new APIError({ message: 'No user found !' });
         }
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+            count: users.length,
+            users: users,
+        });
     } catch (error) {
         next(error);
     }
@@ -119,9 +110,8 @@ async function getUserProfile(req, res, next) {
         const user = await UserService.getUserByEmail(email);
         if (user === null) {
             throw new APIError({ message: 'Not Found User' });
-        } else {
-            return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(user);
         }
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(user);
     } catch (error) {
         next(error);
     }
@@ -138,20 +128,20 @@ async function refreshToken(req, res, next) {
                 refreshToken,
                 jwtConfig.refreshSecret
             );
-            const accessToken = await jwtHelper.generateToken(
-                decoded.data,
-                jwtConfig.accessSecret,
-                jwtConfig.accessLife
-            );
-            return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-                accessToken: accessToken,
-                refreshToken: refreshToken,
-            });
-        } else {
-            return res.status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED).send({
-                message: 'No token provided.',
-            });
+            if (decoded) {
+                const accessToken = await jwtHelper.generateToken(
+                    decoded.data,
+                    jwtConfig.accessSecret,
+                    jwtConfig.accessLife
+                );
+                return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                });
+            }
+            throw new APIError({ message: 'Refresh token wrong' });
         }
+        throw new APIError({ message: 'No token provided !' });
     } catch (error) {
         next(error);
     }

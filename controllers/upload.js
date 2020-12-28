@@ -25,9 +25,7 @@ function getListFiles(req, res, next) {
             'C:/Users/DELL PRECISION/OneDrive/Máy tính/realtimeDatabase/uploads/';
         fs.readdir(directoryPath, function(err, files) {
             if (err) {
-                res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send({
-                    message: 'Unable to scan files!',
-                });
+                throw new APIError({ message: 'Unable to scan files!' });
             }
             let fileInfos = [];
             files.forEach((file) => {
@@ -48,13 +46,10 @@ function download(req, res, next) {
         const fileName = req.body.name;
         const directoryPath =
             'C:/Users/DELL PRECISION/OneDrive/Máy tính/realtimeDatabase/uploads/';
-        res.download(directoryPath + fileName, fileName, (err) => {
-            if (err) {
-                res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send({
-                    message: 'Could not download the file. ' + err,
-                });
-            }
-        });
+        if (!fs.existsSync(directoryPath + fileName)) {
+            throw new APIError({ message: 'No such file or directory' });
+        }
+        res.download(directoryPath + fileName, fileName);
     } catch (error) {
         next(error);
     }

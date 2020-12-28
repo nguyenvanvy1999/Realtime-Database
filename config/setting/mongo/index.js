@@ -14,6 +14,7 @@ function connectMongo() {
         },
         function(err, db) {
             if (err) {
+                console.log(" Can't connect successfully to db: ", mongoConfig.host);
                 return;
             } else {
                 console.log('connect successfully to db: ', mongoConfig.host);
