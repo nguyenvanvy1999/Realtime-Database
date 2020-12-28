@@ -1,7 +1,7 @@
 const DataService = require('../services/data');
 const jwtHelper = require('../helpers/jwt');
-const config = require('../config/constants');
 const DeviceService = require('../services/device');
+const jwtConfig = require('../config/constant/jwt');
 async function saveData(socket, document) {
     try {
         let newData = DataService.newData(socket, document);
@@ -15,11 +15,11 @@ async function checkSocketToken(document) {
     try {
         const device = await jwtHelper.verifyToken(
             document.device,
-            config.jwt.deviceSecret
+            jwtConfig.deviceSecret
         );
         const user = await jwtHelper.verifyToken(
             document.user,
-            config.jwt.accessSecret
+            jwtConfig.accessSecret
         );
         document.device = device;
         document.user = user;

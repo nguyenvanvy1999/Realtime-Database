@@ -1,12 +1,13 @@
 const UserService = require('./../services/user.js');
-const config = require('../config/constants');
 const User = require('../models/user');
 const jwtHelper = require('../helpers/jwt');
 const { APIError } = require('../helpers/ErrorHandler');
-const bcrypt = require('../middleware/bcrypt.js');
-const HTTP_STATUS_CODE = require('../config/constants').HTTP_STATUS_CODE;
+const bcryptHelper = require('../helpers/bcrypt');
+const HTTP_STATUS_CODE = require('../config/constant/http');
 const mailHelper = require('../helpers/mailer');
-const { decode } = require('jsonwebtoken');
+const jwtConfig = require('../config/constant/jwt');
+const mailConfig = require('../config/constant/mail').mailConfig;
+const mailOption = require('../config/constant/mail').mailOption;
 // ________________________________________________
 async function signUp(req, res, next) {
     try {
@@ -15,16 +16,20 @@ async function signUp(req, res, next) {
         let user = await UserService.insert(newUser);
         let token = await jwtHelper.generateToken(
             user,
-            config.jwt.verifySecret,
-            config.jwt.verifyLife
+            jwtConfig.verifySecret,
+            jwtConfig.verifyLife
         );
-        let mailOption = mailHelper.newMailOption(
-            config.nodeMailer.auth.user,
+        let text = {
+            message: mailOption.text,
+            token: token,
+        };
+        let newMail = mailHelper.newMailOption(
+            mailConfig.auth.user,
             email,
-            'Mail send from NodeJS server',
-            token
+            mailOption.subject,
+            text
         );
-        let result = await mailHelper.sendMail(mailOption);
+        let result = await mailHelper.sendMail(newMail);
         res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
             .send({ message: 'Check your email and verify account!', result });
@@ -35,7 +40,7 @@ async function signUp(req, res, next) {
 async function verifyAccount(req, res, next) {
     try {
         const token = req.body.token || req.query.token || req.header['token'];
-        let decoded = await jwtHelper.verifyToken(token, config.jwt.verifySecret);
+        let decoded = await jwtHelper.verifyToken(token, jwtConfig.verifySecret);
         let result = await UserService.activeAccount(decoded.data.email);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
             message: 'Active successfully !.Now you can using out function',
@@ -54,7 +59,7 @@ async function signIn(req, res, next) {
                 .status(HTTP_STATUS_CODE.ERROR.NOT_FOUND)
                 .send({ error: 'Email was wrong' });
         } else {
-            const checkPass = await bcrypt.compare(password, user.password);
+            const checkPass = await bcryptHelper.compare(password, user.password);
             if (checkPass === false) {
                 res
                     .status(HTTP_STATUS_CODE.ERROR.UNAUTHORIZED)
@@ -80,10 +85,6 @@ async function getAllUser(req, res, next) {
             return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
                 count: users.length,
                 users: users,
-                request: {
-                    type: 'GET',
-                    description: 'Get All Users',
-                },
             });
         }
     } catch (error) {
@@ -94,7 +95,7 @@ async function getAllUser(req, res, next) {
 async function editUser(req, res, next) {
     try {
         let { email, newUsername, newPassword } = req.body;
-        newPassword = await bcrypt.hash(newPassword, 8);
+        newPassword = await bcryptHelper.hash(newPassword, 8);
         const newUser = await UserService.editUser(email, newUsername, newPassword);
         const token = await jwtHelper.returnToken(newUser);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ token, newUser });
@@ -135,12 +136,12 @@ async function refreshToken(req, res, next) {
         if (refreshToken) {
             const decoded = await jwtHelper.verifyToken(
                 refreshToken,
-                config.jwt.accessSecret
+                jwtConfig.refreshSecret
             );
             const accessToken = await jwtHelper.generateToken(
                 decoded.data,
-                config.jwt.accessSecret,
-                config.jwt.accessLife
+                jwtConfig.accessSecret,
+                jwtConfig.accessLife
             );
             return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
                 accessToken: accessToken,

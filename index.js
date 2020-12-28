@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const server = require('http').createServer(app);
-const mongo = require('./config/mongo/index');
-const config = require('./config/constants');
+const mongo = require('./config/setting/mongo/index');
 const morgan = require('morgan');
 const cors = require('cors');
+const serverConfig = require('./config/constant/server');
 // ________________________________________________
 mongo.connectMongo();
 app.use(morgan('dev'));
@@ -30,9 +30,9 @@ app.use((req, res, next) => {
 app.use('/user', require('./routers/user')());
 app.use('/data', require('./routers/data')());
 // ________________________________________________
-server.listen(config.sever.port, config.sever.host, () => {
+server.listen(serverConfig.port, serverConfig.host, () => {
     console.log(
-        'server on: http://' + config.sever.host + ':' + config.sever.port
+        'server on: http://' + serverConfig.host + ':' + serverConfig.port
     );
 });
 // ________________________________________________

@@ -6,7 +6,7 @@ function hash(password, saltRounds) {
             if (error) {
                 return reject(error);
             }
-            return resolve(result); //save on DB
+            return resolve(result);
         });
     });
 }

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('../constants');
+const mongoConfig = require('../../constant/mongo');
 
 // ________________________________________________
 
@@ -7,7 +7,7 @@ function connectMongo() {
     mongoose.Promise = global.Promise;
     mongoose.set('useFindAndModify', false);
     mongoose.connect(
-        config.mongo.host, {
+        mongoConfig.host, {
             useCreateIndex: true,
             useNewUrlParser: true,
             useUnifiedTopology: true,
@@ -16,7 +16,7 @@ function connectMongo() {
             if (err) {
                 return;
             } else {
-                console.log('connect successfully to db: ', config.mongo.host);
+                console.log('connect successfully to db: ', mongoConfig.host);
             }
         }
     );

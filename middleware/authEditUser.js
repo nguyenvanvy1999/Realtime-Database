@@ -1,4 +1,3 @@
-const { APIError } = require('../helpers/ErrorHandler');
 const User = require('../models/user');
 
 function checkUsernameAndPassword(req, res, next) {

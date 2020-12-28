@@ -1,12 +1,14 @@
 const uploadFile = require('../middleware/upload').uploadFileMiddle;
 const { APIError } = require('../helpers/ErrorHandler');
-const HTTP_STATUS_CODE = require('../config/constants').HTTP_STATUS_CODE;
+const HTTP_STATUS_CODE = require('../config/constant/http');
 const fs = require('fs');
 async function upload(req, res, next) {
     try {
         await uploadFile(req, res);
-        if (req.file == undefined) {
-            throw new APIError({ message: 'Please upload a file' });
+        if (!req.file) {
+            throw new APIError({
+                message: 'Please choose a file or check your file type',
+            });
         }
 
         res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
@@ -21,7 +23,6 @@ function getListFiles(req, res, next) {
     try {
         const directoryPath =
             'C:/Users/DELL PRECISION/OneDrive/Máy tính/realtimeDatabase/uploads/';
-        console.log(__dirname);
         fs.readdir(directoryPath, function(err, files) {
             if (err) {
                 res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send({
@@ -60,7 +61,7 @@ function download(req, res, next) {
 }
 
 module.exports = {
-    upload,
-    getListFiles,
-    download,
+    upload: upload,
+    getListFiles: getListFiles,
+    download: download,
 };

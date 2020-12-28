@@ -1,7 +1,7 @@
 const jwtHelper = require('../helpers/jwt');
-const config = require('../config/constants');
+const jwtConfig = require('../config/constant/jwt');
 const User = require('../models/user');
-const HTTP_STATUS_CODE = require('../config/constants').HTTP_STATUS_CODE;
+const HTTP_STATUS_CODE = require('../config/constant/http');
 let isAuth = async function(req, res, next) {
     const tokenFromClient =
         req.body.token || req.query.token || req.header['token'];
@@ -9,7 +9,7 @@ let isAuth = async function(req, res, next) {
         try {
             const decoded = await jwtHelper.verifyToken(
                 tokenFromClient,
-                config.jwt.accessSecret
+                jwtConfig.accessSecret
             );
             req.jwtDecoded = decoded;
             next();

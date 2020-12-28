@@ -17,9 +17,6 @@ class APIError extends BaseError {
 }
 
 class ErrorHandler {
-    // eslint-disable-next-line no-unused-vars
-    async handleError(error) {}
-
     isTrustedError(error) {
         if (error instanceof BaseError) {
             return error.isOperational;

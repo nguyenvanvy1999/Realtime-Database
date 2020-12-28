@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config/constants');
+const jwtConfig = require('../config/constant/jwt');
 
 let generateToken = (user, secretSignature, tokenLife) => {
     return new Promise((resolve, reject) => {
@@ -35,13 +35,13 @@ async function returnToken(user) {
     try {
         const accessToken = await generateToken(
             user,
-            config.jwt.accessSecret,
-            config.jwt.accessLife
+            jwtConfig.accessSecret,
+            jwtConfig.accessLife
         );
         const refreshToken = await generateToken(
             user,
-            config.jwt.refreshSecret,
-            config.jwt.refreshLife
+            jwtConfig.refreshSecret,
+            jwtConfig.refreshLife
         );
         return {
             accessToken: accessToken,

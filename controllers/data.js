@@ -1,5 +1,5 @@
 const DataService = require('../services/data');
-const HTTP_STATUS_CODE = require('../config/constants').HTTP_STATUS_CODE;
+const HTTP_STATUS_CODE = require('../config/constant/http');
 const { APIError } = require('../helpers/ErrorHandler');
 async function getData(req, res, next) {
     try {

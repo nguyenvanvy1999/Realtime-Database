@@ -1,7 +1,7 @@
 const nodeMailer = require('nodemailer');
-const config = require('../config/constants');
+const mailConfig = require('../config/constant/mail').mailConfig;
 
-const transporter = nodeMailer.createTransport(config.nodeMailer);
+const transporter = nodeMailer.createTransport(mailConfig);
 
 function newMailOption(from, to, subject, text) {
     let mailOption = {

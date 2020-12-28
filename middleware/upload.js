@@ -1,5 +1,5 @@
 const util = require('util');
-const upload = require('../config/multer/index');
+const upload = require('../config/setting/multer/index');
 
 const uploadFile = upload.single('file');
 const uploadFiles = upload.array('files');
