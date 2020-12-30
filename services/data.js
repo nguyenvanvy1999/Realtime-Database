@@ -5,8 +5,8 @@ function newData(socket, document) {
     newData = {
         _id: mongoose.Types.ObjectId(),
         user: document.user,
-        time: Date.now(),
         device: document.device,
+        time: Date.now(),
         data: {
             socket: {
                 id: socket.id,
@@ -31,10 +31,10 @@ function insert(newData) {
     });
 }
 
-function getDataDevice(device) {
+function getDataByDevice(deviceID) {
     return new Promise((resolve, reject) => {
         try {
-            const dataDocuments = Data.find({ device: device });
+            const dataDocuments = Data.find({ device: deviceID });
             return resolve(dataDocuments);
         } catch (error) {
             return reject(error);
@@ -42,10 +42,10 @@ function getDataDevice(device) {
     });
 }
 
-function getDataUser(email) {
+function getDataByUser(userID) {
     return new Promise((resolve, reject) => {
         try {
-            const dataDocuments = Data.find({ user: { email: email } });
+            const dataDocuments = Data.find({ user: userID });
             return resolve(dataDocuments);
         } catch (error) {
             return reject(error);
@@ -53,7 +53,7 @@ function getDataUser(email) {
     });
 }
 
-function deleteData(id) {
+function deleteOneData(id) {
     return new Promise((resolve, reject) => {
         try {
             const result = Data.findByIdAndDelete(id);
@@ -64,10 +64,34 @@ function deleteData(id) {
     });
 }
 
+function deleteDataByUser(userID) {
+    return new Promise((resolve, reject) => {
+        try {
+            let result = Data.deleteMany({ user: userID });
+            return resolve(result);
+        } catch (error) {
+            return reject(error);
+        }
+    });
+}
+
+function deleteDataByDevice(deviceID) {
+    return new Promise((resolve, reject) => {
+        try {
+            let result = Data.deleteMany({ device: deviceID });
+            return resolve(result);
+        } catch (error) {
+            return reject(error);
+        }
+    });
+}
+
 module.exports = {
     newData: newData,
     insert: insert,
-    getDataDevice: getDataDevice,
-    getDataUser: getDataUser,
-    deleteData: deleteData,
+    getDataByDevice: getDataByDevice,
+    getDataByUser: getDataByUser,
+    deleteOneData: deleteOneData,
+    deleteDataByDevice: deleteDataByDevice,
+    deleteDataByUser: deleteDataByUser,
 };

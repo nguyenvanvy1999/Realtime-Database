@@ -25,7 +25,9 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
-});
+}, { timestamps: true }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
+userSchema.set('toObject', { virtuals: true });
+userSchema.set('toJSON', { virtuals: true });
 
 userSchema.pre('save', async function(next) {
     // Hash the password before saving the user model
@@ -33,6 +35,11 @@ userSchema.pre('save', async function(next) {
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);
     }
+    next();
+});
+userSchema.pre('remove', async function(next) {
+    const user = this;
+    user.model('Data').deleteMany({ user: this._id });
     next();
 });
 

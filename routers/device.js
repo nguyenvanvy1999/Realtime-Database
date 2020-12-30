@@ -1,46 +1,43 @@
 'user strict';
-const DataController = require('../controllers/data');
 const router = require('express').Router();
 const { handleError } = require('../middleware/error');
 const authMiddleware = require('../middleware/authMiddleware');
-const UploadController = require('../controllers/upload');
 const multer = require('multer');
+const DeviceController = require('../controllers/device');
+
 module.exports = () => {
     router
-        .route('/get-data-user')
+        .route('/get-device-user-and-type')
+        .get(
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            DeviceController.getDeviceByUserAndType,
+            handleError
+        );
+    router
+        .route('/get-device-user')
+        .get(
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            DeviceController.getDeviceUser,
+            handleError
+        );
+    router
+        .route('/get-device')
         .get(
             multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
-            DataController.getDataByUser,
+            DeviceController.getDeviceByID,
             handleError
         );
+    //FIXME: add role admin auth
     router
-        .route('/get-data-device')
-        .get(
-            multer().none(),
-            authMiddleware.isAuth,
-            authMiddleware.isActive,
-            DataController.getDataByDevice,
-            handleError
-        );
+        .route('/admin/get-all-device')
+        .get(multer().none(), DeviceController.getAllDevice, handleError);
     router
-        .route('/delete-data-user')
-        .delete(
-            multer().none(),
-            authMiddleware.isAuth,
-            authMiddleware.isActive,
-            DataController.deleteDataByUser,
-            handleError
-        );
-    router
-        .route('/delete-data-device')
-        .delete(
-            multer().none(),
-            authMiddleware.isAuth,
-            authMiddleware.isActive,
-            DataController.deleteDataByDevice,
-            handleError
-        );
+        .route('/admin/get-device-same-type')
+        .get(multer().none(), DeviceController.getAllDeviceSameType, handleError);
+
     return router;
 };

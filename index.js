@@ -6,6 +6,10 @@ const mongo = require('./config/setting/mongo/index');
 const morgan = require('morgan');
 const cors = require('cors');
 const serverConfig = require('./config/constant/server');
+const UserRouter = require('./routers/user')();
+const DataRouter = require('./routers/data')();
+const FileRouter = require('./routers/file')();
+const DeviceRouter = require('./routers/device')();
 // ________________________________________________
 mongo.connectMongo();
 app.use(morgan('dev'));
@@ -27,8 +31,10 @@ app.use((req, res, next) => {
     next();
 });
 // ________________________________________________
-app.use('/user', require('./routers/user')());
-app.use('/data', require('./routers/data')());
+app.use('/user', UserRouter);
+app.use('/data', DataRouter);
+app.use('/file', FileRouter);
+app.use('/device', DeviceRouter);
 // ________________________________________________
 server.listen(serverConfig.port, serverConfig.host, () => {
     console.log(

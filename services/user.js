@@ -74,22 +74,13 @@ function activeAccount(email) {
     return new Promise((resolve, reject) => {
         try {
             const result = User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
-            return result;
+            return resolve(result);
         } catch (error) {
             return reject(error);
         }
     });
 }
-// FIXME: no used this function
-async function getPermission(email, next) {
-    try {
-        const user = await User.findOne({ email: email });
-        const permission = user.role;
-        return permission;
-    } catch (error) {
-        next(error);
-    }
-}
+
 // ________________________________________________
 module.exports = {
     newUser: newUser,
