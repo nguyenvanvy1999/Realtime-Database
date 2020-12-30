@@ -41,7 +41,8 @@ async function deleteDataByUser(req, res, next) {
 }
 async function deleteDataByDevice(req, res, next) {
     try {
-        let result = await DataService.deleteDataByDevice(req.body.deviceID);
+        const deviceID = req.body.deviceID;
+        let result = await DataService.deleteDataByDevice(deviceID);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
             .send({ message: 'Delete success' });
@@ -51,7 +52,8 @@ async function deleteDataByDevice(req, res, next) {
 }
 async function deleteOneData(req, res, next) {
     try {
-        let result = await DataService.deleteOneData(req.body.dataID);
+        const dataID = req.body.dataID;
+        let result = await DataService.deleteOneData(dataID);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
             .send({ message: 'Delete success' });
