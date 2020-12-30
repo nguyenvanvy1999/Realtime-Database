@@ -49,10 +49,36 @@ async function getAllDeviceSameType(req, res, next) {
     }
 }
 
+async function linkDeviceToUser(req, res, next) {
+    try {
+        const user = req.jwtDecoded.data;
+        const deviceID = req.body.deviceID;
+        const result = await DeviceService.linkDeviceWithUser(deviceID, user._id);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Link successfully !', result });
+    } catch (error) {
+        next(error);
+    }
+}
+async function unLinkDeviceToUser(req, res, next) {
+    try {
+        const deviceID = req.body.deviceID;
+        const result = await DeviceService.unLinkDevice(deviceID);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'UnLink Successfully !' });
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     getAllDevice: getAllDevice,
     getAllDeviceSameType: getAllDeviceSameType,
     getDeviceByID: getDeviceByID,
     getDeviceByUserAndType: getDeviceByUserAndType,
     getDeviceUser: getDeviceByUser,
+    linkDeviceToUser: linkDeviceToUser,
+    unLinkDevice: unLinkDeviceToUser,
 };

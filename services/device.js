@@ -55,10 +55,34 @@ function getDeviceUserAndType(userID, type) {
         }
     });
 }
+
+function linkDeviceWithUser(deviceID, userID) {
+    return new Promise((resolve, reject) => {
+        try {
+            const result = Device.findOneAndUpdate({ deviceID: deviceID }, { user: userID }, { new: true });
+            return resolve(result);
+        } catch (error) {
+            return reject(error);
+        }
+    });
+}
+
+function unLinkDevice(deviceID) {
+    return new Promise((resolve, reject) => {
+        try {
+            const result = Device.findOneAndUpdate({ deviceID: deviceID }, { user: null }, { new: true });
+            return resolve(result);
+        } catch (error) {
+            return reject(error);
+        }
+    });
+}
 module.exports = {
     getDevice: getDevice,
     getAllDevice: getAllDevice,
     getAllDeviceSameType: getAllDeviceSameType,
     getDeviceUser: getDeviceUser,
     getDeviceUserAndType: getDeviceUserAndType,
+    linkDeviceWithUser: linkDeviceWithUser,
+    unLinkDevice: unLinkDevice,
 };
