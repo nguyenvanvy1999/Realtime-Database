@@ -80,6 +80,16 @@ function activeAccount(email) {
         }
     });
 }
+// FIXME: no used this function
+async function getPermission(email, next) {
+    try {
+        const user = await User.findOne({ email: email });
+        const permission = user.role;
+        return permission;
+    } catch (error) {
+        next(error);
+    }
+}
 // ________________________________________________
 module.exports = {
     newUser: newUser,

@@ -45,7 +45,7 @@ function getDataDevice(device) {
 function getDataUser(email) {
     return new Promise((resolve, reject) => {
         try {
-            const dataDocuments = Data.find({ user:{email:email} });
+            const dataDocuments = Data.find({ user: { email: email } });
             return resolve(dataDocuments);
         } catch (error) {
             return reject(error);
