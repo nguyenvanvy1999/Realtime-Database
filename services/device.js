@@ -77,6 +77,17 @@ function unLinkDevice(deviceID) {
         }
     });
 }
+
+function unLinkAllDevice(userID) {
+    return new Promise((resolve, reject) => {
+        try {
+            const result = Device.updateMany({ user: userID }, { user: null }, { new: true });
+            return resolve(result);
+        } catch (error) {
+            return reject(error);
+        }
+    });
+}
 module.exports = {
     getDevice: getDevice,
     getAllDevice: getAllDevice,
@@ -85,4 +96,5 @@ module.exports = {
     getDeviceUserAndType: getDeviceUserAndType,
     linkDeviceWithUser: linkDeviceWithUser,
     unLinkDevice: unLinkDevice,
+    unLinkAllDevice: unLinkAllDevice,
 };

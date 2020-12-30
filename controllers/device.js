@@ -72,6 +72,17 @@ async function unLinkDeviceToUser(req, res, next) {
         next(error);
     }
 }
+async function unLinkAllDevice(req, res, next) {
+    try {
+        const user = req.jwtDecoded.data;
+        const result = await DeviceService.unLinkAllDevice(user._id);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'UnLink Successfully !' });
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     getAllDevice: getAllDevice,
@@ -81,4 +92,5 @@ module.exports = {
     getDeviceUser: getDeviceByUser,
     linkDeviceToUser: linkDeviceToUser,
     unLinkDevice: unLinkDeviceToUser,
+    unLinkAllDevice: unLinkAllDevice,
 };

@@ -49,6 +49,15 @@ module.exports = () => {
             DeviceController.unLinkDevice,
             handleError
         );
+    router
+        .route('/unlink-all-device')
+        .get(
+            multer().none(),
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            DeviceController.unLinkAllDevice,
+            handleError
+        );
     //FIXME: add role admin auth
     router
         .route('/admin/get-all-device')

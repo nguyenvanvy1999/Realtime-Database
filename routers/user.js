@@ -40,14 +40,12 @@ module.exports = () => {
             UserController.deleteUser,
             handleError
         );
-    router
-        .route('/user-profile')
-        .post(
-            authMiddleware.isAuth,
-            authMiddleware.isActive,
-            UserController.getUserProfile,
-            handleError
-        );
+    router.route('/user-profile').post(
+        authMiddleware.isAuth,
+        authMiddleware.isActive,
+        UserController.getUserProfile,
+        handleError
+    );
     router.route('/token').get(UserController.refreshToken, handleError);
     return router;
 };
