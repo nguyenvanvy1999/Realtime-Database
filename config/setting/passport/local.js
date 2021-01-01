@@ -1,14 +1,11 @@
-//FIXME:passport local
-
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../../../models/user');
 const UserService = require('../../../services/user');
 const bcryptHelper = require('../../../helpers/bcrypt');
-const signUpStrategy = new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true,
-    },
+const passportConfig = require('../../constant/passport');
+
+const signUpStrategy = new LocalStrategy(
+    passportConfig.local,
     async(req, email, username, password, done) => {
         try {
             const user = await User.findOne({ email: email });
@@ -24,11 +21,8 @@ const signUpStrategy = new LocalStrategy({
         }
     }
 );
-const signInStrategy = new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true,
-    },
+const signInStrategy = new LocalStrategy(
+    passportConfig.local,
     async(req, email, password, done) => {
         try {
             const user = await UserService.activeAccount(email);
