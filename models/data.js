@@ -21,7 +21,7 @@ const dataSchema = new Schema({
         },
         time: String,
     }, ],
-});
+}, { timestamps: true });
 
 const Data = mongoose.model('Data', dataSchema);
 

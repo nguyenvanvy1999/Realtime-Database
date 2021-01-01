@@ -14,7 +14,7 @@ const deviceSchema = new Schema({
         // likes camera,...
         type: Schema.Types.Mixed,
     },
-});
+}, { timestamps: true });
 
 const Device = mongoose.model('Device', deviceSchema);
 
