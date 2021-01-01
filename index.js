@@ -10,6 +10,7 @@ const UserRouter = require('./routers/user')();
 const DataRouter = require('./routers/data')();
 const FileRouter = require('./routers/file')();
 const DeviceRouter = require('./routers/device')();
+const flash = require('connect-flash'); //FIXME:passport
 // ________________________________________________
 mongo.connectMongo();
 app.use(morgan('dev'));
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use(cors());
+app.use(flash()); // FIXME:passport
 // ________________________________________________
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');

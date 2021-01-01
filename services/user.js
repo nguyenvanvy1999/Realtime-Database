@@ -80,7 +80,6 @@ function activeAccount(email) {
         }
     });
 }
-
 // ________________________________________________
 module.exports = {
     newUser: newUser,

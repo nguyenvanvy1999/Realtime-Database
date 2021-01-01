@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const isEmail = require('validator').isEmail;
 const bcrypt = require('bcrypt');
-const userSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+const Schema = require('mongoose').Schema();
+const userSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     username: {
         type: String,
         unique: true,
@@ -19,15 +20,12 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: [true, 'password is required'],
-        minLength: [4, 'Password must be at least 4'],
     },
     isActive: {
         type: Boolean,
         default: false,
     },
-}, { timestamps: true }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
-userSchema.set('toObject', { virtuals: true });
-userSchema.set('toJSON', { virtuals: true });
+}, { timestamps: true });
 
 userSchema.pre('save', async function(next) {
     // Hash the password before saving the user model
