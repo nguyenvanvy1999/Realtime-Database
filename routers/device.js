@@ -4,6 +4,7 @@ const { handleError } = require('../middleware/error');
 const authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');
 const DeviceController = require('../controllers/device');
+const ZoneController = require('../controllers/zone');
 
 module.exports = () => {
     router
@@ -56,6 +57,52 @@ module.exports = () => {
             authMiddleware.isAuth,
             authMiddleware.isActive,
             DeviceController.unLinkAllDevice,
+            handleError
+        );
+    // _____________________________________________________________
+    router
+        .route('/new-zone')
+        .get(
+            multer().none(),
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            ZoneController.newZone,
+            handleError
+        );
+    router
+        .route('/zone/insert-device')
+        .get(
+            multer().none(),
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            ZoneController.insertDevice,
+            handleError
+        );
+    router
+        .route('/zone/insert-many')
+        .get(
+            multer().none(),
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            ZoneController.insertManyDevice,
+            handleError
+        );
+    router
+        .route('/zone/remove-device')
+        .get(
+            multer().none(),
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            ZoneController.removeDevice,
+            handleError
+        );
+    router
+        .route('/zone/remove-many')
+        .get(
+            multer().none(),
+            authMiddleware.isAuth,
+            authMiddleware.isActive,
+            ZoneController.removeManyDevices,
             handleError
         );
     //FIXME: add role admin auth

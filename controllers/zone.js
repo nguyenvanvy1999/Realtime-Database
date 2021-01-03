@@ -38,4 +38,32 @@ async function insertManyDevice(req, res, next) {
         next(error);
     }
 }
-module.exports = {};
+async function removeDevice(req, res, next) {
+    try {
+        const { zoneID, deviceID } = req.body;
+        const result = await ZoneService.removeDevice(zoneID, deviceID);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Remove device successfully !', result: result });
+    } catch (error) {
+        next(error);
+    }
+}
+async function removeManyDevices(req, res, next) {
+    try {
+        const { zoneID, devicesID } = req.body;
+        const result = await ZoneService.removeDevice(zoneID, devicesID);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Remove devices successfully !', result: result });
+    } catch (error) {
+        next(error);
+    }
+}
+module.exports = {
+    newZone: newZone,
+    insertDevice: insertDevice,
+    insertManyDevice: insertManyDevice,
+    removeDevice: removeDevice,
+    removeManyDevices: removeManyDevices,
+};
