@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const isEmail = require('validator').isEmail;
 const bcrypt = require('bcrypt');
-const Schema = require('mongoose').Schema();
+const Schema = mongoose.Schema;
 const userSchema = new Schema({
     _id: Schema.Types.ObjectId,
     username: {
