@@ -1,48 +1,42 @@
 'user strict';
-const express = require('express');
 const DataController = require('../controllers/data');
-const router = express.Router();
+const router = require('express').Router();
 const { handleError } = require('../middleware/error');
 const authMiddleware = require('../middleware/authMiddleware');
 const UploadController = require('../controllers/upload');
 const multer = require('multer');
 module.exports = () => {
     router
-        .route('/get-data')
+        .route('/get-data-user')
         .get(
             multer().none(),
             authMiddleware.isAuth,
-            authMiddleware.isActive,
-            DataController.getData,
+            DataController.getDataByUser,
             handleError
         );
-    router.route('/get-all-data').get(DataController.getAllData, handleError);
     router
-        .route('/delete-data')
+        .route('/get-data-device')
+        .get(
+            multer().none(),
+            authMiddleware.isAuth,
+            DataController.getDataByDevice,
+            handleError
+        );
+    router
+        .route('/delete-data-user')
         .delete(
             multer().none(),
             authMiddleware.isAuth,
-            authMiddleware.isActive,
-            DataController.deleteData,
+            DataController.deleteDataByUser,
             handleError
         );
-    router.route('/upload/single').post(
-        //authMiddleware.isAuth,
-        //authMiddleware.isActive,
-        UploadController.upload,
-        handleError
-    );
-    router.route('/upload/multi').post(
-        //authMiddleware.isAuth,
-        //authMiddleware.isActive,
-        UploadController.upload,
-        handleError
-    );
     router
-        .route('/list-file')
-        .get(multer().none(), UploadController.getListFiles, handleError);
-    router
-        .route('/download')
-        .get(multer().none(), UploadController.download, handleError);
+        .route('/delete-data-device')
+        .delete(
+            multer().none(),
+            authMiddleware.isAuth,
+            DataController.deleteDataByDevice,
+            handleError
+        );
     return router;
 };

@@ -74,7 +74,7 @@ function activeAccount(email) {
     return new Promise((resolve, reject) => {
         try {
             const result = User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
-            return result;
+            return resolve(result);
         } catch (error) {
             return reject(error);
         }

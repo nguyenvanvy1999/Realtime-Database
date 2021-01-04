@@ -5,29 +5,32 @@ const authMiddleware = require('../middleware/authMiddleware');
 const { handleError } = require('../middleware/error');
 const authEditUser = require('../middleware/authEditUser');
 const multer = require('multer');
+const joiMiddleware = require('../middleware/joi');
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
     router
         .route('/sign-up')
         .post(
+            joiMiddleware.joiSignUp,
             authSignUp.checkDuplicateUsernameOrEmail,
             UserController.signUp,
             handleError
         );
     router
         .route('/sign-in')
-        .post(authMiddleware.isActive, UserController.signIn, handleError);
+        .post(joiMiddleware.joiSignIn, UserController.signIn, handleError);
 
     router
         .route('/verify-account')
-        .post(UserController.verifyAccount, handleError);
-    router.route('/get-all-users').get(UserController.getAllUser, handleError);
+        .post(joiMiddleware.joiToken, UserController.verifyAccount, handleError);
+    router.route('/get-all-users').get(UserController.getAllUser, handleError); //FIXME:add role admin
     router
         .route('/edit-user')
         .patch(
+            joiMiddleware.joiToken,
+            joiMiddleware.joiEdit,
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             authEditUser.checkUsernameAndPassword,
             UserController.editUser,
             handleError
@@ -35,19 +38,21 @@ module.exports = () => {
     router
         .route('/delete-user')
         .delete(
+            joiMiddleware.joiToken,
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             UserController.deleteUser,
             handleError
         );
     router
         .route('/user-profile')
         .post(
+            joiMiddleware.joiToken,
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             UserController.getUserProfile,
             handleError
         );
-    router.route('/token').get(UserController.refreshToken, handleError);
+    router
+        .route('/token')
+        .get(joiMiddleware.joiToken, UserController.refreshToken, handleError);
     return router;
 };

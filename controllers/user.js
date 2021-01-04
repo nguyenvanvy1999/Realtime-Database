@@ -61,6 +61,9 @@ async function signIn(req, res, next) {
         if (checkPass === false) {
             throw new APIError({ message: 'password wrong !' });
         }
+        if (user.isActive === false) {
+            throw new APIError({ message: 'Please active account first !' });
+        }
         const token = await jwtHelper.returnToken(user);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
     } catch (error) {

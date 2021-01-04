@@ -1,13 +1,10 @@
 const DataService = require('../services/data');
 const HTTP_STATUS_CODE = require('../config/constant/http');
 const { APIError } = require('../helpers/ErrorHandler');
-async function getData(req, res, next) {
+async function getDataByUser(req, res, next) {
     try {
         let user = req.jwtDecoded.data;
-        if (!user) {
-            throw new APIError({ message: 'User wrong' });
-        }
-        const dataDocuments = await DataService.getData(user.email);
+        const dataDocuments = await DataService.getDataByUser(user._id);
         if (dataDocuments.length === 0) {
             throw new APIError({ message: 'No data found' });
         }
@@ -16,27 +13,55 @@ async function getData(req, res, next) {
         next(error);
     }
 }
-
-async function getAllData(req, res, next) {
+async function getDataByDevice(req, res, next) {
     try {
-        const dataDocuments = await DataService.getAllData();
+        let deviceID = req.body.deviceID;
+        if (!deviceID) {
+            throw new APIError({ message: 'Please choose device to get data' });
+        }
+        const dataDocuments = await DataService.getDataByDevice(deviceID);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(dataDocuments);
     } catch (error) {
         next(error);
     }
 }
-async function deleteData(req, res, next) {
+async function deleteDataByUser(req, res, next) {
     try {
-        let user = req.jwtDecoded.data;
-        let result = await DataService.deleteData(user.email);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('delete successfully!');
+        const user = req.jwtDecoded.data;
+        let result = await DataService.deleteDataByUser(user._id);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Delete success' });
     } catch (error) {
         next(error);
     }
 }
-
+async function deleteDataByDevice(req, res, next) {
+    try {
+        const deviceID = req.body.deviceID;
+        let result = await DataService.deleteDataByDevice(deviceID);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Delete success' });
+    } catch (error) {
+        next(error);
+    }
+}
+async function deleteOneData(req, res, next) {
+    try {
+        const dataID = req.body.dataID;
+        let result = await DataService.deleteOneData(dataID);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Delete success' });
+    } catch (error) {
+        next(error);
+    }
+}
 module.exports = {
-    getData: getData,
-    getAllData: getAllData,
-    deleteData: deleteData,
+    getDataByDevice: getDataByDevice,
+    getDataByUser: getDataByUser,
+    deleteDataByDevice: deleteDataByDevice,
+    deleteDataByUser: deleteDataByUser,
+    deleteOneData: deleteOneData,
 };
