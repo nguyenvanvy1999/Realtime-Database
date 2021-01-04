@@ -1,92 +1,77 @@
 const Device = require('../models/device');
 
-function getDevice(deviceID) {
-    return new Promise((resolve, reject) => {
-        try {
-            const device = Device.findOne({ deviceID: deviceID });
-            return resolve(device);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function getDevice(deviceID) {
+    try {
+        const device = await Device.findOne({ deviceID: deviceID });
+        return device;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getAllDeviceSameType(type) {
+async function getAllDeviceSameType(type) {
     //get all devices likes camera,sensor,... by device type
-    return new Promise((resolve, reject) => {
-        try {
-            const devices = Device.find({ type: type });
-            return resolve(devices);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+
+    try {
+        const devices = await Device.find({ type: type });
+        return devices;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getAllDevice() {
-    return new Promise((resolve, reject) => {
-        try {
-            const devices = Device.find();
-            return resolve(devices);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function getAllDevice() {
+    try {
+        const devices = await Device.find();
+        return devices;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getDeviceUser(userID) {
-    return new Promise((resolve, reject) => {
-        try {
-            const devices = Device.find({ user: userID });
-            return resolve(devices);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function getDeviceUser(userID) {
+    try {
+        const devices = await Device.find({ user: userID });
+        return devices;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getDeviceUserAndType(userID, type) {
-    return new Promise((resolve, reject) => {
-        try {
-            const devices = Device.find({ user: userID }, { type: type });
-            return resolve(devices);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function getDeviceUserAndType(userID, type) {
+    try {
+        const devices = await Device.find({ user: userID }, { type: type });
+        return devices;
+    } catch (error) {
+        return error;
+    }
 }
 
-function linkDeviceWithUser(deviceID, userID) {
-    return new Promise((resolve, reject) => {
-        try {
-            const result = Device.findOneAndUpdate({ deviceID: deviceID }, { user: userID }, { new: true });
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function linkDeviceWithUser(deviceID, userID) {
+    try {
+        const result = await Device.findOneAndUpdate({ deviceID: deviceID }, { user: userID }, { new: true });
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
-function unLinkDevice(deviceID) {
-    return new Promise((resolve, reject) => {
-        try {
-            const result = Device.findOneAndUpdate({ deviceID: deviceID }, { user: null }, { new: true });
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function unLinkDevice(deviceID) {
+    try {
+        const result = await Device.findOneAndUpdate({ deviceID: deviceID }, { user: null }, { new: true });
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
-function unLinkAllDevice(userID) {
-    return new Promise((resolve, reject) => {
-        try {
-            const result = Device.updateMany({ user: userID }, { user: null }, { new: true });
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function unLinkAllDevice(userID) {
+    try {
+        const result = await Device.updateMany({ user: userID }, { user: null }, { new: true });
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 module.exports = {
     getDevice: getDevice,

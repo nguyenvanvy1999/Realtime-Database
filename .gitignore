@@ -1,14 +1,8 @@
 node_modules/
 .idea/
 .vs/
-test.js/
 .github/
-trash.js
-test.json
 .vscode/
-document.js
-document.txt
 uploads/
 .settings/
-todo.txt
-test.js
+test/

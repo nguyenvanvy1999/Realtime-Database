@@ -1,35 +1,30 @@
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../config/constant/jwt');
 
-let generateToken = (user, secretSignature, tokenLife) => {
-    return new Promise((resolve, reject) => {
-        try {
-            const userData = {
-                _id: user._id,
-                email: user.email,
-                username: user.username,
-            };
-            const token = jwt.sign({ data: userData }, secretSignature, {
-                algorithm: 'HS256',
-                expiresIn: tokenLife,
-            });
-            return resolve(token);
-        } catch (error) {
-            return reject(error);
-        }
-    });
-};
-
-let verifyToken = (token, secretKey) => {
-    return new Promise((resolve, reject) => {
-        try {
-            const decoded = jwt.verify(token, secretKey);
-            return resolve(decoded);
-        } catch (error) {
-            return reject(error);
-        }
-    });
-};
+async function generateToken(user, secretSignature, tokenLife) {
+    try {
+        const userData = {
+            _id: user._id,
+            email: user.email,
+            username: user.username,
+        };
+        const token = await jwt.sign({ data: userData }, secretSignature, {
+            algorithm: 'HS256',
+            expiresIn: tokenLife,
+        });
+        return token;
+    } catch (error) {
+        return error;
+    }
+}
+async function verifyToken(token, secretKey) {
+    try {
+        const decoded = await jwt.verify(token, secretKey);
+        return decoded;
+    } catch (error) {
+        return error;
+    }
+}
 
 async function returnToken(user) {
     try {

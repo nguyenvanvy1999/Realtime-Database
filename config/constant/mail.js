@@ -1,7 +1,7 @@
 const mailConfig = {
     host: 'smtp.gmail.com',
     port: 587,
-    secure: false,
+    secure: true,
     auth: {
         user: 'nguyenvanvy619619@gmail.com',
         pass: '619619vyvy',

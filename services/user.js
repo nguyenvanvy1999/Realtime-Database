@@ -12,73 +12,58 @@ function newUser(email, username, password) {
     };
     return newUser;
 }
-
-function insert(newUser) {
-    return new Promise((resolve, reject) => {
-        try {
-            const user = new User(newUser);
-            const result = user.save();
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function insert(newUser) {
+    try {
+        const user = new User(newUser);
+        const result = await user.save();
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getUserByEmail(email) {
-    return new Promise((resolve, reject) => {
-        try {
-            const user = User.findOne({ email: email });
-            return resolve(user);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function getUserByEmail(email) {
+    try {
+        const user = await User.findOne({ email: email });
+        return user;
+    } catch (error) {
+        return error;
+    }
+}
+async function getAllUser() {
+    try {
+        const users = await User.find();
+        return users;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getAllUser() {
-    return new Promise((resolve, reject) => {
-        try {
-            const userDocuments = User.find();
-            return resolve(userDocuments);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function editUser(email, newUsername, newPassword) {
+    try {
+        const user = await User.findOneAndUpdate({ email: email }, { username: newUsername, password: newPassword }, { new: true });
+        return user;
+    } catch (error) {
+        return error;
+    }
 }
 
-function editUser(email, newUsername, newPassword) {
-    return new Promise((resolve, reject) => {
-        try {
-            console.log(newPassword);
-            const user = User.findOneAndUpdate({ email: email }, { username: newUsername, password: newPassword }, { new: true });
-            return resolve(user);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function deleteUserByEmail(email) {
+    try {
+        const result = await User.findOneAndDelete({ email: email });
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
-function deleteUserByEmail(email) {
-    return new Promise((resolve, reject) => {
-        try {
-            const result = User.findOneAndDelete({ email: email });
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
-}
-
-function activeAccount(email) {
-    return new Promise((resolve, reject) => {
-        try {
-            const result = User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function activeAccount(email) {
+    try {
+        const result = await User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 // ________________________________________________
 module.exports = {

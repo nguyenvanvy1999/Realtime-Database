@@ -19,71 +19,59 @@ function newData(socket, document) {
     return newData;
 }
 
-function insert(newData) {
-    return new Promise((resolve, reject) => {
-        try {
-            const data = new Data(newData);
-            const result = data.save();
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function insert(newData) {
+    try {
+        const data = new Data(newData);
+        const result = await data.save();
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getDataByDevice(deviceID) {
-    return new Promise((resolve, reject) => {
-        try {
-            const dataDocuments = Data.find({ device: deviceID });
-            return resolve(dataDocuments);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function getDataByDevice(deviceID) {
+    try {
+        const dataDocuments = await Data.find({ device: deviceID });
+        return dataDocuments;
+    } catch (error) {
+        return error;
+    }
 }
 
-function getDataByUser(userID) {
-    return new Promise((resolve, reject) => {
-        try {
-            const dataDocuments = Data.find({ user: userID });
-            return resolve(dataDocuments);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function getDataByUser(userID) {
+    try {
+        const dataDocuments = await Data.find({ user: userID });
+        return dataDocuments;
+    } catch (error) {
+        return error;
+    }
 }
 
-function deleteOneData(id) {
-    return new Promise((resolve, reject) => {
-        try {
-            const result = Data.findByIdAndDelete(id);
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function deleteOneData(id) {
+    try {
+        const result = await Data.findByIdAndDelete(id);
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
-function deleteDataByUser(userID) {
-    return new Promise((resolve, reject) => {
-        try {
-            let result = Data.deleteMany({ user: userID });
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function deleteDataByUser(userID) {
+    try {
+        let result = await Data.deleteMany({ user: userID });
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
-function deleteDataByDevice(deviceID) {
-    return new Promise((resolve, reject) => {
-        try {
-            let result = Data.deleteMany({ device: deviceID });
-            return resolve(result);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function deleteDataByDevice(deviceID) {
+    try {
+        let result = await Data.deleteMany({ device: deviceID });
+        return result;
+    } catch (error) {
+        return error;
+    }
 }
 
 module.exports = {

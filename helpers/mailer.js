@@ -1,8 +1,6 @@
 const nodeMailer = require('nodemailer');
 const mailConfig = require('../config/constant/mail').mailConfig;
 
-const transporter = nodeMailer.createTransport(mailConfig);
-
 function newMailOption(from, to, subject, text) {
     let mailOption = {
         from: from,
@@ -13,11 +11,12 @@ function newMailOption(from, to, subject, text) {
     return mailOption;
 }
 
-function sendMail(mailOption) {
+async function sendMail(mailOption, next) {
     return new Promise((resolve, reject) => {
         try {
-            let result = transporter.sendMail(mailOption);
-            return resolve(result);
+            const transporter = nodeMailer.createTransport(mailConfig);
+            const mail = transporter.sendMail(mailOption);
+            return resolve(mail);
         } catch (error) {
             return reject(error);
         }

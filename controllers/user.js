@@ -30,9 +30,10 @@ async function signUp(req, res, next) {
             text
         );
         let result = await mailHelper.sendMail(newMail);
-        res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Check your email and verify account!', result });
+        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+            message: 'Check your email and verify account!',
+            result: result,
+        });
     } catch (error) {
         next(error);
     }
