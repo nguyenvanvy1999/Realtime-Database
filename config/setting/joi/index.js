@@ -1,5 +1,6 @@
-let joi = require('joi');
-
+//const joi = require('joi');
+const joi = require('joi-oid');
+const Joi = require('joi');
 const signUpSchema = joi.object({
     email: joi
         .string()
@@ -35,8 +36,29 @@ const tokenSchema = joi.object({
         .string()
         .regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/),
 });
+const deviceIDSchema = joi.object({
+    deviceID: joi.objectId(),
+});
+const deviceTypeSchema = joi.object({
+    type: joi.string().required(),
+});
+const zoneSchema = joi.object({
+    zone: joi.objectId().required(),
+});
+const devicesIDSchema = joi
+    .array()
+    .items(
+        joi.object({
+            deviceID: joi.objectId(),
+        })
+    )
+    .required();
 module.exports = {
     signInSchema: signInSchema,
     signUpSchema: signUpSchema,
     tokenSchema: tokenSchema,
+    deviceIDSchema: deviceIDSchema,
+    devicesIDSchema: devicesIDSchema,
+    deviceTypeSchema: deviceTypeSchema,
+    zoneSchema: zoneSchema,
 };

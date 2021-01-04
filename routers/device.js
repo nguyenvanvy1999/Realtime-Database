@@ -5,8 +5,10 @@ const authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');
 const DeviceController = require('../controllers/device');
 const ZoneController = require('../controllers/zone');
+const joiMiddleware = require('../middleware/joi');
 
 module.exports = () => {
+    router.use(multer().none());
     router
         .route('/get-device-user-and-type')
         .get(
@@ -26,7 +28,7 @@ module.exports = () => {
     router
         .route('/get-device')
         .get(
-            multer().none(),
+            joiMiddleware.joiDevice,
             authMiddleware.isAuth,
             authMiddleware.isActive,
             DeviceController.getDeviceByID,
@@ -35,7 +37,6 @@ module.exports = () => {
     router
         .route('/link-device')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             DeviceController.linkDeviceToUser,
@@ -44,7 +45,6 @@ module.exports = () => {
     router
         .route('/unlink-device')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             DeviceController.unLinkDevice,
@@ -53,7 +53,6 @@ module.exports = () => {
     router
         .route('/unlink-all-device')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             DeviceController.unLinkAllDevice,
@@ -63,7 +62,6 @@ module.exports = () => {
     router
         .route('/new-zone')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             ZoneController.newZone,
@@ -72,7 +70,6 @@ module.exports = () => {
     router
         .route('/zone/insert-device')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             ZoneController.insertDevice,
@@ -81,7 +78,6 @@ module.exports = () => {
     router
         .route('/zone/insert-many')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             ZoneController.insertManyDevice,
@@ -90,7 +86,6 @@ module.exports = () => {
     router
         .route('/zone/remove-device')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             ZoneController.removeDevice,
@@ -99,7 +94,6 @@ module.exports = () => {
     router
         .route('/zone/remove-many')
         .get(
-            multer().none(),
             authMiddleware.isAuth,
             authMiddleware.isActive,
             ZoneController.removeManyDevices,
@@ -108,10 +102,10 @@ module.exports = () => {
     //FIXME: add role admin auth
     router
         .route('/admin/get-all-device')
-        .get(multer().none(), DeviceController.getAllDevice, handleError);
+        .get(DeviceController.getAllDevice, handleError);
     router
         .route('/admin/get-device-same-type')
-        .get(multer().none(), DeviceController.getAllDeviceSameType, handleError);
+        .get(DeviceController.getAllDeviceSameType, handleError);
 
     return router;
 };
