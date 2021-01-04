@@ -27,6 +27,14 @@ const signInSchema = joi.object({
     password: joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
     role: joi.string().valid('Admin', 'User'),
 });
+const editUserSchema = joi.object({
+    newUsername: joi.string().alphanum().min(4).max(30).required(),
+    newPassword: joi
+        .string()
+        .regex(/^[a-zA-Z0-9]{3,30}$/)
+        .min(4)
+        .required(),
+});
 const tokenSchema = joi.object({
     token: joi
         .string()
@@ -61,4 +69,5 @@ module.exports = {
     devicesIDSchema: devicesIDSchema,
     deviceTypeSchema: deviceTypeSchema,
     zoneSchema: zoneSchema,
+    editUserSchema: editUserSchema,
 };

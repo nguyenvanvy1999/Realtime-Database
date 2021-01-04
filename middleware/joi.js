@@ -1,3 +1,4 @@
+const { func } = require('joi');
 const Joi = require('joi');
 const JoiSchema = require('../config/setting/joi/index');
 const { APIError } = require('../helpers/ErrorHandler');
@@ -17,6 +18,18 @@ async function joiSignUp(req, res, next) {
 async function joiSignIn(req, res, next) {
     try {
         const { result, error } = JoiSchema.signInSchema.validate(req.body);
+        if (!error) {
+            next();
+        } else {
+            throw new APIError({ message: error.message });
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+async function joiEdit(req, res, next) {
+    try {
+        const { result, error } = JoiSchema.editUserSchema.validate(req.body);
         if (!error) {
             next();
         } else {
@@ -94,4 +107,5 @@ module.exports = {
     joiDeviceType: joiDeviceType,
     joiDevices: joiDevices,
     joiZone: joiZone,
+    joiEdit: joiEdit,
 };

@@ -34,6 +34,7 @@ module.exports = () => {
         .route('/edit-user')
         .patch(
             joiMiddleware.joiToken,
+            joiMiddleware.joiEdit,
             authMiddleware.isAuth,
             authMiddleware.isActive,
             authEditUser.checkUsernameAndPassword,
