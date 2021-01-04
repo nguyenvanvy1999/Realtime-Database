@@ -4,9 +4,6 @@ const { APIError } = require('../helpers/ErrorHandler');
 async function getDataByUser(req, res, next) {
     try {
         let user = req.jwtDecoded.data;
-        if (!user) {
-            throw new APIError({ message: 'User wrong' });
-        }
         const dataDocuments = await DataService.getDataByUser(user._id);
         if (dataDocuments.length === 0) {
             throw new APIError({ message: 'No data found' });

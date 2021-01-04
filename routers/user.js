@@ -19,24 +19,18 @@ module.exports = () => {
         );
     router
         .route('/sign-in')
-        .post(
-            joiMiddleware.joiSignIn,
-            authMiddleware.isActive,
-            UserController.signIn,
-            handleError
-        );
+        .post(joiMiddleware.joiSignIn, UserController.signIn, handleError);
 
     router
         .route('/verify-account')
         .post(joiMiddleware.joiToken, UserController.verifyAccount, handleError);
-    router.route('/get-all-users').get(UserController.getAllUser, handleError);
+    router.route('/get-all-users').get(UserController.getAllUser, handleError); //FIXME:add role admin
     router
         .route('/edit-user')
         .patch(
             joiMiddleware.joiToken,
             joiMiddleware.joiEdit,
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             authEditUser.checkUsernameAndPassword,
             UserController.editUser,
             handleError
@@ -46,7 +40,6 @@ module.exports = () => {
         .delete(
             joiMiddleware.joiToken,
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             UserController.deleteUser,
             handleError
         );
@@ -55,7 +48,6 @@ module.exports = () => {
         .post(
             joiMiddleware.joiToken,
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             UserController.getUserProfile,
             handleError
         );

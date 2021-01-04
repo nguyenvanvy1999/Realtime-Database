@@ -24,26 +24,7 @@ let isAuth = async function(req, res, next) {
         next(error);
     }
 };
-let isActive = async function(req, res, next) {
-    try {
-        let email = req.body.email;
-        let user = await User.findOne({ email: email });
-        if (user) {
-            if (user.isActive === true) {
-                next();
-            } else {
-                throw new APIError({
-                    message: 'Account not active. Please active first',
-                });
-            }
-        }
-        throw new APIError({ message: 'Not found user' });
-    } catch (error) {
-        next(error);
-    }
-};
 
 module.exports = {
     isAuth: isAuth,
-    isActive: isActive,
 };

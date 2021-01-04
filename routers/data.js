@@ -11,7 +11,6 @@ module.exports = () => {
         .get(
             multer().none(),
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             DataController.getDataByUser,
             handleError
         );
@@ -20,7 +19,6 @@ module.exports = () => {
         .get(
             multer().none(),
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             DataController.getDataByDevice,
             handleError
         );
@@ -29,7 +27,6 @@ module.exports = () => {
         .delete(
             multer().none(),
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             DataController.deleteDataByUser,
             handleError
         );
@@ -38,7 +35,6 @@ module.exports = () => {
         .delete(
             multer().none(),
             authMiddleware.isAuth,
-            authMiddleware.isActive,
             DataController.deleteDataByDevice,
             handleError
         );
