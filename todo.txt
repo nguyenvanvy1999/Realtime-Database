@@ -1,0 +1,5 @@
+- add function link device to user(is active)//OK
+- add function unlink//OK
+- add function link/unlink device to  zone//OK
+- using passport-local to middleware
+- validate JSON
