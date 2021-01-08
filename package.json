@@ -25,7 +25,8 @@
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
         "socket.io": "^2.3.0",
-        "validator": "^13.1.17"
+        "validator": "^13.1.17",
+        "winston": "^3.3.3"
     },
     "devDependencies": {
         "morgan": "^1.10.0",

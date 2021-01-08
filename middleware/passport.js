@@ -6,12 +6,13 @@ const HTTP_STATUS_CODE = require('../config/constant/http');
 const { APIError } = require('../helpers/ErrorHandler');
 const signUpStrategy = new LocalStrategy(
     passportConfig.local,
-    async(req, email, username, password, done) => {
+    async(req, email, password, done) => {
         try {
-            const user = await UserService.getUserByEmail(email);
+            let user = await UserService.getUserByEmail(email);
             if (user) {
                 throw new APIError({ message: 'This email already exists' });
             } else {
+                const username = req.body.username;
                 const newUser = UserService.newUser(email, username, password);
                 const user = await UserService.insert(newUser);
                 return done(null, user);
@@ -29,7 +30,8 @@ const signInStrategy = new LocalStrategy(
             if (!user) {
                 throw new APIError({ message: 'Email wrong' });
             }
-            if (!bcryptHelper.compare(password, user.password)) {
+            let isPassword = await bcryptHelper.compare(password, user.password);
+            if (!isPassword) {
                 throw new APIError({ message: 'Password wrong' });
             }
             if (user.isActive === false) {

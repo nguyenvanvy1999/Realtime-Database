@@ -12,7 +12,12 @@ module.exports = () => {
     router.use(multer().none());
     router
         .route('/sign-up')
-        .post(joiMiddleware.joiSignUp, UserController.signUp, handleError);
+        .post(
+            joiMiddleware.joiSignUp,
+            passport.authenticate('local-signup'),
+            UserController.signUp,
+            handleError
+        );
     router
         .route('/sign-in')
         .post(

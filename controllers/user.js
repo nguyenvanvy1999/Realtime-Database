@@ -8,12 +8,11 @@ const mailHelper = require('../helpers/mailer');
 const jwtConfig = require('../config/constant/jwt');
 const mailConfig = require('../config/constant/mail').mailConfig;
 const mailOption = require('../config/constant/mail').mailOption;
+const returnHelper = require('../helpers/return');
 // ________________________________________________
 async function signUp(req, res, next) {
     try {
-        const { email, username, password } = req.body;
-        let newUser = UserService.newUser(email, username, password);
-        let user = await UserService.insert(newUser);
+        const user = req.user;
         let token = await jwtHelper.generateToken(
             user,
             jwtConfig.verifySecret,
@@ -25,15 +24,14 @@ async function signUp(req, res, next) {
         };
         let newMail = mailHelper.newMailOption(
             mailConfig.auth.user,
-            email,
+            user.email,
             mailOption.subject,
             text
         );
-        let result = await mailHelper.sendMail(newMail);
-        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-            message: 'Check your email and verify account!',
-            result: result,
-        });
+        const result = await mailHelper.sendMail(newMail);
+        res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Check your email and verify account!', result });
     } catch (error) {
         next(error);
     }

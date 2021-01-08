@@ -6,3 +6,4 @@ node_modules/
 uploads/
 .settings/
 test/
+helpers/errors.log
