@@ -53,18 +53,7 @@ async function verifyAccount(req, res, next) {
 }
 async function signIn(req, res, next) {
     try {
-        let { email, password } = req.body;
-        const user = await User.findOne({ email: email });
-        if (!user) {
-            throw new APIError({ message: 'Email wrong !' });
-        }
-        const checkPass = await bcryptHelper.compare(password, user.password);
-        if (checkPass === false) {
-            throw new APIError({ message: 'password wrong !' });
-        }
-        if (user.isActive === false) {
-            throw new APIError({ message: 'Please active account first !' });
-        }
+        const user = req.user;
         const token = await jwtHelper.returnToken(user);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
     } catch (error) {

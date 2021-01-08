@@ -6,20 +6,21 @@ const { handleError } = require('../middleware/error');
 const authEditUser = require('../middleware/authEditUser');
 const multer = require('multer');
 const joiMiddleware = require('../middleware/joi');
+const passport = require('passport');
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
     router
         .route('/sign-up')
-        .post(
-            joiMiddleware.joiSignUp,
-            authSignUp.checkDuplicateUsernameOrEmail,
-            UserController.signUp,
-            handleError
-        );
+        .post(joiMiddleware.joiSignUp, UserController.signUp, handleError);
     router
         .route('/sign-in')
-        .post(joiMiddleware.joiSignIn, UserController.signIn, handleError);
+        .post(
+            joiMiddleware.joiSignIn,
+            passport.authenticate('local-signin'),
+            UserController.signIn,
+            handleError
+        );
 
     router
         .route('/verify-account')
