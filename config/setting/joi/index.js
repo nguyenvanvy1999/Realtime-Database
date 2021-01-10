@@ -1,73 +1,65 @@
 //const joi = require('joi');
 const joi = require('joi-oid');
 const Joi = require('joi');
+const joiSchema = require('../../constant/joi');
+
 const signUpSchema = joi.object({
-    email: joi
-        .string()
-        .email({
-            minDomainSegments: 2,
-            tlds: { allow: ['com', 'net', 'vn'] },
-        })
-        .required(),
-    username: joi.string().alphanum().min(4).max(30).required(),
-    password: joi
-        .string()
-        .regex(/^[a-zA-Z0-9]{3,30}$/)
-        .min(4)
-        .required(),
+    email: joiSchema.email,
+    username: joiSchema.username,
+    password: joiSchema.password,
 });
 const signInSchema = joi.object({
-    email: joi
-        .string()
-        .email({
-            minDomainSegments: 2,
-            tlds: { allow: ['com', 'net', 'vn'] },
-        })
-        .required(),
-    password: joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-    role: joi.string().valid('Admin', 'User'),
+    email: joiSchema.email,
+    password: joiSchema.password,
 });
 const editUserSchema = joi.object({
-    newUsername: joi.string().alphanum().min(4).max(30).required(),
-    newPassword: joi
-        .string()
-        .regex(/^[a-zA-Z0-9]{3,30}$/)
-        .min(4)
-        .required(),
+    toke: joiSchema.token,
+    newUsername: joiSchema.newUsername,
+    newPassword: joiSchema.newPassword,
 });
 const tokenSchema = joi.object({
-    token: joi
-        .string()
-        .regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/)
-        .required(),
-    refresh_token: joi
-        .string()
-        .regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/),
+    token: joiSchema.token,
 });
+
 const deviceIDSchema = joi.object({
-    deviceID: joi.objectId(),
+    deviceID: joiSchema.deviceID,
+});
+const deviceIDAndUserSchema = joi.object({
+    token: joiSchema.token,
+    deviceID: joiSchema.deviceID,
+});
+const deviceTypeAndUserSchema = joi.object({
+    token: joiSchema.token,
+    type: joiSchema.deviceType,
 });
 const deviceTypeSchema = joi.object({
-    type: joi.string().required(),
+    type: joiSchema.deviceType,
 });
-const zoneSchema = joi.object({
-    zone: joi.objectId().required(),
+
+const newZoneSchema = joi.object({
+    token: joiSchema.token,
+    deviceID: joiSchema.deviceID,
+    name: joiSchema.name,
+    description: joiSchema.description,
 });
-const devicesIDSchema = joi
-    .array()
-    .items(
-        joi.object({
-            deviceID: joi.objectId(),
-        })
-    )
-    .required();
+const zoneIDAndDeviceID = joi.object({
+    zoneID: joiSchema.zoneID,
+    deviceID: joiSchema.deviceID,
+});
+const zoneIDAndDevicesID = joi.object({
+    zoneID: joiSchema.zoneID,
+    devicesID: joi.array().items(joiSchema.deviceID),
+});
 module.exports = {
     signInSchema: signInSchema,
     signUpSchema: signUpSchema,
     tokenSchema: tokenSchema,
     deviceIDSchema: deviceIDSchema,
-    devicesIDSchema: devicesIDSchema,
     deviceTypeSchema: deviceTypeSchema,
-    zoneSchema: zoneSchema,
     editUserSchema: editUserSchema,
+    deviceIDAndUserSchema: deviceIDAndUserSchema,
+    deviceTypeAndUserSchema: deviceTypeAndUserSchema,
+    newZoneSchema: newZoneSchema,
+    zoneIDAndDeviceID: zoneIDAndDeviceID,
+    zoneIDAndDevicesID: zoneIDAndDevicesID,
 };

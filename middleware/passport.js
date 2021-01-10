@@ -1,9 +1,11 @@
 const LocalStrategy = require('passport-local').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
 const UserService = require('../services/user');
 const bcryptHelper = require('../helpers/bcrypt');
 const passportConfig = require('../config/constant/passport');
-const HTTP_STATUS_CODE = require('../config/constant/http');
 const { APIError } = require('../helpers/ErrorHandler');
+
+const User = require('../models/user');
 const signUpStrategy = new LocalStrategy(
     passportConfig.local,
     async(req, email, password, done) => {

@@ -89,7 +89,7 @@ module.exports = {
     getAllDeviceSameType: getAllDeviceSameType,
     getDeviceByID: getDeviceByID,
     getDeviceByUserAndType: getDeviceByUserAndType,
-    getDeviceUser: getDeviceByUser,
+    getDeviceByUser: getDeviceByUser,
     linkDeviceToUser: linkDeviceToUser,
     unLinkDevice: unLinkDeviceToUser,
     unLinkAllDevice: unLinkAllDevice,

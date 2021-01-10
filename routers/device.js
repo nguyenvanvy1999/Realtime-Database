@@ -12,53 +12,103 @@ module.exports = () => {
     router
         .route('/get-device-user-and-type')
         .get(
+            joiMiddleware.joiDeviceTypeAndUser,
             authMiddleware.isAuth,
             DeviceController.getDeviceByUserAndType,
             handleError
         );
     router
         .route('/get-device-user')
-        .get(authMiddleware.isAuth, DeviceController.getDeviceUser, handleError);
+        .get(
+            joiMiddleware.joiToken,
+            authMiddleware.isAuth,
+            DeviceController.getDeviceByUser,
+            handleError
+        );
     router
         .route('/get-device')
         .get(
-            joiMiddleware.joiDevice,
+            joiMiddleware.joiDeviceID,
             authMiddleware.isAuth,
             DeviceController.getDeviceByID,
             handleError
         );
     router
         .route('/link-device')
-        .get(authMiddleware.isAuth, DeviceController.linkDeviceToUser, handleError);
+        .get(
+            joiMiddleware.joiDeviceIDAndUser,
+            authMiddleware.isAuth,
+            DeviceController.linkDeviceToUser,
+            handleError
+        );
     router
         .route('/unlink-device')
-        .get(authMiddleware.isAuth, DeviceController.unLinkDevice, handleError);
+        .get(
+            joiMiddleware.joiDeviceIDAndUser,
+            authMiddleware.isAuth,
+            DeviceController.unLinkDevice,
+            handleError
+        );
     router
         .route('/unlink-all-device')
-        .get(authMiddleware.isAuth, DeviceController.unLinkAllDevice, handleError);
+        .get(
+            joiMiddleware.joiToken,
+            authMiddleware.isAuth,
+            DeviceController.unLinkAllDevice,
+            handleError
+        );
     // _____________________________________________________________
     router
         .route('/new-zone')
-        .get(authMiddleware.isAuth, ZoneController.newZone, handleError);
+        .get(
+            joiMiddleware.joiNewZone,
+            authMiddleware.isAuth,
+            ZoneController.newZone,
+            handleError
+        );
     router
         .route('/zone/insert-device')
-        .get(authMiddleware.isAuth, ZoneController.insertDevice, handleError);
+        .get(
+            joiMiddleware.joiZoneIDAndDeviceID,
+            authMiddleware.isAuth,
+            ZoneController.insertDevice,
+            handleError
+        );
     router
         .route('/zone/insert-many')
-        .get(authMiddleware.isAuth, ZoneController.insertManyDevice, handleError);
+        .get(
+            joiMiddleware.joiZoneIDAndDevicesID,
+            authMiddleware.isAuth,
+            ZoneController.insertManyDevice,
+            handleError
+        );
     router
         .route('/zone/remove-device')
-        .get(authMiddleware.isAuth, ZoneController.removeDevice, handleError);
+        .get(
+            joiMiddleware.joiZoneIDAndDeviceID,
+            authMiddleware.isAuth,
+            ZoneController.removeDevice,
+            handleError
+        );
     router
         .route('/zone/remove-many')
-        .get(authMiddleware.isAuth, ZoneController.removeManyDevices, handleError);
+        .get(
+            joiMiddleware.joiZoneIDAndDevicesID,
+            authMiddleware.isAuth,
+            ZoneController.removeManyDevices,
+            handleError
+        );
     // _____________________________________________________________
     router
         .route('/admin/get-all-device')
         .get(DeviceController.getAllDevice, handleError); //FIXME: add role admin auth
     router
         .route('/admin/get-device-same-type')
-        .get(DeviceController.getAllDeviceSameType, handleError); //FIXME: add role admin auth
+        .get(
+            joiMiddleware.joiDeviceType,
+            DeviceController.getAllDeviceSameType,
+            handleError
+        ); //FIXME: add role admin auth
 
     return router;
 };

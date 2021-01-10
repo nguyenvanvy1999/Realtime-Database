@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const UserController = require('../controllers/user');
-const authSignUp = require('../middleware/authSignUp');
 const authMiddleware = require('../middleware/authMiddleware');
 const { handleError } = require('../middleware/error');
 const authEditUser = require('../middleware/authEditUser');
@@ -34,7 +33,6 @@ module.exports = () => {
     router
         .route('/edit-user')
         .patch(
-            joiMiddleware.joiToken,
             joiMiddleware.joiEdit,
             authMiddleware.isAuth,
             authEditUser.checkUsernameAndPassword,

@@ -3,13 +3,15 @@ const DataController = require('../controllers/data');
 const router = require('express').Router();
 const { handleError } = require('../middleware/error');
 const authMiddleware = require('../middleware/authMiddleware');
-const UploadController = require('../controllers/upload');
+const joiMiddleware = require('../middleware/joi');
+
 const multer = require('multer');
 module.exports = () => {
+    router.use(multer().none());
     router
         .route('/get-data-user')
         .get(
-            multer().none(),
+            joiMiddleware.joiToken,
             authMiddleware.isAuth,
             DataController.getDataByUser,
             handleError
@@ -17,7 +19,7 @@ module.exports = () => {
     router
         .route('/get-data-device')
         .get(
-            multer().none(),
+            joiMiddleware.joiDeviceID,
             authMiddleware.isAuth,
             DataController.getDataByDevice,
             handleError
@@ -25,7 +27,7 @@ module.exports = () => {
     router
         .route('/delete-data-user')
         .delete(
-            multer().none(),
+            joiMiddleware.joiToken,
             authMiddleware.isAuth,
             DataController.deleteDataByUser,
             handleError
@@ -33,7 +35,7 @@ module.exports = () => {
     router
         .route('/delete-data-device')
         .delete(
-            multer().none(),
+            joiMiddleware.joiDeviceID,
             authMiddleware.isAuth,
             DataController.deleteDataByDevice,
             handleError
