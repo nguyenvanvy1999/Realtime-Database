@@ -1,9 +1,11 @@
 const Zone = require('../models/zone');
 const mongoose = require('mongoose');
 
-function newZone(userID, devicesID) {
+function newZone(userID, devicesID, name, description) {
     const newZone = {
         _id: mongoose.Schema.Types.ObjectId(),
+        name: name,
+        description: description,
         user: userID,
         devices: [],
     };

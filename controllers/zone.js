@@ -4,8 +4,8 @@ const HTTP_STATUS_CODE = require('../config/constant/http');
 async function newZone(req, res, next) {
     try {
         const user = req.jwtDecoded.data;
-        const devicesID = req.body.devicesID;
-        const newZone = ZoneService.newZone(user, devicesID);
+        const { description, name, deviceID } = req.body;
+        const newZone = ZoneService.newZone(user, deviceID, name, description);
         const result = await ZoneService.insert(newZone);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
