@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../config/constant/jwt');
+const { APIError } = require('./ErrorHandler');
 
 async function generateToken(user, secretSignature, tokenLife) {
     try {
@@ -14,7 +15,7 @@ async function generateToken(user, secretSignature, tokenLife) {
         });
         return token;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function verifyToken(token, secretKey) {
@@ -22,7 +23,7 @@ async function verifyToken(token, secretKey) {
         const decoded = await jwt.verify(token, secretKey);
         return decoded;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -30,24 +31,20 @@ async function returnToken(user) {
     try {
         const accessToken = await generateToken(
             user,
-            jwtConfig.accessSecret,
-            jwtConfig.accessLife
+            jwtConfig.ACCESS.SECRET,
+            jwtConfig.ACCESS.LIFE
         );
         const refreshToken = await generateToken(
             user,
-            jwtConfig.refreshSecret,
-            jwtConfig.refreshLife
+            jwtConfig.REFRESH.SECRET,
+            jwtConfig.REFRESH.LIFE
         );
         return {
             accessToken: accessToken,
             refreshToken: refreshToken,
         };
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
-module.exports = {
-    generateToken: generateToken,
-    verifyToken: verifyToken,
-    returnToken: returnToken,
-};
+module.exports = { generateToken, verifyToken, returnToken };

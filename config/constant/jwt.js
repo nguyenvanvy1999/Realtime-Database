@@ -1,10 +1,19 @@
-const jwtConfig = {
-    accessSecret: 'access',
-    accessLife: 900,
-    refreshSecret: 'refresh',
-    refreshLife: 86400,
-    deviceSecret: 'device',
-    verifySecret: 'verify',
-    verifyLife: 900,
+const JwtConfig = {
+    ACCESS: {
+        SECRET: 'access',
+        LIFE: 900,
+    },
+    REFRESH: {
+        SECRET: 'refresh',
+        LIFE: 86400,
+    },
+    VERIFY: {
+        SECRET: 'verify',
+        LIFE: 900,
+    },
+    DEVICE: {
+        SECRET: 'device',
+        LIFE: 86400,
+    },
 };
-module.exports = jwtConfig;
+module.exports = JwtConfig;

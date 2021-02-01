@@ -15,8 +15,8 @@ async function signUp(req, res, next) {
         const newUser = UserService.newUser(email, username, password);
         let token = await jwtHelper.generateToken(
             newUser,
-            jwtConfig.verifySecret,
-            jwtConfig.verifyLife
+            jwtConfig.VERIFY.SECRET,
+            jwtConfig.VERIFY.LIFE
         );
         let text = {
             message: mailOption.text,
@@ -40,7 +40,7 @@ async function signUp(req, res, next) {
 async function verifyAccount(req, res, next) {
     try {
         const token = req.body.token || req.query.token || req.header['token'];
-        let decoded = await jwtHelper.verifyToken(token, jwtConfig.verifySecret);
+        let decoded = await jwtHelper.verifyToken(token, jwtConfig.VERIFY.SECRET);
         let result = await UserService.activeAccount(decoded.data.email);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
             message: 'Active successfully !.Now you can using out function',
@@ -117,13 +117,13 @@ async function refreshToken(req, res, next) {
         if (refreshToken) {
             const decoded = await jwtHelper.verifyToken(
                 refreshToken,
-                jwtConfig.refreshSecret
+                jwtConfig.REFRESH.SECRET
             );
             if (decoded) {
                 const accessToken = await jwtHelper.generateToken(
                     decoded.data,
-                    jwtConfig.accessSecret,
-                    jwtConfig.accessLife
+                    jwtConfig.ACCESS.SECRET,
+                    jwtConfig.ACCESS.LIFE
                 );
                 return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
                     accessToken: accessToken,
@@ -139,12 +139,12 @@ async function refreshToken(req, res, next) {
 }
 // ________________________________________________
 module.exports = {
-    signUp: signUp,
-    signIn: signIn,
-    getAllUser: getAllUser,
-    editUser: editUser,
-    deleteUser: deleteUser,
-    getUserProfile: getUserProfile,
-    refreshToken: refreshToken,
-    verifyAccount: verifyAccount,
+    signUp,
+    signIn,
+    getAllUser,
+    editUser,
+    deleteUser,
+    getUserProfile,
+    refreshToken,
+    verifyAccount,
 };

@@ -59,9 +59,9 @@ async function removeManyDevices(req, res, next) {
     }
 }
 module.exports = {
-    newZone: newZone,
-    insertDevice: insertDevice,
-    insertManyDevice: insertManyDevice,
-    removeDevice: removeDevice,
-    removeManyDevices: removeManyDevices,
+    newZone,
+    insertDevice,
+    insertManyDevice,
+    removeDevice,
+    removeManyDevices,
 };

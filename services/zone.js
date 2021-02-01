@@ -89,13 +89,13 @@ async function deleteZone(zoneID) {
     }
 }
 module.exports = {
-    newZone: newZone,
-    insert: insert,
-    getZoneByDevice: getZoneByDevice,
-    getZoneByUser: getZoneByUser,
-    addDevice: addDevice,
-    addManyDevices: addManyDevices,
-    removeDevice: removeDevice,
-    removeManyDevices: removeManyDevices,
-    deleteZone: deleteZone,
+    newZone,
+    insert,
+    getZoneByDevice,
+    getZoneByUser,
+    addDevice,
+    addManyDevices,
+    removeDevice,
+    removeManyDevices,
+    deleteZone,
 };

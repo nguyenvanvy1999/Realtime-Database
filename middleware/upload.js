@@ -7,7 +7,4 @@ const uploadFiles = upload.array('files');
 const uploadFileMiddle = util.promisify(uploadFile);
 const uploadFilesMiddle = util.promisify(uploadFiles);
 
-module.exports = {
-    uploadFileMiddle: uploadFileMiddle,
-    uploadFilesMiddle: uploadFilesMiddle,
-};
+module.exports = { uploadFileMiddle, uploadFilesMiddle };

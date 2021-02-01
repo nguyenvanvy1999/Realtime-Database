@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const UserController = require('../controllers/user');
-const authMiddleware = require('../middleware/authMiddleware');
+const JwtMiddleware = require('../middleware/jwt');
 const { handleError } = require('../middleware/error');
-const authEditUser = require('../middleware/authEditUser');
+const UserMiddleware = require('../middleware/user');
 const multer = require('multer');
 const JoiValidate = require('../middleware/joi');
 const passport = require('passport');
@@ -34,8 +34,8 @@ module.exports = () => {
         .route('/edit-user')
         .patch(
             JoiValidate.user.editUser,
-            authMiddleware.isAuth,
-            authEditUser.checkUsernameAndPassword,
+            JwtMiddleware.isAuth,
+            UserMiddleware.checkUsernameAndPassword,
             UserController.editUser,
             handleError
         );
@@ -43,7 +43,7 @@ module.exports = () => {
         .route('/delete-user')
         .delete(
             JoiValidate.user.token,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             UserController.deleteUser,
             handleError
         );
@@ -51,7 +51,7 @@ module.exports = () => {
         .route('/user-profile')
         .post(
             JoiValidate.user.token,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             UserController.getUserProfile,
             handleError
         );

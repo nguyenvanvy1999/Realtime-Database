@@ -2,7 +2,7 @@
 const DataController = require('../controllers/data');
 const router = require('express').Router();
 const { handleError } = require('../middleware/error');
-const authMiddleware = require('../middleware/authMiddleware');
+const JwtMiddleware = require('../middleware/jwt');
 const JoiValidate = require('../middleware/joi');
 
 const multer = require('multer');
@@ -12,7 +12,7 @@ module.exports = () => {
         .route('/get-data-user')
         .get(
             JoiValidate.user.token,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DataController.getDataByUser,
             handleError
         );
@@ -20,7 +20,7 @@ module.exports = () => {
         .route('/get-data-device')
         .get(
             JoiValidate.device.deviceID,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DataController.getDataByDevice,
             handleError
         );
@@ -28,7 +28,7 @@ module.exports = () => {
         .route('/delete-data-user')
         .delete(
             JoiValidate.user.token,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DataController.deleteDataByUser,
             handleError
         );
@@ -36,7 +36,7 @@ module.exports = () => {
         .route('/delete-data-device')
         .delete(
             JoiValidate.device.deviceID,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DataController.deleteDataByDevice,
             handleError
         );

@@ -1,29 +1,26 @@
 const nodeMailer = require('nodemailer');
 const mailConfig = require('../config/constant/mail').mailConfig;
+const mailOption = require('../config/constant/mail').mailOption;
+const { APIError } = require('../helpers/ErrorHandler');
 
-function newMailOption(from, to, subject, text) {
-    let mailOption = {
-        from: from,
+function newMailOption(to, text) {
+    const newOption = {
+        from: mailConfig.auth.user,
         to: to,
-        subject: subject,
-        text: text,
+        subject: mailOption.subject,
+        text: mailOption.text + text + mailOption.text2,
     };
-    return mailOption;
+    return newOption;
 }
 
-async function sendMail(mailOption, next) {
-    return new Promise((resolve, reject) => {
-        try {
-            const transporter = nodeMailer.createTransport(mailConfig);
-            const mail = transporter.sendMail(mailOption);
-            return resolve(mail);
-        } catch (error) {
-            return reject(error);
-        }
-    });
+async function sendMail(mailOption) {
+    try {
+        const transporter = nodeMailer.createTransport(mailConfig);
+        const mail = await transporter.sendMail(mailOption);
+        return mail;
+    } catch (error) {
+        throw new APIError({ message: error.message, errors: error });
+    }
 }
 
-module.exports = {
-    newMailOption: newMailOption,
-    sendMail: sendMail,
-};
+module.exports = { newMailOption, sendMail };

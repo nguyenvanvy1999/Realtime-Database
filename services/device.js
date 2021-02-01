@@ -74,12 +74,12 @@ async function unLinkAllDevice(userID) {
     }
 }
 module.exports = {
-    getDevice: getDevice,
-    getAllDevice: getAllDevice,
-    getAllDeviceSameType: getAllDeviceSameType,
-    getDeviceUser: getDeviceUser,
-    getDeviceUserAndType: getDeviceUserAndType,
-    linkDeviceWithUser: linkDeviceWithUser,
-    unLinkDevice: unLinkDevice,
-    unLinkAllDevice: unLinkAllDevice,
+    getDevice,
+    getAllDevice,
+    getAllDeviceSameType,
+    getDeviceUser,
+    getDeviceUserAndType,
+    linkDeviceWithUser,
+    unLinkDevice,
+    unLinkAllDevice,
 };

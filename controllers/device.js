@@ -85,12 +85,12 @@ async function unLinkAllDevice(req, res, next) {
 }
 
 module.exports = {
-    getAllDevice: getAllDevice,
-    getAllDeviceSameType: getAllDeviceSameType,
-    getDeviceByID: getDeviceByID,
-    getDeviceByUserAndType: getDeviceByUserAndType,
-    getDeviceByUser: getDeviceByUser,
-    linkDeviceToUser: linkDeviceToUser,
-    unLinkDevice: unLinkDeviceToUser,
-    unLinkAllDevice: unLinkAllDevice,
+    getAllDevice,
+    getAllDeviceSameType,
+    getDeviceByID,
+    getDeviceByUserAndType,
+    getDeviceByUser,
+    linkDeviceToUser,
+    unLinkDeviceToUser,
+    unLinkAllDevice,
 };

@@ -1,17 +1,17 @@
 'user strict';
 const router = require('express').Router();
 const { handleError } = require('../middleware/error');
-const authMiddleware = require('../middleware/authMiddleware');
+const JwtMiddleware = require('../middleware/jwt');
 const UploadController = require('../controllers/upload');
 const multer = require('multer');
 
 module.exports = () => {
     router
         .route('/upload/single')
-        .post(authMiddleware.isAuth, UploadController.upload, handleError);
+        .post(JwtMiddleware.isAuth, UploadController.upload, handleError);
     router
         .route('/upload/multi')
-        .post(authMiddleware.isAuth, UploadController.upload, handleError); //FIXME:fix  upload many files
+        .post(JwtMiddleware.isAuth, UploadController.upload, handleError); //FIXME:fix  upload many files
     router
         .route('/list-file')
         .get(multer().none(), UploadController.getListFiles, handleError); // FIXME: add role auth here

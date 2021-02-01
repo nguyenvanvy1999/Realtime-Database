@@ -59,9 +59,9 @@ async function deleteOneData(req, res, next) {
     }
 }
 module.exports = {
-    getDataByDevice: getDataByDevice,
-    getDataByUser: getDataByUser,
-    deleteDataByDevice: deleteDataByDevice,
-    deleteDataByUser: deleteDataByUser,
-    deleteOneData: deleteOneData,
+    getDataByDevice,
+    getDataByUser,
+    deleteDataByDevice,
+    deleteDataByUser,
+    deleteOneData,
 };

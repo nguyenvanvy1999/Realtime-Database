@@ -75,11 +75,11 @@ async function deleteDataByDevice(deviceID) {
 }
 
 module.exports = {
-    newData: newData,
-    insert: insert,
-    getDataByDevice: getDataByDevice,
-    getDataByUser: getDataByUser,
-    deleteOneData: deleteOneData,
-    deleteDataByDevice: deleteDataByDevice,
-    deleteDataByUser: deleteDataByUser,
+    newData,
+    insert,
+    getDataByDevice,
+    getDataByUser,
+    deleteOneData,
+    deleteDataByDevice,
+    deleteDataByUser,
 };

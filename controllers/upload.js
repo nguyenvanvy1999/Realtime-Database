@@ -55,8 +55,4 @@ function download(req, res, next) {
     }
 }
 
-module.exports = {
-    upload: upload,
-    getListFiles: getListFiles,
-    download: download,
-};
+module.exports = { upload, getListFiles, download };

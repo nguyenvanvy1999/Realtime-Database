@@ -1,7 +1,7 @@
 'user strict';
 const router = require('express').Router();
 const { handleError } = require('../middleware/error');
-const authMiddleware = require('../middleware/authMiddleware');
+const JwtMiddleware = require('../middleware/jwt');
 const multer = require('multer');
 const DeviceController = require('../controllers/device');
 const ZoneController = require('../controllers/zone');
@@ -13,7 +13,7 @@ module.exports = () => {
         .route('/get-device-user-and-type')
         .get(
             JoiValidate.device.tokenAndDeviceID,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DeviceController.getDeviceByUserAndType,
             handleError
         );
@@ -21,7 +21,7 @@ module.exports = () => {
         .route('/get-device-user')
         .get(
             JoiValidate.user.token,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DeviceController.getDeviceByUser,
             handleError
         );
@@ -29,7 +29,7 @@ module.exports = () => {
         .route('/get-device')
         .get(
             JoiValidate.device.deviceID,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DeviceController.getDeviceByID,
             handleError
         );
@@ -37,7 +37,7 @@ module.exports = () => {
         .route('/link-device')
         .get(
             JoiValidate.device.tokenAndDeviceID,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DeviceController.linkDeviceToUser,
             handleError
         );
@@ -45,15 +45,15 @@ module.exports = () => {
         .route('/unlink-device')
         .get(
             JoiValidate.device.tokenAndDeviceID,
-            authMiddleware.isAuth,
-            DeviceController.unLinkDevice,
+            JwtMiddleware.isAuth,
+            DeviceController.unLinkDeviceToUser,
             handleError
         );
     router
         .route('/unlink-all-device')
         .get(
             JoiValidate.user.token,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             DeviceController.unLinkAllDevice,
             handleError
         );
@@ -62,7 +62,7 @@ module.exports = () => {
         .route('/new-zone')
         .get(
             JoiValidate.zone.newZone,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             ZoneController.newZone,
             handleError
         );
@@ -70,7 +70,7 @@ module.exports = () => {
         .route('/zone/insert-device')
         .get(
             JoiValidate.zone.one,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             ZoneController.insertDevice,
             handleError
         );
@@ -78,7 +78,7 @@ module.exports = () => {
         .route('/zone/insert-many')
         .get(
             JoiValidate.zone.many,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             ZoneController.insertManyDevice,
             handleError
         );
@@ -86,7 +86,7 @@ module.exports = () => {
         .route('/zone/remove-device')
         .get(
             JoiValidate.zone.one,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             ZoneController.removeDevice,
             handleError
         );
@@ -94,7 +94,7 @@ module.exports = () => {
         .route('/zone/remove-many')
         .get(
             JoiValidate.zone.many,
-            authMiddleware.isAuth,
+            JwtMiddleware.isAuth,
             ZoneController.removeManyDevices,
             handleError
         );

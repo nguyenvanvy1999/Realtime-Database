@@ -17,7 +17,4 @@ async function compare(password, hash) {
     }
 }
 
-module.exports = {
-    hash: hash,
-    compare: compare,
-};
+module.exports = { hash, compare };
