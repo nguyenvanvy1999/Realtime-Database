@@ -5,14 +5,14 @@ const authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');
 const DeviceController = require('../controllers/device');
 const ZoneController = require('../controllers/zone');
-const joiMiddleware = require('../middleware/joi');
+const JoiValidate = require('../middleware/joi');
 
 module.exports = () => {
     router.use(multer().none());
     router
         .route('/get-device-user-and-type')
         .get(
-            joiMiddleware.joiDeviceTypeAndUser,
+            JoiValidate.device.tokenAndDeviceID,
             authMiddleware.isAuth,
             DeviceController.getDeviceByUserAndType,
             handleError
@@ -20,7 +20,7 @@ module.exports = () => {
     router
         .route('/get-device-user')
         .get(
-            joiMiddleware.joiToken,
+            JoiValidate.user.token,
             authMiddleware.isAuth,
             DeviceController.getDeviceByUser,
             handleError
@@ -28,7 +28,7 @@ module.exports = () => {
     router
         .route('/get-device')
         .get(
-            joiMiddleware.joiDeviceID,
+            JoiValidate.device.deviceID,
             authMiddleware.isAuth,
             DeviceController.getDeviceByID,
             handleError
@@ -36,7 +36,7 @@ module.exports = () => {
     router
         .route('/link-device')
         .get(
-            joiMiddleware.joiDeviceIDAndUser,
+            JoiValidate.device.tokenAndDeviceID,
             authMiddleware.isAuth,
             DeviceController.linkDeviceToUser,
             handleError
@@ -44,7 +44,7 @@ module.exports = () => {
     router
         .route('/unlink-device')
         .get(
-            joiMiddleware.joiDeviceIDAndUser,
+            JoiValidate.device.tokenAndDeviceID,
             authMiddleware.isAuth,
             DeviceController.unLinkDevice,
             handleError
@@ -52,7 +52,7 @@ module.exports = () => {
     router
         .route('/unlink-all-device')
         .get(
-            joiMiddleware.joiToken,
+            JoiValidate.user.token,
             authMiddleware.isAuth,
             DeviceController.unLinkAllDevice,
             handleError
@@ -61,7 +61,7 @@ module.exports = () => {
     router
         .route('/new-zone')
         .get(
-            joiMiddleware.joiNewZone,
+            JoiValidate.zone.newZone,
             authMiddleware.isAuth,
             ZoneController.newZone,
             handleError
@@ -69,7 +69,7 @@ module.exports = () => {
     router
         .route('/zone/insert-device')
         .get(
-            joiMiddleware.joiZoneIDAndDeviceID,
+            JoiValidate.zone.one,
             authMiddleware.isAuth,
             ZoneController.insertDevice,
             handleError
@@ -77,7 +77,7 @@ module.exports = () => {
     router
         .route('/zone/insert-many')
         .get(
-            joiMiddleware.joiZoneIDAndDevicesID,
+            JoiValidate.zone.many,
             authMiddleware.isAuth,
             ZoneController.insertManyDevice,
             handleError
@@ -85,7 +85,7 @@ module.exports = () => {
     router
         .route('/zone/remove-device')
         .get(
-            joiMiddleware.joiZoneIDAndDeviceID,
+            JoiValidate.zone.one,
             authMiddleware.isAuth,
             ZoneController.removeDevice,
             handleError
@@ -93,7 +93,7 @@ module.exports = () => {
     router
         .route('/zone/remove-many')
         .get(
-            joiMiddleware.joiZoneIDAndDevicesID,
+            JoiValidate.zone.many,
             authMiddleware.isAuth,
             ZoneController.removeManyDevices,
             handleError
@@ -105,7 +105,7 @@ module.exports = () => {
     router
         .route('/admin/get-device-same-type')
         .get(
-            joiMiddleware.joiDeviceType,
+            JoiValidate.device.type,
             DeviceController.getAllDeviceSameType,
             handleError
         ); //FIXME: add role admin auth

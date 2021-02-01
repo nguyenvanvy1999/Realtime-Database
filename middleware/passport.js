@@ -1,5 +1,4 @@
 const LocalStrategy = require('passport-local').Strategy;
-const JwtStrategy = require('passport-jwt').Strategy;
 const UserService = require('../services/user');
 const bcryptHelper = require('../helpers/bcrypt');
 const passportConfig = require('../config/constant/passport');

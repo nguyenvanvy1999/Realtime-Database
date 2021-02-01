@@ -11,9 +11,10 @@ const mailOption = require('../config/constant/mail').mailOption;
 // ________________________________________________
 async function signUp(req, res, next) {
     try {
-        const user = req.user;
+        const { email, username, password } = req.body;
+        const newUser = UserService.newUser(email, username, password);
         let token = await jwtHelper.generateToken(
-            user,
+            newUser,
             jwtConfig.verifySecret,
             jwtConfig.verifyLife
         );
@@ -23,11 +24,12 @@ async function signUp(req, res, next) {
         };
         let newMail = mailHelper.newMailOption(
             mailConfig.auth.user,
-            user.email,
+            email,
             mailOption.subject,
             text
         );
         const result = await mailHelper.sendMail(newMail);
+        await UserService.insert(newUser);
         res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
             .send({ message: 'Check your email and verify account!', result });
@@ -87,7 +89,6 @@ async function editUser(req, res, next) {
 async function deleteUser(req, res, next) {
     try {
         const email = req.body.email || req.jwtDecoded.data.email;
-        console.log(email);
         UserService.deleteUserByEmail(email);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Delete Successfully!');
     } catch (error) {
