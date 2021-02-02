@@ -18,9 +18,10 @@ async function generateToken(user, secretSignature, tokenLife) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-async function verifyToken(token, secretKey) {
+
+function verifyToken(token, secretKey) {
     try {
-        const decoded = await jwt.verify(token, secretKey);
+        const decoded = jwt.verify(token, secretKey);
         return decoded;
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });

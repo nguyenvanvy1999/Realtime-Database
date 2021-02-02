@@ -47,7 +47,7 @@ module.exports = () => {
         );
     router
         .route('/verify') // verify account
-        .post(JoiValidate.user.token, UserController.verifyAccount);
+        .get(JoiValidate.user.token, UserController.verifyAccount);
     router.route('/user').get(handleError);
     router.route('/users').get(UserController.getAllUser); //FIXME:add role admin
     router
