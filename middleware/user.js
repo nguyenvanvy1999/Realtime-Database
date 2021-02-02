@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 
 async function checkUsernameAndPassword(req, res, next) {
     try {

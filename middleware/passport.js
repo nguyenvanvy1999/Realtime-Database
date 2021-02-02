@@ -2,7 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const UserService = require('../services/user');
 const bcryptHelper = require('../helpers/bcrypt');
 const passportConfig = require('../config/constant/passport');
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 
 const User = require('../models/user');
 const signUpStrategy = new LocalStrategy(

@@ -1,11 +1,11 @@
 const Device = require('../models/device');
-
+const { APIError } = require('../helpers/error');
 async function getDevice(deviceID) {
     try {
         const device = await Device.findOne({ deviceID: deviceID });
         return device;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -16,7 +16,7 @@ async function getAllDeviceSameType(type) {
         const devices = await Device.find({ type: type });
         return devices;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -25,7 +25,7 @@ async function getAllDevice() {
         const devices = await Device.find();
         return devices;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -34,7 +34,7 @@ async function getDeviceUser(userID) {
         const devices = await Device.find({ user: userID });
         return devices;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -43,7 +43,7 @@ async function getDeviceUserAndType(userID, type) {
         const devices = await Device.find({ user: userID }, { type: type });
         return devices;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -52,7 +52,7 @@ async function linkDeviceWithUser(deviceID, userID) {
         const result = await Device.findOneAndUpdate({ deviceID: deviceID }, { user: userID }, { new: true });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -61,18 +61,18 @@ async function unLinkDevice(deviceID) {
         const result = await Device.findOneAndUpdate({ deviceID: deviceID }, { user: null }, { new: true });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
-
 async function unLinkAllDevice(userID) {
     try {
         const result = await Device.updateMany({ user: userID }, { user: null }, { new: true });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
+
 module.exports = {
     getDevice,
     getAllDevice,

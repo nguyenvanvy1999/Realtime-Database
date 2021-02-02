@@ -1,4 +1,4 @@
-const { errorHandler, APIError } = require('../helpers/ErrorHandler');
+const { errorHandler, APIError } = require('../helpers/error');
 const logger = require('../helpers/winston');
 
 function handleNotFoundPage(req, res) {

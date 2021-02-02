@@ -1,5 +1,6 @@
 const Data = require('../models/data');
 const mongoose = require('mongoose');
+const { APIError } = require('../helpers/error');
 
 function newData(socket, document) {
     newData = {
@@ -25,7 +26,7 @@ async function insert(newData) {
         const result = await data.save();
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -34,7 +35,7 @@ async function getDataByDevice(deviceID) {
         const dataDocuments = await Data.find({ device: deviceID });
         return dataDocuments;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -43,7 +44,7 @@ async function getDataByUser(userID) {
         const dataDocuments = await Data.find({ user: userID });
         return dataDocuments;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -52,7 +53,7 @@ async function deleteOneData(id) {
         const result = await Data.findByIdAndDelete(id);
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -61,7 +62,7 @@ async function deleteDataByUser(userID) {
         let result = await Data.deleteMany({ user: userID });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 
@@ -70,7 +71,7 @@ async function deleteDataByDevice(deviceID) {
         let result = await Data.deleteMany({ device: deviceID });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 

@@ -1,5 +1,6 @@
 const Zone = require('../models/zone');
 const mongoose = require('mongoose');
+const { APIError } = require('../helpers/error');
 
 function newZone(userID, devicesID, name, description) {
     const newZone = {
@@ -21,7 +22,7 @@ async function insert(newZone) {
         const result = await zone.save();
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function getZoneByUser(userID) {
@@ -29,7 +30,7 @@ async function getZoneByUser(userID) {
         const zone = await Zone.findOne({ user: userID });
         return zone;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function getZoneByDevice(deviceID) {
@@ -37,7 +38,7 @@ async function getZoneByDevice(deviceID) {
         const zones = await Zone.find({ devices: { $all: [deviceID] } });
         return zones;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function deleteZone(zoneID) {
@@ -45,7 +46,7 @@ async function deleteZone(zoneID) {
         const result = await Zone.findOneAndDelete({ _id: zoneID });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function addDevice(zoneID, deviceID) {
@@ -53,7 +54,7 @@ async function addDevice(zoneID, deviceID) {
         const result = await Zone.updateOne({ _id: zoneID }, { $push: { devices: deviceID } });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function addManyDevices(zoneID, devicesID) {
@@ -61,7 +62,7 @@ async function addManyDevices(zoneID, devicesID) {
         const result = await Zone.updateOne({ _id: zoneID }, { $push: { devices: { $each: devicesID } } });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function removeDevice(zoneID, deviceID) {
@@ -69,7 +70,7 @@ async function removeDevice(zoneID, deviceID) {
         const result = await Zone.updateOne({ _id: zoneID }, { $pull: { devices: deviceID } });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function removeManyDevices(zoneID, devicesID) {
@@ -77,7 +78,7 @@ async function removeManyDevices(zoneID, devicesID) {
         const result = await Zone.updateOne({ _id: zoneID }, { $pullAll: { devices: devicesID } });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 async function deleteZone(zoneID) {
@@ -85,7 +86,7 @@ async function deleteZone(zoneID) {
         const result = await Zone.findOneAndRemove({ _id: zoneID });
         return result;
     } catch (error) {
-        return error;
+        throw new APIError({ message: error.message, errors: error });
     }
 }
 module.exports = {

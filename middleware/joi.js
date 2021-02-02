@@ -1,5 +1,5 @@
 const joiSchema = require('../config/setting/joi/index');
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 const JoiValidate = {
     user: {
         signUp: async(req, res, next) => {

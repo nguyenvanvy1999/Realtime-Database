@@ -10,53 +10,49 @@ const passport = require('passport');
 module.exports = () => {
     router.use(multer().none());
     router
-        .route('/sign-up')
+        .route('/register')
         .post(
             JoiValidate.user.signUp,
             passport.authenticate('local-signup'),
-            UserController.signUp,
-            handleError
+            UserController.signUp
         );
     router
-        .route('/sign-in')
+        .route('/') //post user (Sign In)
         .post(
             JoiValidate.user.signIn,
             passport.authenticate('local-signin'),
-            UserController.signIn,
-            handleError
+            UserController.signIn
         );
-
     router
-        .route('/verify-account')
-        .post(JoiValidate.user.token, UserController.verifyAccount, handleError);
-    router.route('/get-all-users').get(UserController.getAllUser, handleError); //FIXME:add role admin
+        .route('/') //get user (User Profile)
+        .get(
+            JoiValidate.user.token,
+            JwtMiddleware.isAuth,
+            UserController.getUserProfile
+        );
     router
-        .route('/edit-user')
+        .route('/') //edit user
         .patch(
             JoiValidate.user.editUser,
             JwtMiddleware.isAuth,
             UserMiddleware.checkUsernameAndPassword,
-            UserController.editUser,
-            handleError
+            UserController.editUser
         );
     router
-        .route('/delete-user')
+        .route('/') //delete user
         .delete(
             JoiValidate.user.token,
             JwtMiddleware.isAuth,
-            UserController.deleteUser,
-            handleError
+            UserController.deleteUser
         );
     router
-        .route('/user-profile')
-        .post(
-            JoiValidate.user.token,
-            JwtMiddleware.isAuth,
-            UserController.getUserProfile,
-            handleError
-        );
+        .route('/verify') // verify account
+        .post(JoiValidate.user.token, UserController.verifyAccount);
+    router.route('/user').get(handleError);
+    router.route('/users').get(UserController.getAllUser); //FIXME:add role admin
     router
-        .route('/token')
-        .get(JoiValidate.user.token, UserController.refreshToken, handleError);
+        .route('/refresh') //refresh token
+        .get(JoiValidate.user.token, UserController.refreshToken);
+    router.use(handleError);
     return router;
 };

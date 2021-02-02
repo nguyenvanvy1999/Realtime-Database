@@ -1,5 +1,5 @@
 const uploadFile = require('../middleware/upload').uploadFileMiddle;
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 const HTTP_STATUS_CODE = require('../config/constant/http');
 const fs = require('fs');
 async function upload(req, res, next) {

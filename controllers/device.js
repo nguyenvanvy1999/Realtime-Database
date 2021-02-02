@@ -1,5 +1,5 @@
 const DeviceService = require('../services/device');
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 const HTTP_STATUS_CODE = require('../config/constant/http');
 async function getDeviceByID(req, res, next) {
     try {

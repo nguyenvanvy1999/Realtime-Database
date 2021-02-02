@@ -1,7 +1,7 @@
 const UserService = require('./../services/user.js');
 const User = require('../models/user');
 const jwtHelper = require('../helpers/jwt');
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 const bcryptHelper = require('../helpers/bcrypt');
 const HTTP_STATUS_CODE = require('../config/constant/http');
 const mailHelper = require('../helpers/mailer');

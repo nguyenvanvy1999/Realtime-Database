@@ -1,6 +1,6 @@
 const DataService = require('../services/data');
 const HTTP_STATUS_CODE = require('../config/constant/http');
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 async function getDataByUser(req, res, next) {
     try {
         let user = req.jwtDecoded.data;

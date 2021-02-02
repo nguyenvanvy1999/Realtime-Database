@@ -1,13 +1,13 @@
 const User = require('./../models/user');
 const mongoose = require('mongoose');
-const { APIError } = require('../helpers/ErrorHandler');
+const { APIError } = require('../helpers/error');
 // ________________________________________________
-function newUser(email, username, password) {
+function newUser(user) {
     newUser = {
         _id: mongoose.Types.ObjectId(),
-        email: email,
-        username: username,
-        password: password,
+        email: user.email,
+        username: user.username,
+        password: user.password,
         isActive: false,
     };
     return newUser;
@@ -56,7 +56,13 @@ async function deleteUserByEmail(email) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-
+async function user(user) {
+    try {
+        const { email, username, password } = user;
+    } catch (error) {
+        throw new APIError({ message: error.message, errors: error });
+    }
+}
 async function activeAccount(email) {
     try {
         const result = await User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
