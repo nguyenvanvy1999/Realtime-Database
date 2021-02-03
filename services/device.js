@@ -2,8 +2,7 @@ const Device = require('../models/device');
 const { APIError } = require('../helpers/error');
 async function getDevice(deviceID) {
     try {
-        const device = await Device.findOne({ deviceID: deviceID });
-        return device;
+        return await Device.findOne({ deviceID: deviceID });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -13,8 +12,7 @@ async function getAllDeviceSameType(type) {
     //get all devices likes camera,sensor,... by device type
 
     try {
-        const devices = await Device.find({ type: type });
-        return devices;
+        return await Device.find({ type: type });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -22,8 +20,7 @@ async function getAllDeviceSameType(type) {
 
 async function getAllDevice() {
     try {
-        const devices = await Device.find();
-        return devices;
+        return await Device.find();
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -31,8 +28,7 @@ async function getAllDevice() {
 
 async function getDeviceUser(userID) {
     try {
-        const devices = await Device.find({ user: userID });
-        return devices;
+        return await Device.find({ user: userID });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -40,8 +36,7 @@ async function getDeviceUser(userID) {
 
 async function getDeviceUserAndType(userID, type) {
     try {
-        const devices = await Device.find({ user: userID }, { type: type });
-        return devices;
+        return await Device.find({ user: userID }, { type: type });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -49,8 +44,7 @@ async function getDeviceUserAndType(userID, type) {
 
 async function linkDeviceWithUser(deviceID, userID) {
     try {
-        const result = await Device.findOneAndUpdate({ deviceID: deviceID }, { user: userID }, { new: true });
-        return result;
+        return await Device.findOneAndUpdate({ deviceID: deviceID }, { user: userID }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -58,16 +52,14 @@ async function linkDeviceWithUser(deviceID, userID) {
 
 async function unLinkDevice(deviceID) {
     try {
-        const result = await Device.findOneAndUpdate({ deviceID: deviceID }, { user: null }, { new: true });
-        return result;
+        return await Device.findOneAndUpdate({ deviceID: deviceID }, { user: null }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
 async function unLinkAllDevice(userID) {
     try {
-        const result = await Device.updateMany({ user: userID }, { user: null }, { new: true });
-        return result;
+        return await Device.updateMany({ user: userID }, { user: null }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }

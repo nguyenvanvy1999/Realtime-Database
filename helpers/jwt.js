@@ -9,20 +9,18 @@ async function generateToken(user, secretSignature, tokenLife) {
             email: user.email,
             username: user.username,
         };
-        const token = await jwt.sign({ data: userData }, secretSignature, {
+        return await jwt.sign({ data: userData }, secretSignature, {
             algorithm: 'HS256',
             expiresIn: tokenLife,
         });
-        return token;
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
 
-function verifyToken(token, secretKey) {
+async function verifyToken(token, secretKey) {
     try {
-        const decoded = jwt.verify(token, secretKey);
-        return decoded;
+        return await jwt.verify(token, secretKey);
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }

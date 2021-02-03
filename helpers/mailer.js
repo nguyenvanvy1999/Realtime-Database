@@ -16,8 +16,7 @@ function newMailOption(to, text) {
 async function sendMail(mailOption) {
     try {
         const transporter = nodeMailer.createTransport(mailConfig);
-        const mail = await transporter.sendMail(mailOption);
-        return mail;
+        return await transporter.sendMail(mailOption);
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }

@@ -2,16 +2,14 @@ const bcrypt = require('bcrypt');
 const { APIError } = require('./error');
 async function hash(password, saltRounds) {
     try {
-        const result = await bcrypt.hash(password, saltRounds);
-        return result;
+        return await bcrypt.hash(password, saltRounds);
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
 async function compare(password, hash) {
     try {
-        const result = await bcrypt.compare(password, hash);
-        return result;
+        return await bcrypt.compare(password, hash);
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }

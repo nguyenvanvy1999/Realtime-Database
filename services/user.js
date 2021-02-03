@@ -15,8 +15,7 @@ function newUser(user) {
 async function insert(newUser) {
     try {
         const user = new User(newUser);
-        const result = await user.save();
-        return result;
+        return await user.save();
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -24,16 +23,14 @@ async function insert(newUser) {
 
 async function getUserByEmail(email) {
     try {
-        const user = await User.findOne({ email: email });
-        return user;
+        return await User.findOne({ email: email });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
 async function getAllUser() {
     try {
-        const users = await User.find();
-        return users;
+        return await User.find();
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -41,8 +38,7 @@ async function getAllUser() {
 
 async function editUser(email, newUsername, newPassword) {
     try {
-        const user = await User.findOneAndUpdate({ email: email }, { username: newUsername, password: newPassword }, { new: true });
-        return user;
+        return await User.findOneAndUpdate({ email: email }, { username: newUsername, password: newPassword }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -50,23 +46,35 @@ async function editUser(email, newUsername, newPassword) {
 
 async function deleteUserByEmail(email) {
     try {
-        const result = await User.findOneAndDelete({ email: email });
-        return result;
+        return await User.findOneAndDelete({ email: email });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
 async function user(user) {
     try {
-        const { email, username, password } = user;
+        const { email, username, _id } = user;
+        return await User.findOne({
+            $and: [{ email: email }, { username: username }, { _id: _id }],
+        });
+    } catch (error) {
+        throw new APIError({ message: error.message, errors: error });
+    }
+}
+async function users(user) {
+    try {
+        if (user === null) return User.find();
+        const { email, username, _id } = user;
+        return User.findOne({
+            $or: [{ email: email }, { username: username }, { _id: _id }],
+        });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
 async function activeAccount(email) {
     try {
-        const result = await User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
-        return result;
+        return await User.findOneAndUpdate({ email: email }, { isActive: true }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }

@@ -23,8 +23,7 @@ function newData(socket, document) {
 async function insert(newData) {
     try {
         const data = new Data(newData);
-        const result = await data.save();
-        return result;
+        return await data.save();
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -32,8 +31,7 @@ async function insert(newData) {
 
 async function getDataByDevice(deviceID) {
     try {
-        const dataDocuments = await Data.find({ device: deviceID });
-        return dataDocuments;
+        return await Data.find({ device: deviceID });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -41,8 +39,7 @@ async function getDataByDevice(deviceID) {
 
 async function getDataByUser(userID) {
     try {
-        const dataDocuments = await Data.find({ user: userID });
-        return dataDocuments;
+        return await Data.find({ user: userID });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -50,8 +47,7 @@ async function getDataByUser(userID) {
 
 async function deleteOneData(id) {
     try {
-        const result = await Data.findByIdAndDelete(id);
-        return result;
+        return await Data.findByIdAndDelete(id);
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -59,8 +55,7 @@ async function deleteOneData(id) {
 
 async function deleteDataByUser(userID) {
     try {
-        let result = await Data.deleteMany({ user: userID });
-        return result;
+        return await Data.deleteMany({ user: userID });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -68,8 +63,7 @@ async function deleteDataByUser(userID) {
 
 async function deleteDataByDevice(deviceID) {
     try {
-        let result = await Data.deleteMany({ device: deviceID });
-        return result;
+        return await Data.deleteMany({ device: deviceID });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }

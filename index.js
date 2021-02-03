@@ -47,7 +47,7 @@ server.listen(serverConfig.port, serverConfig.host, () => {
     );
 });
 // ________________________________________________
-const socketFunction = require('./sockets/function').socketFunction;
+const socketFunction = require('./sockets/index').socketFunction;
 const io = require('socket.io')(server);
 io.on('connection', socketFunction);
 // ________________________________________________
