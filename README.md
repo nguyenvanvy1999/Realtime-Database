@@ -1,5 +1,6 @@
-A project realtime database, usign NodeJS,Express,MongoDB,SocketIO
-_________________________________________________________
+A project realtime database, using NodeJS,Express,MongoDB,SocketIO
+_________________________________________________________.
+
 - package.json là file chứa thông tin của toàn dự án
 - package-lock.json là file chứa tên,ver của các module sử dụng trong project
 - file index là file chịu trách nhiệm khởi tạo, kết nối server, khởi tạo mongodb,kết nối socketIO
@@ -10,16 +11,21 @@ _________________________________________________________
 - Middleware là nơi chứa các hàm auth,handlerError
 - Models chứa Schema của data
 - Sockets khởi tạo sockets để giao tiếp realtime bằng socketIO
-________________________________________________________
+
+________________________________________________________.
+
 some module used:
+
 - mongoose: Thao tác với MongoDB
 - express: web application framework cho NodeJS
 - body-parser: Làm việc với data-form
-- socket.io:Giúp kết nối realtime giữa các bên ở những địa điểm khác nhau nhờ server trung gian
-- bcrypt:Hash mật khẩu trước khi lưu
-- multer: xử lý dữ liệu multipart/form-data khi người dùng upload file
+- socket.io: Giúp kết nối realtime giữa các bên ở những địa điểm khác nhau nhờ server trung gian
+- bcrypt: Hash mật khẩu trước khi lưu
+- multer: Xử lý dữ liệu multipart/form-data khi người dùng upload file
 - morgan: middleware dùng để request logger
-- jsonwebtoken: Tạo và xác thực JWT khi user đăng nhập
+- jsonwebtoken: Tạo và xác thực JWT
 - nodemailer: Gửi email
-_________________________________________________________
-- install: clone repo and open folder in terminal and :npm -i
+
+_________________________________________________________.
+
+- install: clone repo mở terminal trong thư mục và : npm -i

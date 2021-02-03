@@ -1,27 +1,31 @@
 const User = require('../models/user');
 const { APIError } = require('../helpers/error');
 
-async function checkUsernameAndPassword(req, res, next) {
+async function checkEditUser(req, res, next) {
     try {
-        const { email, username } = req.body;
+        const { email } = req.jwtDecoded.data;
+        const { username } = req.body;
         const user = await User.findOne({ username: username });
         if (user != null && user.email != email) {
-            throw new APIError({ message: 'Username has been used' });
+            throw new APIError({ message: 'Username has has been exits' });
         }
         next();
     } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
+        next(error);
     }
 }
 
-async function checkDuplicateEmail(req, res, next) {
+async function checkRegister(req, res, next) {
     try {
-        const user = await User.findOne({ email: req.email });
-        if (user) throw new APIError({ message: 'The email has been exits' });
+        const { email, username } = req.body;
+        const isEmail = await User.findOne({ email: email });
+        if (isEmail) throw new APIError({ message: 'The email has been exits' });
+        const isUsername = await User.findOne({ username: username });
+        if (isEmail) throw new APIError({ message: 'The username has been exits' });
         next();
     } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
+        next(error);
     }
 }
 
-module.exports = { checkDuplicateEmail, checkUsernameAndPassword };
+module.exports = { checkEditUser, checkRegister };

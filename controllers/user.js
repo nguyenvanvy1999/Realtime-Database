@@ -11,26 +11,25 @@ const mailOption = require('../config/constant/mail').mailOption;
 // ________________________________________________
 async function signUp(req, res, next) {
     try {
-        const { email, username, password } = req.body;
-        const newUser = UserService.newUser(email, username, password);
-        let token = await jwtHelper.generateToken(
+        const newUser = UserService.newUser(req.body);
+        const token = await jwtHelper.generateToken(
             newUser,
             jwtConfig.VERIFY.SECRET,
             jwtConfig.VERIFY.LIFE
         );
-        let text = {
+        const text = {
             message: mailOption.text,
             token: token,
         };
-        let newMail = mailHelper.newMailOption(
+        const newMail = mailHelper.newMailOption(
             mailConfig.auth.user,
-            email,
+            req.body.email,
             mailOption.subject,
             text
         );
         const result = await mailHelper.sendMail(newMail);
         await UserService.insert(newUser);
-        res
+        return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
             .send({ message: 'Check your email and verify account!', result });
     } catch (error) {
@@ -40,11 +39,10 @@ async function signUp(req, res, next) {
 async function verifyAccount(req, res, next) {
     try {
         const token = req.body.token || req.query.token || req.header['token'];
-        let decoded = await jwtHelper.verifyToken(token, jwtConfig.VERIFY.SECRET);
-        let result = await UserService.activeAccount(decoded.data.email);
+        const decoded = await jwtHelper.verifyToken(token, jwtConfig.VERIFY.SECRET);
+        await UserService.activeAccount(decoded.data.email);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-            message: 'Active successfully !.Now you can using out function',
-            result,
+            message: 'Active successfully !',
         });
     } catch (error) {
         next(error);
@@ -52,7 +50,11 @@ async function verifyAccount(req, res, next) {
 }
 async function signIn(req, res, next) {
     try {
-        const user = req.user;
+        const { email, password } = req.body;
+        const user = await UserService.getUserByEmail(email);
+        if (!user) throw new APIError({ message: 'Email wrong' });
+        const isPassword = await bcryptHelper.compare(password, user.password);
+        if (!isPassword) throw new APIError({ message: 'Password wrong' });
         const token = await jwtHelper.returnToken(user);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
     } catch (error) {
@@ -63,9 +65,7 @@ async function signIn(req, res, next) {
 async function getAllUser(req, res, next) {
     try {
         const users = await UserService.getAllUser();
-        if (users.length === 0) {
-            throw new APIError({ message: 'No user found !' });
-        }
+        if (users.length === 0) throw new APIError({ message: 'No user found !' });
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
             count: users.length,
             users: users,
@@ -77,11 +77,12 @@ async function getAllUser(req, res, next) {
 
 async function editUser(req, res, next) {
     try {
-        let { email, newUsername, newPassword } = req.body;
-        newPassword = await bcryptHelper.hash(newPassword, 8);
+        const { email } = req.jwtDecoded.data;
+        const newUsername = req.body.username;
+        const newPassword = await bcryptHelper.hash(req.body.password, 10);
         const newUser = await UserService.editUser(email, newUsername, newPassword);
         const token = await jwtHelper.returnToken(newUser);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ token, newUser });
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ token });
     } catch (error) {
         next(error);
     }

@@ -5,7 +5,6 @@ const { handleError } = require('../middleware/error');
 const UserMiddleware = require('../middleware/user');
 const multer = require('multer');
 const JoiValidate = require('../middleware/joi');
-const passport = require('passport');
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
@@ -13,16 +12,12 @@ module.exports = () => {
         .route('/register')
         .post(
             JoiValidate.user.signUp,
-            passport.authenticate('local-signup'),
+            UserMiddleware.checkRegister,
             UserController.signUp
         );
     router
         .route('/') //post user (Sign In)
-        .post(
-            JoiValidate.user.signIn,
-            passport.authenticate('local-signin'),
-            UserController.signIn
-        );
+        .post(JoiValidate.user.signIn, UserController.signIn);
     router
         .route('/') //get user (User Profile)
         .get(
@@ -35,7 +30,7 @@ module.exports = () => {
         .patch(
             JoiValidate.user.editUser,
             JwtMiddleware.isAuth,
-            UserMiddleware.checkUsernameAndPassword,
+            UserMiddleware.checkEditUser,
             UserController.editUser
         );
     router
