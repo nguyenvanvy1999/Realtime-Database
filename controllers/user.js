@@ -27,11 +27,11 @@ async function signUp(req, res, next) {
             mailOption.subject,
             text
         );
-        const result = await mailHelper.sendMail(newMail);
+        //const result = await mailHelper.sendMail(newMail);
         await UserService.insert(newUser);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Check your email and verify account!', result });
+            .send({ message: 'Check your email and verify account!' });
     } catch (error) {
         next(error);
     }
@@ -57,19 +57,6 @@ async function signIn(req, res, next) {
         if (!isPassword) throw new APIError({ message: 'Password wrong' });
         const token = await jwtHelper.returnToken(user);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
-    } catch (error) {
-        next(error);
-    }
-}
-
-async function getAllUser(req, res, next) {
-    try {
-        const users = await UserService.getAllUser();
-        if (users.length === 0) throw new APIError({ message: 'No user found !' });
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-            count: users.length,
-            users: users,
-        });
     } catch (error) {
         next(error);
     }
@@ -138,14 +125,22 @@ async function refreshToken(req, res, next) {
         next(error);
     }
 }
+async function searchUser(req, res, next) {
+    try {
+        const user = await UserService.findUsers(req.body);
+        return res.status(200).send({ length: user.length, users: user });
+    } catch (error) {
+        next(error);
+    }
+}
 // ________________________________________________
 module.exports = {
     signUp,
     signIn,
-    getAllUser,
     editUser,
     deleteUser,
     getUserProfile,
     refreshToken,
     verifyAccount,
+    searchUser,
 };

@@ -28,13 +28,6 @@ async function getUserByEmail(email) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-async function getAllUser() {
-    try {
-        return await User.find();
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
 
 async function editUser(email, newUsername, newPassword) {
     try {
@@ -51,22 +44,15 @@ async function deleteUserByEmail(email) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-async function user(user) {
+async function search(user) {
     try {
-        const { email, username, _id } = user;
-        return await User.findOne({
-            $and: [{ email: email }, { username: username }, { _id: _id }],
-        });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
-async function users(user) {
-    try {
-        if (user === null) return User.find();
-        const { email, username, _id } = user;
-        return User.findOne({
-            $or: [{ email: email }, { username: username }, { _id: _id }],
+        const email = user.email || '';
+        const username = user.username || '';
+        return User.find({
+            $and: [
+                { email: { $regex: email, $options: 'i' } },
+                { username: { $regex: username, $options: 'i' } },
+            ],
         });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
@@ -88,4 +74,5 @@ module.exports = {
     editUser,
     deleteUserByEmail,
     activeAccount,
+    search,
 };

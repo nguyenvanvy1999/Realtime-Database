@@ -21,7 +21,8 @@ async function checkRegister(req, res, next) {
         const isEmail = await User.findOne({ email: email });
         if (isEmail) throw new APIError({ message: 'The email has been exits' });
         const isUsername = await User.findOne({ username: username });
-        if (isEmail) throw new APIError({ message: 'The username has been exits' });
+        if (isUsername)
+            throw new APIError({ message: 'The username has been exits' });
         next();
     } catch (error) {
         next(error);
