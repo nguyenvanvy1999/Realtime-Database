@@ -127,8 +127,10 @@ async function refreshToken(req, res, next) {
 }
 async function searchUser(req, res, next) {
     try {
-        const user = await UserService.findUsers(req.body);
-        return res.status(200).send({ length: user.length, users: user });
+        const user = await UserService.search(req.body);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ length: user.length, users: user });
     } catch (error) {
         next(error);
     }

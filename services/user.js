@@ -70,7 +70,6 @@ module.exports = {
     newUser,
     insert,
     getUserByEmail,
-    getAllUser,
     editUser,
     deleteUserByEmail,
     activeAccount,
