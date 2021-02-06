@@ -27,7 +27,7 @@ async function signUp(req, res, next) {
             mailOption.subject,
             text
         );
-        //const result = await mailHelper.sendMail(newMail);
+        await mailHelper.sendMail(newMail);
         await UserService.insert(newUser);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)

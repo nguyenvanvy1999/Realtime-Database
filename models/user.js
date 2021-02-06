@@ -6,11 +6,16 @@ const userSchema = new Schema({
     username: { type: String, unique: true, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true, min: 4 },
+    roles: {
+        type: String,
+        apply: ['User', 'Admin'],
+        default: 'User',
+        required: true,
+    },
     isActive: { type: Boolean, default: false },
 }, { timestamps: true });
 
 userSchema.pre('save', async function(next) {
-    // Hash the password before saving the user model
     const user = this;
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);

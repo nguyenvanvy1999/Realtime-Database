@@ -9,6 +9,7 @@ function newUser(user) {
         username: user.username,
         password: user.password,
         isActive: false,
+        roles: user.roles,
     };
     return newUser;
 }
