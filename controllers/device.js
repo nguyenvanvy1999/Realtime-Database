@@ -1,54 +1,28 @@
 const DeviceService = require('../services/device');
 const { APIError } = require('../helpers/error');
 const HTTP_STATUS_CODE = require('../config/constant/http');
-async function getDeviceByID(req, res, next) {
-    try {
-        const deviceID = req.body.deviceID;
-        const device = await DeviceService.getDevice(deviceID);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(device);
-    } catch (error) {
-        next(error);
-    }
-}
 
-async function getDeviceByUser(req, res, next) {
+async function getDeviceUser(req, res, next) {
     try {
-        const user = req.jwtDecoded.data;
-        const devices = await DeviceService.getDeviceUser(user._id);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(devices);
+        const user = req.jwtDecoded.data._id;
+        const result = await DeviceService.getDeviceUser(user, req.body);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ length: result.length, result: result });
     } catch (error) {
         next(error);
     }
 }
-async function getDeviceByUserAndType(req, res, next) {
+async function getDeviceAdmin(req, res, next) {
     try {
-        const user = req.jwtDecoded.data;
-        const type = req.body.type;
-        const devices = await DeviceService.getDeviceUserAndType(user._id, type);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(devices);
+        const result = await DeviceService.getDeviceAdmin(req.body);
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ length: result.length, result: result });
     } catch (error) {
         next(error);
     }
 }
-// must be Admin to used
-async function getAllDevice(req, res, next) {
-    try {
-        const devices = await DeviceService.getAllDevice();
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(devices);
-    } catch (error) {
-        next(error);
-    }
-}
-async function getAllDeviceSameType(req, res, next) {
-    try {
-        const type = req.body.type;
-        const devices = await DeviceService.getAllDeviceSameType(type);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(devices);
-    } catch (error) {
-        next(error);
-    }
-}
-
 async function linkDeviceToUser(req, res, next) {
     try {
         const user = req.jwtDecoded.data;
@@ -64,7 +38,7 @@ async function linkDeviceToUser(req, res, next) {
 async function unLinkDeviceToUser(req, res, next) {
     try {
         const deviceID = req.body.deviceID;
-        const result = await DeviceService.unLinkDevice(deviceID);
+        await DeviceService.unLinkDevice(deviceID);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
             .send({ message: 'UnLink Successfully !' });
@@ -75,7 +49,7 @@ async function unLinkDeviceToUser(req, res, next) {
 async function unLinkAllDevice(req, res, next) {
     try {
         const user = req.jwtDecoded.data;
-        const result = await DeviceService.unLinkAllDevice(user._id);
+        await DeviceService.unLinkAllDevice(user._id);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
             .send({ message: 'UnLink Successfully !' });
@@ -85,11 +59,8 @@ async function unLinkAllDevice(req, res, next) {
 }
 
 module.exports = {
-    getAllDevice,
-    getAllDeviceSameType,
-    getDeviceByID,
-    getDeviceByUserAndType,
-    getDeviceByUser,
+    getDeviceUser,
+    getDeviceAdmin,
     linkDeviceToUser,
     unLinkDeviceToUser,
     unLinkAllDevice,

@@ -9,106 +9,66 @@ const JoiValidate = require('../middleware/joi');
 
 module.exports = () => {
     router.use(multer().none());
-    router
-        .route('/get-device-user-and-type')
-        .get(
-            JoiValidate.device.tokenAndDeviceID,
-            JwtMiddleware.isAuth,
-            DeviceController.getDeviceByUserAndType,
-            handleError
-        );
-    router
-        .route('/get-device-user')
-        .get(
-            JoiValidate.user.token,
-            JwtMiddleware.isAuth,
-            DeviceController.getDeviceByUser,
-            handleError
-        );
-    router
-        .route('/get-device')
-        .get(
-            JoiValidate.device.deviceID,
-            JwtMiddleware.isAuth,
-            DeviceController.getDeviceByID,
-            handleError
-        );
+    router.route('/').get(JwtMiddleware.isAuth, DeviceController.getDeviceUser); //FIXME:add joi validate here
+    router.route('/admin').get(DeviceController.getDeviceAdmin); //FIXME:add joi validate and role user
     router
         .route('/link-device')
         .get(
             JoiValidate.device.tokenAndDeviceID,
             JwtMiddleware.isAuth,
-            DeviceController.linkDeviceToUser,
-            handleError
+            DeviceController.linkDeviceToUser
         );
     router
         .route('/unlink-device')
         .get(
             JoiValidate.device.tokenAndDeviceID,
             JwtMiddleware.isAuth,
-            DeviceController.unLinkDeviceToUser,
-            handleError
+            DeviceController.unLinkDeviceToUser
         );
     router
         .route('/unlink-all-device')
         .get(
             JoiValidate.user.token,
             JwtMiddleware.isAuth,
-            DeviceController.unLinkAllDevice,
-            handleError
+            DeviceController.unLinkAllDevice
         );
+    // _____________________________________________________________
     // _____________________________________________________________
     router
         .route('/new-zone')
         .get(
             JoiValidate.zone.newZone,
             JwtMiddleware.isAuth,
-            ZoneController.newZone,
-            handleError
+            ZoneController.newZone
         );
     router
         .route('/zone/insert-device')
         .get(
             JoiValidate.zone.one,
             JwtMiddleware.isAuth,
-            ZoneController.insertDevice,
-            handleError
+            ZoneController.insertDevice
         );
     router
         .route('/zone/insert-many')
         .get(
             JoiValidate.zone.many,
             JwtMiddleware.isAuth,
-            ZoneController.insertManyDevice,
-            handleError
+            ZoneController.insertManyDevice
         );
     router
         .route('/zone/remove-device')
         .get(
             JoiValidate.zone.one,
             JwtMiddleware.isAuth,
-            ZoneController.removeDevice,
-            handleError
+            ZoneController.removeDevice
         );
     router
         .route('/zone/remove-many')
         .get(
             JoiValidate.zone.many,
             JwtMiddleware.isAuth,
-            ZoneController.removeManyDevices,
-            handleError
+            ZoneController.removeManyDevices
         );
-    // _____________________________________________________________
-    router
-        .route('/admin/get-all-device')
-        .get(DeviceController.getAllDevice, handleError); //FIXME: add role admin auth
-    router
-        .route('/admin/get-device-same-type')
-        .get(
-            JoiValidate.device.type,
-            DeviceController.getAllDeviceSameType,
-            handleError
-        ); //FIXME: add role admin auth
-
+    router.use(handleError);
     return router;
 };

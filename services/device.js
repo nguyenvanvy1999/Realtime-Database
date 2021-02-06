@@ -1,47 +1,31 @@
 const Device = require('../models/device');
 const { APIError } = require('../helpers/error');
-async function getDevice(deviceID) {
+const mongoose = require('mongoose');
+async function getDeviceAdmin(device) {
     try {
-        return await Device.findOne({ deviceID: deviceID });
+        return await Device.find(device);
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-
-async function getAllDeviceSameType(type) {
-    //get all devices likes camera,sensor,... by device type
-
+async function getDeviceUser(user, device) {
     try {
-        return await Device.find({ type: type });
+        const _id = mongoose.Types.ObjectId(user);
+        const { model, type, deviceID } = device;
+        const name = device.name || '';
+        return await Device.find({
+            $and: [
+                { user: _id },
+                { model: model },
+                { type: type },
+                { deviceID: deviceID },
+                { name: { $regex: name, $options: 'i' } },
+            ],
+        });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-
-async function getAllDevice() {
-    try {
-        return await Device.find();
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
-
-async function getDeviceUser(userID) {
-    try {
-        return await Device.find({ user: userID });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
-
-async function getDeviceUserAndType(userID, type) {
-    try {
-        return await Device.find({ user: userID }, { type: type });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
-
 async function linkDeviceWithUser(deviceID, userID) {
     try {
         return await Device.findOneAndUpdate({ deviceID: deviceID }, { user: userID }, { new: true });
@@ -66,12 +50,9 @@ async function unLinkAllDevice(userID) {
 }
 
 module.exports = {
-    getDevice,
-    getAllDevice,
-    getAllDeviceSameType,
     getDeviceUser,
-    getDeviceUserAndType,
     linkDeviceWithUser,
     unLinkDevice,
     unLinkAllDevice,
+    getDeviceAdmin,
 };

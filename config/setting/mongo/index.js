@@ -11,6 +11,7 @@ function connectMongo() {
             useCreateIndex: true,
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            ignoreUndefined: true,
         },
         function(err, db) {
             if (err) {

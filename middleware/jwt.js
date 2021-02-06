@@ -5,7 +5,7 @@ const { APIError } = require('../helpers/error');
 
 async function isAuth(req, res, next) {
     try {
-        const token = req.body.token || req.query.token || req.header['token'];
+        const token = req.body.token || req.query.token || req.headers['token'];
         const decoded = await jwtHelper.verifyToken(token, jwtConfig.ACCESS.SECRET);
         req.jwtDecoded = decoded;
         next();
