@@ -29,4 +29,13 @@ async function checkRegister(req, res, next) {
     }
 }
 
-module.exports = { checkEditUser, checkRegister };
+async function checkRole(req, res, next) {
+    try {
+        const { roles } = req.jwtDecoded.data;
+        if (roles != 'Admin') throw new APIError({ message: 'No permission' });
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
+module.exports = { checkEditUser, checkRegister, checkRole };

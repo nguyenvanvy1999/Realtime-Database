@@ -8,7 +8,13 @@ const JoiValidate = require('../middleware/joi');
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
-    router.route('/search').get(UserController.searchUser); //FIXME:add role
+    router
+        .route('/search')
+        .get(
+            JoiValidate.user.token,
+            UserMiddleware.checkRole,
+            UserController.searchUser
+        );
     router
         .route('/register')
         .post(

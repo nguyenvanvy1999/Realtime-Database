@@ -8,6 +8,7 @@ async function generateToken(user, secretSignature, tokenLife) {
             _id: user._id,
             email: user.email,
             username: user.username,
+            roles: user.roles,
         };
         return await jwt.sign({ data: userData }, secretSignature, {
             algorithm: 'HS256',
