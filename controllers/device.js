@@ -23,36 +23,25 @@ async function getDeviceAdmin(req, res, next) {
         next(error);
     }
 }
-async function linkDeviceToUser(req, res, next) {
+
+async function linkDevice(req, res, next) {
     try {
-        const user = req.jwtDecoded.data;
-        const deviceID = req.body.deviceID;
-        const result = await DeviceService.linkDeviceWithUser(deviceID, user._id);
+        const user = req.jwtDecoded.data._id;
+        const result = await DeviceService.link(user, req.body);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Link successfully !', result });
+            .send({ message: 'Active device successfully', result: result });
     } catch (error) {
         next(error);
     }
 }
-async function unLinkDeviceToUser(req, res, next) {
+
+async function unLinkDevice(req, res, next) {
     try {
-        const deviceID = req.body.deviceID;
-        await DeviceService.unLinkDevice(deviceID);
+        const result = await DeviceService.unLink(req.body);
         return res
             .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'UnLink Successfully !' });
-    } catch (error) {
-        next(error);
-    }
-}
-async function unLinkAllDevice(req, res, next) {
-    try {
-        const user = req.jwtDecoded.data;
-        await DeviceService.unLinkAllDevice(user._id);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'UnLink Successfully !' });
+            .send({ message: 'Un Active device successfully', result: result });
     } catch (error) {
         next(error);
     }
@@ -61,7 +50,6 @@ async function unLinkAllDevice(req, res, next) {
 module.exports = {
     getDeviceUser,
     getDeviceAdmin,
-    linkDeviceToUser,
-    unLinkDeviceToUser,
-    unLinkAllDevice,
+    linkDevice,
+    unLinkDevice,
 };

@@ -25,19 +25,10 @@ module.exports = () => {
             UserMiddleware.checkRole,
             DeviceController.getDeviceAdmin
         );
+    router.route('/link').get(JwtMiddleware.isAuth, DeviceController.linkDevice);
     router
-        .route('/link-device')
-        .get(JwtMiddleware.isAuth, DeviceController.linkDeviceToUser);
-    router
-        .route('/unlink-device')
-        .get(JwtMiddleware.isAuth, DeviceController.unLinkDeviceToUser);
-    router
-        .route('/unlink-all-device')
-        .get(
-            JoiValidate.user.token,
-            JwtMiddleware.isAuth,
-            DeviceController.unLinkAllDevice
-        );
+        .route('/unlink')
+        .get(JwtMiddleware.isAuth, DeviceController.unLinkDevice);
     // _____________________________________________________________
     // _____________________________________________________________
     router
