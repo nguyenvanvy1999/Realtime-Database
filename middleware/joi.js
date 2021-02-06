@@ -28,7 +28,7 @@ const JoiValidate = {
         },
         token: async(req, res, next) => {
             try {
-                const { result, error } = joiSchema.user.tokenSchema.validate(req.body);
+                const { result, error } = joiSchema.user.tokenSchema.validate(req);
                 if (error)
                     throw new APIError({ message: error.message, errors: error });
                 next();
@@ -50,31 +50,19 @@ const JoiValidate = {
         },
     },
     device: {
+        getDevice: async(req, res, next) => {
+            try {
+                const { result, error } = joiSchema.device.getDevice.validate(req);
+                if (error)
+                    throw new APIError({ message: error.message, errors: error });
+                next();
+            } catch (error) {
+                next(error);
+            }
+        },
         deviceID: async(req, res, next) => {
             try {
                 const { result, error } = joiSchema.device.deviceID.validate(req.body);
-                if (error)
-                    throw new APIError({ message: error.message, errors: error });
-                next();
-            } catch (error) {
-                next(error);
-            }
-        },
-        tokenAndDeviceID: async(req, res, next) => {
-            try {
-                const { result, error } = joiSchema.device.tokenAndDeviceID.validate(
-                    req.body
-                );
-                if (error)
-                    throw new APIError({ message: error.message, errors: error });
-                next();
-            } catch (error) {
-                next(error);
-            }
-        },
-        type: async(req, res, next) => {
-            try {
-                const { result, error } = joiSchema.device.type.validate(req.body);
                 if (error)
                     throw new APIError({ message: error.message, errors: error });
                 next();

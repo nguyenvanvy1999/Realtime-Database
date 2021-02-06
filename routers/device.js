@@ -6,25 +6,31 @@ const multer = require('multer');
 const DeviceController = require('../controllers/device');
 const ZoneController = require('../controllers/zone');
 const JoiValidate = require('../middleware/joi');
-
+const UserMiddleware = require('../middleware/user');
 module.exports = () => {
     router.use(multer().none());
-    router.route('/').get(JwtMiddleware.isAuth, DeviceController.getDeviceUser); //FIXME:add joi validate here
-    router.route('/admin').get(DeviceController.getDeviceAdmin); //FIXME:add joi validate and role user
+    router
+        .route('/') //get device,using userID(required),deviceID,name,model,type(if no value, return all device of user)
+        .get(
+            JoiValidate.device.getDevice,
+            JwtMiddleware.isAuth,
+            UserMiddleware.checkRole,
+            DeviceController.getDeviceUser
+        );
+    router
+        .route('/admin') //get device,using deviceID,name,model,type(if no value, return all device)
+        .get(
+            JoiValidate.device.getDevice,
+            JwtMiddleware.isAuth,
+            UserMiddleware.checkRole,
+            DeviceController.getDeviceAdmin
+        );
     router
         .route('/link-device')
-        .get(
-            JoiValidate.device.tokenAndDeviceID,
-            JwtMiddleware.isAuth,
-            DeviceController.linkDeviceToUser
-        );
+        .get(JwtMiddleware.isAuth, DeviceController.linkDeviceToUser);
     router
         .route('/unlink-device')
-        .get(
-            JoiValidate.device.tokenAndDeviceID,
-            JwtMiddleware.isAuth,
-            DeviceController.unLinkDeviceToUser
-        );
+        .get(JwtMiddleware.isAuth, DeviceController.unLinkDeviceToUser);
     router
         .route('/unlink-all-device')
         .get(

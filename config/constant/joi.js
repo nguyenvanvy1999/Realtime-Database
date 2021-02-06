@@ -3,8 +3,8 @@ const custom = require('../setting/joi/custom');
 
 const joiConfig = {
     general: {
-        string: joi.string().required(),
-        _id: custom.joiOID.objectId().required(),
+        string: joi.string(),
+        _id: custom.joiOID.objectId(),
     },
     user: {
         email: joi
