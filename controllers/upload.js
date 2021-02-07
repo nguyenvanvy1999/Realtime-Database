@@ -10,7 +10,6 @@ async function upload(req, res, next) {
                 message: 'Please choose a file or check your file type',
             });
         }
-
         res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
             message: 'Uploaded the file successfully: ' + req.file.originalname,
         });
