@@ -4,18 +4,21 @@ const { handleError } = require('../middleware/error');
 const JwtMiddleware = require('../middleware/jwt');
 const UploadController = require('../controllers/upload');
 const multer = require('multer');
+const UserMiddleware = require('../middleware/user');
 
 module.exports = () => {
+    router.route('/').post(JwtMiddleware.isAuth, UploadController.upload);
     router
-        .route('/upload/single')
-        .post(JwtMiddleware.isAuth, UploadController.upload);
+        .route('/list')
+        .get(
+            multer().none(),
+            JwtMiddleware.isAuth,
+            UserMiddleware.checkRole,
+            UploadController.getListFiles
+        );
     router
-        .route('/upload/multi')
-        .post(JwtMiddleware.isAuth, UploadController.upload); //FIXME:fix  upload many files
-    router
-        .route('/list-file')
-        .get(multer().none(), UploadController.getListFiles); // FIXME: add role auth here
-    router.route('/download').get(multer().none(), UploadController.download); // FIXME: add role auth here
+        .route('/')
+        .get(multer().none(), JwtMiddleware.isAuth, UploadController.download);
     router.use(handleError);
     return router;
 };

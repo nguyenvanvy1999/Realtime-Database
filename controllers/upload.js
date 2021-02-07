@@ -1,9 +1,12 @@
 const uploadFile = require('../middleware/upload').uploadFileMiddle;
+const uploadFiles = require('../middleware/upload').uploadFilesMiddle;
 const { APIError } = require('../helpers/error');
 const HTTP_STATUS_CODE = require('../config/constant/http');
 const fs = require('fs');
+const fileConfig = require('../config/constant/file');
 async function upload(req, res, next) {
     try {
+        //FIXME:upload multi files
         await uploadFile(req, res);
         if (!req.file) {
             throw new APIError({
@@ -20,9 +23,7 @@ async function upload(req, res, next) {
 
 function getListFiles(req, res, next) {
     try {
-        const directoryPath =
-            'C:/Users/DELL PRECISION/OneDrive/Máy tính/realtimeDatabase/uploads/';
-        fs.readdir(directoryPath, function(err, files) {
+        fs.readdir(fileConfig.path, function(err, files) {
             if (err) {
                 throw new APIError({ message: 'Unable to scan files!' });
             }
@@ -30,7 +31,7 @@ function getListFiles(req, res, next) {
             files.forEach((file) => {
                 fileInfos.push({
                     name: file,
-                    url: directoryPath + file,
+                    url: fileConfig.path + file,
                 });
             });
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(fileInfos);
@@ -43,12 +44,12 @@ function getListFiles(req, res, next) {
 function download(req, res, next) {
     try {
         const fileName = req.body.name;
-        const directoryPath =
-            'C:/Users/DELL PRECISION/OneDrive/Máy tính/realtimeDatabase/uploads/';
-        if (!fs.existsSync(directoryPath + fileName)) {
+        const directoryPath = fileConfig.path + fileName;
+        console.log(directoryPath);
+        if (!fs.existsSync(directoryPath)) {
             throw new APIError({ message: 'No such file or directory' });
         }
-        res.download(directoryPath + fileName, fileName);
+        res.download(directoryPath, fileName);
     } catch (error) {
         next(error);
     }
