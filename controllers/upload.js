@@ -1,20 +1,18 @@
-const uploadFile = require('../middleware/upload').uploadFileMiddle;
-const uploadFiles = require('../middleware/upload').uploadFilesMiddle;
+const uploadHelper = require('../helpers/multer');
 const { APIError } = require('../helpers/error');
 const HTTP_STATUS_CODE = require('../config/constant/http');
 const fs = require('fs');
 const fileConfig = require('../config/constant/file');
 async function upload(req, res, next) {
     try {
-        //FIXME:upload multi files
-        await uploadFile(req, res);
-        if (!req.file) {
+        await uploadHelper(req, res);
+        if (!req.files) {
             throw new APIError({
                 message: 'Please choose a file or check your file type',
             });
         }
         res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-            message: 'Uploaded the file successfully: ' + req.file.originalname,
+            message: 'Uploaded files successfully ',
         });
     } catch (error) {
         next(error);
