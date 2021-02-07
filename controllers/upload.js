@@ -21,7 +21,9 @@ async function upload(req, res, next) {
 
 function getListFiles(req, res, next) {
     try {
-        fs.readdir(fileConfig.path, function(err, files) {
+        const { email } = req.jwtDecoded.data;
+        const dir = `${fileConfig.path}${email}`;
+        fs.readdir(dir, function(err, files) {
             if (err) {
                 throw new APIError({ message: 'Unable to scan files!' });
             }
@@ -41,13 +43,13 @@ function getListFiles(req, res, next) {
 
 function download(req, res, next) {
     try {
-        const fileName = req.body.name;
-        const directoryPath = fileConfig.path + fileName;
-        console.log(directoryPath);
-        if (!fs.existsSync(directoryPath)) {
+        const { email } = req.jwtDecoded.data;
+        const { name } = req.body;
+        const dir = `${fileConfig.path}${email}/${name}`;
+        if (!fs.existsSync(dir)) {
             throw new APIError({ message: 'No such file or directory' });
         }
-        res.download(directoryPath, fileName);
+        res.download(dir, name);
     } catch (error) {
         next(error);
     }

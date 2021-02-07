@@ -10,12 +10,7 @@ module.exports = () => {
     router.route('/').post(JwtMiddleware.isAuth, UploadController.upload);
     router
         .route('/list')
-        .get(
-            multer().none(),
-            JwtMiddleware.isAuth,
-            UserMiddleware.checkRole,
-            UploadController.getListFiles
-        );
+        .get(multer().none(), JwtMiddleware.isAuth, UploadController.getListFiles);
     router
         .route('/')
         .get(multer().none(), JwtMiddleware.isAuth, UploadController.download);
