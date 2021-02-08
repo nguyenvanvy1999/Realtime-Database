@@ -1,7 +1,5 @@
-const jwtHelper = require('../helpers/jwt');
-const jwtConfig = require('../config/constant/jwt');
-const User = require('../models/user');
-const { APIError } = require('../helpers/error');
+const jwtHelper = require('../helpers/jwt'),
+    jwtConfig = require('../config/constant/jwt');
 
 async function isAuth(req, res, next) {
     try {

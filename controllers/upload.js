@@ -1,10 +1,10 @@
-const { APIError } = require('../helpers/error');
-const HTTP_STATUS_CODE = require('../config/constant/http');
-const fs = require('fs');
-const fileConfig = require('../config/constant/file');
-const uploadMiddleware = require('../middleware/multer');
-const DataService = require('../services/data');
-const mongoose = require('mongoose');
+const { APIError } = require('../helpers/error'),
+    HTTP_STATUS_CODE = require('../config/constant/http'),
+    fs = require('fs'),
+    fileConfig = require('../config/constant/file'),
+    uploadMiddleware = require('../middleware/multer'),
+    DataService = require('../services/data');
+
 async function uploadFiles(req, res, next) {
     try {
         await uploadMiddleware(req, res);

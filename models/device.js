@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
 
 const deviceSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    user: { type: Schema.Types.ObjectId, ref: 'User', default: null },
+    _id: ObjectId,
+    user: { type: ObjectId, ref: 'User', default: null },
     deviceID: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     model: { type: String, required: true },

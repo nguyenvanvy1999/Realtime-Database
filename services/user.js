@@ -1,6 +1,6 @@
-const User = require('./../models/user');
-const mongoose = require('mongoose');
-const { APIError } = require('../helpers/error');
+const User = require('./../models/user'),
+    mongoose = require('mongoose'),
+    { APIError } = require('../helpers/error');
 // ________________________________________________
 function newUser(user) {
     newUser = {

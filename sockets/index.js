@@ -11,6 +11,4 @@ async function socketFunction(socket) {
     });
 }
 
-module.exports = {
-    socketFunction,
-};
+module.exports = { socketFunction };

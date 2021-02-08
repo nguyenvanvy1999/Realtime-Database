@@ -1,12 +1,12 @@
-'user strict';
-const router = require('express').Router();
-const { handleError } = require('../middleware/error');
-const JwtMiddleware = require('../middleware/jwt');
-const multer = require('multer');
-const DeviceController = require('../controllers/device');
-const ZoneController = require('../controllers/zone');
-const JoiValidate = require('../middleware/joi');
-const UserMiddleware = require('../middleware/user');
+const router = require('express').Router(),
+    { handleError } = require('../middleware/error'),
+    JwtMiddleware = require('../middleware/jwt'),
+    multer = require('multer'),
+    DeviceController = require('../controllers/device'),
+    ZoneController = require('../controllers/zone'),
+    JoiValidate = require('../middleware/joi'),
+    UserMiddleware = require('../middleware/user');
+
 module.exports = () => {
     router.use(multer().none());
     router

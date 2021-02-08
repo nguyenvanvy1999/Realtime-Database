@@ -1,16 +1,16 @@
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const server = require('http').createServer(app);
-const mongo = require('./config/setting/mongo/index');
-const morgan = require('morgan');
-const cors = require('cors');
-const serverConfig = require('./config/constant/server');
-const UserRouter = require('./routers/user')();
-const DataRouter = require('./routers/data')();
-const FileRouter = require('./routers/file')();
-const DeviceRouter = require('./routers/device')();
-const flash = require('connect-flash');
+const express = require('express'),
+    app = express(),
+    bodyParser = require('body-parser'),
+    server = require('http').createServer(app),
+    mongo = require('./config/setting/mongo/index'),
+    morgan = require('morgan'),
+    cors = require('cors'),
+    flash = require('connect-flash'),
+    serverConfig = require('./config/constant/server'),
+    UserRouter = require('./routers/user')(),
+    DataRouter = require('./routers/data')(),
+    FileRouter = require('./routers/file')(),
+    DeviceRouter = require('./routers/device')();
 // ________________________________________________
 mongo.connectMongo();
 app.use(morgan('dev'));

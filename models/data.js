@@ -1,10 +1,11 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
 
 const dataSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    device: { type: Schema.Types.ObjectId, ref: 'Device' },
+    _id: ObjectId,
+    user: { type: ObjectId, ref: 'User' },
+    device: { type: ObjectId, ref: 'Device' },
     time: { type: Date, default: Date.now() },
     data: [{ type: Schema.Types.Mixed }],
 }, { timestamps: true });

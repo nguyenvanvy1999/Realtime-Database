@@ -1,13 +1,12 @@
-const UserService = require('./../services/user.js');
-const User = require('../models/user');
-const jwtHelper = require('../helpers/jwt');
-const { APIError } = require('../helpers/error');
-const bcryptHelper = require('../helpers/bcrypt');
-const HTTP_STATUS_CODE = require('../config/constant/http');
-const mailHelper = require('../helpers/mailer');
-const jwtConfig = require('../config/constant/jwt');
-const mailConfig = require('../config/constant/mail').mailConfig;
-const mailOption = require('../config/constant/mail').mailOption;
+const UserService = require('./../services/user.js'),
+    jwtHelper = require('../helpers/jwt'),
+    { APIError } = require('../helpers/error'),
+    bcryptHelper = require('../helpers/bcrypt'),
+    HTTP_STATUS_CODE = require('../config/constant/http'),
+    mailHelper = require('../helpers/mailer'),
+    jwtConfig = require('../config/constant/jwt'),
+    mailConfig = require('../config/constant/mail').mailConfig,
+    mailOption = require('../config/constant/mail').mailOption;
 // ________________________________________________
 async function signUp(req, res, next) {
     try {

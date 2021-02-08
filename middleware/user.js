@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const { APIError } = require('../helpers/error');
+const User = require('../models/user'),
+    { APIError } = require('../helpers/error');
 
 async function checkEditUser(req, res, next) {
     try {

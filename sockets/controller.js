@@ -7,14 +7,11 @@ async function receiveDataFromClient(socket, document) {
             socket.emit('message', 'Auth failed');
             socket.disconnect();
         }
-        let result = await SocketService.saveData(socket, document);
-        console.log(result);
-        socket.emit('message', result);
+        const result = await SocketService.saveData(socket, document);
+        socket.emit('message', result); //FIXME:emit to this user, not is to all user
     } catch (error) {
         socket.emit('message', error);
     }
 }
 
-module.exports = {
-    receiveDataFromClient: receiveDataFromClient,
-};
+module.exports = { receiveDataFromClient };

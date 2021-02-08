@@ -1,6 +1,6 @@
-const { errorHandler, APIError } = require('../helpers/error');
-const logger = require('../helpers/winston');
-const HTTP_STATUS_CODE = require('../config/constant/http');
+const { errorHandler, APIError } = require('../helpers/error'),
+    logger = require('../helpers/winston'),
+    HTTP_STATUS_CODE = require('../config/constant/http');
 
 function handleNotFoundPage(req, res) {
     return res.status(404).json({ message: 'Page not found' });

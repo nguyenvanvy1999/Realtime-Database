@@ -1,7 +1,7 @@
-const nodeMailer = require('nodemailer');
-const mailConfig = require('../config/constant/mail').mailConfig;
-const mailOption = require('../config/constant/mail').mailOption;
-const { APIError } = require('./error');
+const nodeMailer = require('nodemailer'),
+    mailConfig = require('../config/constant/mail').mailConfig,
+    mailOption = require('../config/constant/mail').mailOption,
+    { APIError } = require('./error');
 
 function newMailOption(to, text) {
     const newOption = {

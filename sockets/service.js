@@ -1,7 +1,7 @@
-const DataService = require('../services/data');
-const jwtHelper = require('../helpers/jwt');
-const DeviceService = require('../services/device');
-const jwtConfig = require('../config/constant/jwt');
+const DataService = require('../services/data'),
+    jwtHelper = require('../helpers/jwt'),
+    DeviceService = require('../services/device'),
+    jwtConfig = require('../config/constant/jwt');
 
 async function saveData(socket, document) {
     try {

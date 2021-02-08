@@ -1,9 +1,8 @@
-'user strict';
-const DataController = require('../controllers/data');
-const router = require('express').Router();
-const { handleError } = require('../middleware/error');
-const JwtMiddleware = require('../middleware/jwt');
-const JoiValidate = require('../middleware/joi');
+const DataController = require('../controllers/data'),
+    router = require('express').Router(),
+    { handleError } = require('../middleware/error'),
+    JwtMiddleware = require('../middleware/jwt'),
+    JoiValidate = require('../middleware/joi');
 
 const multer = require('multer');
 module.exports = () => {

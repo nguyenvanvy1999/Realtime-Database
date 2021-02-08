@@ -1,5 +1,5 @@
-const winston = require('winston');
-const path = require('path');
+const winston = require('winston'),
+    path = require('path');
 
 module.exports = winston.createLogger({
     // format của log được kết hợp thông qua format.combine

@@ -1,6 +1,6 @@
-const Zone = require('../models/zone');
-const mongoose = require('mongoose');
-const { APIError } = require('../helpers/error');
+const Zone = require('../models/zone'),
+    mongoose = require('mongoose'),
+    { APIError } = require('../helpers/error');
 
 function newZone(userID, devicesID, name, description) {
     const newZone = {

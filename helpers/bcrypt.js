@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
-const { APIError } = require('./error');
+const bcrypt = require('bcrypt'),
+    { APIError } = require('./error');
 async function hash(password, saltRounds) {
     try {
         return await bcrypt.hash(password, saltRounds);

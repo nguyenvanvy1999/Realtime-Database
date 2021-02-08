@@ -1,6 +1,6 @@
-const Data = require('../models/data');
-const mongoose = require('mongoose');
-const { APIError } = require('../helpers/error');
+const Data = require('../models/data'),
+    mongoose = require('mongoose'),
+    { APIError } = require('../helpers/error');
 
 function newData(socket, document) {
     return {

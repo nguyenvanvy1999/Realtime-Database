@@ -1,6 +1,6 @@
-const Device = require('../models/device');
-const { APIError } = require('../helpers/error');
-const mongoose = require('mongoose');
+const Device = require('../models/device'),
+    { APIError } = require('../helpers/error'),
+    mongoose = require('mongoose');
 async function getDeviceAdmin(device) {
     try {
         return await Device.find(device);

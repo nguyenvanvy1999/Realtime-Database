@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
 
 const zoneSchema = new Schema({
-    _id: Schema.Types.ObjectId,
+    _id: ObjectId,
     name: String,
     description: String,
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    devices: [{ type: Schema.Types.ObjectId, ref: 'Device' }],
+    user: { type: ObjectId, ref: 'User' },
+    devices: [{ type: ObjectId, ref: 'Device' }],
 }, { timestamps: true });
 
 const Zone = mongoose.model('Zone', zoneSchema);

@@ -1,6 +1,6 @@
-const Zone = require('../models/zone');
-const ZoneService = require('../services/zone');
-const HTTP_STATUS_CODE = require('../config/constant/http');
+const ZoneService = require('../services/zone'),
+    HTTP_STATUS_CODE = require('../config/constant/http'),
+    { APIError } = require('../helpers/error');
 async function newZone(req, res, next) {
     try {
         const user = req.jwtDecoded.data;

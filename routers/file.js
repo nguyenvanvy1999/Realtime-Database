@@ -1,10 +1,9 @@
-'user strict';
-const router = require('express').Router();
-const { handleError } = require('../middleware/error');
-const JwtMiddleware = require('../middleware/jwt');
-const UploadController = require('../controllers/upload');
-const multer = require('multer');
-const UserMiddleware = require('../middleware/user');
+const router = require('express').Router(),
+    { handleError } = require('../middleware/error'),
+    JwtMiddleware = require('../middleware/jwt'),
+    UploadController = require('../controllers/upload'),
+    multer = require('multer'),
+    UserMiddleware = require('../middleware/user');
 
 module.exports = () => {
     router.route('/').post(JwtMiddleware.isAuth, UploadController.uploadFiles);

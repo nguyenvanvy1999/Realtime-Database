@@ -1,10 +1,10 @@
-const router = require('express').Router();
-const UserController = require('../controllers/user');
-const JwtMiddleware = require('../middleware/jwt');
-const { handleError } = require('../middleware/error');
-const UserMiddleware = require('../middleware/user');
-const multer = require('multer');
-const JoiValidate = require('../middleware/joi');
+const router = require('express').Router(),
+    UserController = require('../controllers/user'),
+    JwtMiddleware = require('../middleware/jwt'),
+    { handleError } = require('../middleware/error'),
+    UserMiddleware = require('../middleware/user'),
+    multer = require('multer'),
+    JoiValidate = require('../middleware/joi');
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
