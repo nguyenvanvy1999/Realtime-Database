@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { APIError } = require('../helpers/error');
 
 function newData(socket, document) {
-    newData = {
+    return {
         _id: mongoose.Types.ObjectId(),
         user: document.user,
         device: document.device,
@@ -17,7 +17,15 @@ function newData(socket, document) {
             data: document.data,
         },
     };
-    return newData;
+}
+
+function newFileData(user, files) {
+    return {
+        _id: mongoose.Types.ObjectId(),
+        user: user,
+        device: null,
+        data: files,
+    };
 }
 
 async function insert(newData) {
@@ -71,6 +79,7 @@ async function deleteDataByDevice(deviceID) {
 
 module.exports = {
     newData,
+    newFileData,
     insert,
     getDataByDevice,
     getDataByUser,

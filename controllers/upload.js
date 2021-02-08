@@ -1,17 +1,23 @@
-const uploadHelper = require('../helpers/multer');
 const { APIError } = require('../helpers/error');
 const HTTP_STATUS_CODE = require('../config/constant/http');
 const fs = require('fs');
 const fileConfig = require('../config/constant/file');
-async function upload(req, res, next) {
+const uploadMiddleware = require('../middleware/multer');
+const DataService = require('../services/data');
+const mongoose = require('mongoose');
+async function uploadFiles(req, res, next) {
     try {
-        await uploadHelper(req, res);
-        if (!req.files) {
+        await uploadMiddleware(req, res);
+        if (req.files.length <= 0) {
             throw new APIError({
                 message: 'Please choose a file or check your file type',
             });
         }
-        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+        const user = req.jwtDecoded.data;
+        const files = req.files;
+        const data = DataService.newFileData(user, files);
+        await DataService.insert(data);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
             message: 'Uploaded files successfully ',
         });
     } catch (error) {
@@ -55,4 +61,4 @@ function download(req, res, next) {
     }
 }
 
-module.exports = { upload, getListFiles, download };
+module.exports = { uploadFiles, getListFiles, download };

@@ -7,7 +7,7 @@ const multer = require('multer');
 const UserMiddleware = require('../middleware/user');
 
 module.exports = () => {
-    router.route('/').post(JwtMiddleware.isAuth, UploadController.upload);
+    router.route('/').post(JwtMiddleware.isAuth, UploadController.uploadFiles);
     router
         .route('/list')
         .get(multer().none(), JwtMiddleware.isAuth, UploadController.getListFiles);
