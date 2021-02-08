@@ -11,7 +11,6 @@ const DataRouter = require('./routers/data')();
 const FileRouter = require('./routers/file')();
 const DeviceRouter = require('./routers/device')();
 const flash = require('connect-flash');
-const passport = require('passport');
 // ________________________________________________
 mongo.connectMongo();
 app.use(morgan('dev'));
@@ -20,8 +19,6 @@ app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use(cors());
 app.use(flash());
-require('./middleware/passport')(passport);
-app.use(passport.initialize());
 // ________________________________________________
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
