@@ -1,0 +1,328 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Realtime Database server. You can find out more about https://github.com/nguyenvanvy1999/Realtime-Database. For this sample, you can use the api key `special-key` to test the authorization filters.",
+        "version": "1.0.0",
+        "title": "Realtime Database",
+        "termsOfService": "",
+        "contact": {
+            "email": "nguyenvanvy1999@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "tags": [{
+            "name": "user",
+            "description": "User",
+            "externalDocs": {
+                "description": "Github",
+                "url": "https://github.com/nguyenvanvy1999/Realtime-Database"
+            }
+        },
+        {
+            "name": "device",
+            "description": "Device",
+            "externalDocs": {
+                "description": "Github",
+                "url": "https://github.com/nguyenvanvy1999/Realtime-Database"
+            }
+        },
+        {
+            "name": "data",
+            "description": "Data"
+        },
+        {
+            "name": "file",
+            "description": "File"
+        }
+    ],
+    "schemes": ["https", "http"],
+    "paths": {
+        "/user/register": {
+            "post": {
+                "consumes": ["multipart/form-data"],
+                "tags": ["user"],
+                "summary": "Create user",
+                "description": "Create user",
+                "operationId": "createUser",
+                "produces": ["application/xml", "application/json"],
+                "parameters": [{
+                        "name": "email",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "email to register"
+                    },
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "username to register"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "password to register"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "schema": {
+                            "type": "string",
+                            "description": "message from server"
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ApiErrorResponse"
+                        },
+                        "description": "Email or username has been exits, password must be at least 4 character"
+                    }
+                }
+            }
+        },
+        "/user/verify": {
+            "get": {
+                "tags": ["user"],
+                "summary": "Verify account",
+                "description": "Verify account",
+                "operationId": "verifyAccount",
+                "produces": ["application/xml", "application/json"],
+                "parameters": [{
+                    "name": "token",
+                    "in": "header",
+                    "type": "string",
+                    "description": "token to verify"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "schema": {
+                            "type": "string",
+                            "description": "message from server"
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ApiErrorResponse"
+                        },
+                        "description": "token invalid"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "consumes": ["multipart/form-data"],
+                "tags": ["user"],
+                "summary": "LognIn",
+                "description": "LognIn",
+                "operationId": "lognIn",
+                "produces": ["application/xml", "application/json"],
+                "parameters": [{
+                        "name": "email",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "email to lognin"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "password to lognin"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "schema": {
+                            "type": "string",
+                            "description": "token send to user"
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ApiErrorResponse"
+                        },
+                        "description": "Invalid username/password supplied"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["user"],
+                "summary": "UserProfile",
+                "description": "get user information",
+                "operationId": "userProfile",
+                "produces": ["application/xml", "application/json"],
+                "parameters": [{
+                    "name": "token",
+                    "in": "header",
+                    "type": "string",
+                    "description": "token",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ApiErrorResponse"
+                        },
+                        "description": "Invalid token supplied"
+                    }
+                },
+                "security": [{
+                    "api_key": []
+                }]
+            },
+            "patch": {
+                "consumes": ["multipart/form-data"],
+                "tags": ["user"],
+                "summary": "EditUser",
+                "description": "edit user information",
+                "operationId": "editUser",
+                "produces": ["application/xml", "application/json"],
+                "parameters": [{
+                        "name": "token",
+                        "in": "header",
+                        "type": "string",
+                        "description": "token",
+                        "required": true
+                    },
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "new username to edit"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "new password to edit"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ApiErrorResponse"
+                        },
+                        "description": "Invalid token supplied or username has been exits"
+                    }
+                }
+            },
+            "delete": {
+                "consumes": ["multipart/form-data"],
+                "tags": ["user"],
+                "summary": "DeleteUser",
+                "description": "delete user account",
+                "operationId": "deleteUser",
+                "produces": ["application/xml", "application/json"],
+                "parameters": [{
+                    "name": "token",
+                    "in": "header",
+                    "type": "string",
+                    "description": "token",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "schema": {
+                            "type": "string",
+                            "description": "message from server"
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ApiErrorResponse"
+                        },
+                        "description": "Invalid token supplied"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "token",
+            "in": "header",
+            "description": "json web token to verify"
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "jwt"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "description": "User account status"
+                }
+            },
+            "xml": {
+                "name": "User"
+            }
+        },
+        "ApiErrorResponse": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "name type of error"
+                },
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "error code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "message of error"
+                },
+                "errors": {
+                    "type": "object",
+                    "description": "information of error"
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Send facebook message to me to more information",
+        "url": "https://www.facebook.com/vy.nguyenvan.79656"
+    }
+}

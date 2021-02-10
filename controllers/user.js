@@ -40,9 +40,9 @@ async function verifyAccount(req, res, next) {
         const token = req.body.token || req.query.token || req.header['token'];
         const decoded = await jwtHelper.verifyToken(token, jwtConfig.VERIFY.SECRET);
         await UserService.activeAccount(decoded.data.email);
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-            message: 'Active successfully !',
-        });
+        return res
+            .status(HTTP_STATUS_CODE.SUCCESS.OK)
+            .send({ message: 'Active successfully !' });
     } catch (error) {
         next(error);
     }

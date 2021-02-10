@@ -42,8 +42,4 @@ async function checkDevice(deviceID) {
     }
 }
 
-module.exports = {
-    saveData: saveData,
-    checkDevice: checkDevice,
-    checkSocketToken: checkSocketToken,
-};
+module.exports = { saveData, checkDevice, checkSocketToken };
