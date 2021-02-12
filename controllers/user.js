@@ -65,7 +65,7 @@ async function editUser(req, res, next) {
     try {
         const { email } = req.jwtDecoded.data;
         const newUsername = req.body.username;
-        const newPassword = await bcryptHelper.hash(req.body.password, 10);
+        const newPassword = await bcryptHelper.hash(req.body.password);
         const newUser = await UserService.editUser(email, newUsername, newPassword);
         const token = await jwtHelper.returnToken(newUser);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ token });

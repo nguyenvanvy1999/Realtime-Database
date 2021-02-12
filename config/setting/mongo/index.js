@@ -6,22 +6,13 @@ const mongoConfig = require('../../constant/mongo');
 function connectMongo() {
     mongoose.Promise = global.Promise;
     mongoose.set('useFindAndModify', false);
-    mongoose.connect(
-        mongoConfig.host, {
-            useCreateIndex: true,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            ignoreUndefined: true,
-        },
-        function(err, db) {
-            if (err) {
-                console.log(" Can't connect successfully to db: ", mongoConfig.host);
-                return;
-            } else {
-                console.log('connect successfully to db: ', mongoConfig.host);
-            }
+    mongoose.connect(mongoConfig.host, mongoConfig.setting, (err, db) => {
+        if (err) {
+            console.log(" Can't connect successfully to db: ", mongoConfig.host);
+            return;
         }
-    );
+        console.log('connect successfully to db: ', mongoConfig.host);
+    });
 }
 
 module.exports = {

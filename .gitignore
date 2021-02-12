@@ -7,3 +7,4 @@ uploads/
 .settings/
 helpers/errors.log
 trash/
+test.js
