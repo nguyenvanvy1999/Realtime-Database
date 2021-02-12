@@ -1,35 +1,46 @@
-const { expect } = require('chai');
-const { connect, clearData, closeDatabase } = require('../config/database'),
+const { expect, assert } = require('chai'), { connect, clearData, closeDatabase } = require('../config/database'),
     UserService = require('../../services/user'), { seedAdmin, seedUser } = require('../config/seed'),
-    jest = require('jest'),
     mongoose = require('mongoose'),
-    chai = require('chai'),
-    bcryptHelper = require('../../helpers/bcrypt');
+    bcryptHelper = require('../../helpers/bcrypt'), { APIError } = require('../../helpers/error');
 
-let user;
+before(async() => await connect());
+// let user, admin;
+// // beforeEach(async() => {
+// //     user = await seedUser;
+// //     admin = seedAdmin;
+// // });
 
-beforeAll(async() => await connect());
-beforeEach(async() => {
-    user = await seedUser;
-});
 describe('UserService', () => {
-    describe('newUser', async() => {
-        it('should  return  a new user');
-        const mockUser = {
-            email: 'test@example.com',
-            username: 'test',
-            password: 'password',
-        };
-        const newUser = UserService.newUser(mockUser);
-        const password = await bcryptHelper.hash('password');
-        expect(mongoose.Types.ObjectId.isValid(newUser._id)).isEqual(true);
-        expect(newUser.email).toEqual(mockUser.email);
-        expect(newUser.username).toEqual(mockUser.username);
-        expect(newUser.password).toEqual(password);
-        expect(newUser.isActive).toEqual(false);
-        expect(newUser.roles).toEqual('User');
+    describe('newUser', () => {
+        it('should save user to DB', async() => {
+            const mockUser = {
+                email: 'test@example.com',
+                username: 'test',
+                password: 'password',
+            };
+            const newUser = UserService.newUser(mockUser);
+            const user = await UserService.insert(newUser);
+            expect(mongoose.Types.ObjectId.isValid(user._id)).to.equal(true);
+            expect(user.roles).equal('User');
+            expect([user.email, user.username]).eql([
+                mockUser.email,
+                mockUser.username,
+            ]);
+            expect(
+                await bcryptHelper.compare(mockUser.password, user.password)
+            ).equal(true);
+            expect(user.isActive).equal(false);
+        });
+        it('should throw new APIError', async() => {
+            const mockUser = null;
+            assert.throws(
+                () => UserService.newUser(mockUser),
+                APIError,
+                "Cannot read property 'email' of null"
+            );
+        });
     });
 });
 
 afterEach(async() => await clearData());
-afterAll(async() => await closeDatabase());
+after(async() => await closeDatabase());
