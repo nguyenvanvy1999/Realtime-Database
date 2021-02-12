@@ -1,0 +1,304 @@
+openapi: 3.0.1
+info:
+  title: Realtime Database
+  description: >-
+    This is a Realtime Database server. You can find out more about    
+    https://github.com/nguyenvanvy1999/Realtime-Database. For this sample, you
+    can use the api key `special-key` to test the authorization filters.
+  termsOfService: ''
+  contact:
+    email: nguyenvanvy1999@gmail.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+  version: 1.0.0
+externalDocs:
+  description: Send mail to me to more information
+  url: 'https://www.facebook.com/vy.nguyenvan.79656'
+servers:
+  - url: 'https://localhost:8080/'
+  - url: 'http://localhost:8080/'
+tags:
+  - name: user
+    description: User
+    externalDocs:
+      description: Github
+      url: 'https://github.com/nguyenvanvy1999/Realtime-Database'
+  - name: device
+    description: Device
+    externalDocs:
+      description: Github
+      url: 'https://github.com/nguyenvanvy1999/Realtime-Database'
+  - name: data
+    description: Data
+  - name: file
+    description: File
+paths:
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: Create user
+      operationId: createUser
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: email to register
+                username:
+                  type: string
+                  description: username to register
+                password:
+                  type: string
+                  description: password to register
+      responses:
+        '200':
+          description: successfully
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: message from server
+            application/json:
+              schema:
+                type: string
+                description: message from server
+        '400':
+          description: >-
+            Email or username has been exits, password must be at least 4
+            character
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /user/verify:
+    get:
+      tags:
+        - user
+      summary: Verify account
+      description: Verify account
+      operationId: verifyAccount
+      parameters:
+        - name: token
+          in: header
+          description: token to verify
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: message from server
+            application/json:
+              schema:
+                type: string
+                description: message from server
+        '400':
+          description: token invalid
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /user:
+    get:
+      tags:
+        - user
+      summary: UserProfile
+      description: get user information
+      operationId: userProfile
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/xml:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid token supplied
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+    post:
+      tags:
+        - user
+      summary: LognIn
+      description: LognIn
+      operationId: lognIn
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: email to lognin
+                password:
+                  type: string
+                  description: password to lognin
+      responses:
+        '200':
+          description: successful
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: token send to user
+            application/json:
+              schema:
+                type: string
+                description: token send to user
+        '400':
+          description: Invalid username/password supplied
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+    delete:
+      tags:
+        - user
+      summary: DeleteUser
+      description: delete user account
+      operationId: deleteUser
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: message from server
+            application/json:
+              schema:
+                type: string
+                description: message from server
+        '400':
+          description: Invalid token supplied
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+    patch:
+      tags:
+        - user
+      summary: EditUser
+      description: edit user information
+      operationId: editUser
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                username:
+                  type: string
+                  description: new username to edit
+                password:
+                  type: string
+                  description: new password to edit
+      responses:
+        '200':
+          description: successful
+          content:
+            application/xml:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid token supplied or username has been exits
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: jwt
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        isActive:
+          type: boolean
+          description: User account status
+      xml:
+        name: User
+    ApiErrorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name type of error
+        code:
+          type: integer
+          description: error code
+          format: int32
+        message:
+          type: string
+          description: message of error
+        errors:
+          type: object
+          properties: {}
+          description: information of error
+  securitySchemes:
+    api_key:
+      type: apiKey
+      description: json web token to verify
+      name: token
+      in: header
