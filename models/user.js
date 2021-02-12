@@ -1,7 +1,8 @@
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId,
-    bcrypt = require('bcrypt');
+    bcrypt = require('bcrypt'),
+    bcryptConfig = require('../config/constant/bcrypt');
 
 const userSchema = new Schema({
     _id: ObjectId,
@@ -20,7 +21,7 @@ const userSchema = new Schema({
 userSchema.pre('save', async function(next) {
     const user = this;
     if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8);
+        user.password = await bcrypt.hash(user.password, bcryptConfig.saltRound);
     }
     next();
 });

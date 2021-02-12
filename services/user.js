@@ -3,15 +3,18 @@ const User = require('./../models/user'),
     { APIError } = require('../helpers/error');
 // ________________________________________________
 function newUser(user) {
-    newUser = {
-        _id: mongoose.Types.ObjectId(),
-        email: user.email,
-        username: user.username,
-        password: user.password,
-        isActive: false,
-        roles: user.roles,
-    };
-    return newUser;
+    try {
+        newUser = {
+            _id: mongoose.Types.ObjectId(),
+            email: user.email,
+            username: user.username,
+            password: user.password,
+            isActive: false,
+        };
+        return newUser;
+    } catch (error) {
+        throw new APIError({ message: error.message, errors: error });
+    }
 }
 async function insert(newUser) {
     try {
