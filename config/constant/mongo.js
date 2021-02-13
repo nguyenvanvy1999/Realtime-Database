@@ -5,6 +5,7 @@ const mongoConfig = {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         ignoreUndefined: true,
+        useFindAndModify: false,
     },
 };
 module.exports = mongoConfig;

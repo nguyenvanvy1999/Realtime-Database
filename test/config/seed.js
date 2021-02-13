@@ -1,6 +1,6 @@
 const User = require('../../models/user'),
     bcryptHelper = require('../../helpers/bcrypt'),
-    { ObjectId } = require('mongoose').Schema.Types,
+    ObjectId = require('mongoose').Types.ObjectId,
     UserService = require('../../services/user');
 
 async function seedAdmin() {
@@ -9,13 +9,13 @@ async function seedAdmin() {
             _id: new ObjectId(),
             email: 'admin@example.com',
             username: 'admin',
-            password: bcryptHelper.hash('password'),
+            password: 'password',
             isActive: true,
             roles: 'Admin',
         };
-        return await UserService.activeAccount(admin);
+        return await UserService.insert(admin);
     } catch (error) {
-        throw Error(error);
+        throw new Error(error);
     }
 }
 
@@ -25,7 +25,7 @@ async function seedUser() {
             _id: new ObjectId(),
             email: 'user@example.com',
             username: 'user',
-            password: bcryptHelper.hash('password'),
+            password: 'password',
             isActive: true,
             roles: 'User',
         };
