@@ -1,20 +1,26 @@
-const mongoose = require('mongoose');
-const mongoConfig = require('../../constant/mongo');
+const mongoose = require('mongoose'),
+    mongoConfig = require('../../constant/mongo'),
+    { success, error, info, warning } = require('log-symbols');
 
 // ________________________________________________
 
-function connectMongo() {
-    mongoose.Promise = global.Promise;
-    mongoose.set('useFindAndModify', false);
-    mongoose.connect(mongoConfig.host, mongoConfig.setting, (err, db) => {
-        if (err) {
-            console.log(" Can't connect successfully to db: ", mongoConfig.host);
-            return;
-        }
-        console.log('connect successfully to db: ', mongoConfig.host);
-    });
+async function connect() {
+    try {
+        mongoose.Promise = global.Promise;
+        await mongoose.connect(mongoConfig.host, mongoConfig.setting);
+        return console.log(`${success} ${mongoConfig.host}`);
+    } catch (err) {
+        return console.log(`${error} ${mongoConfig.host}`);
+    }
 }
 
-module.exports = {
-    connectMongo: connectMongo,
-};
+async function disconnect() {
+    try {
+        await mongoose.disconnect();
+        return console.log(`${success} Disconnect`);
+    } catch (err) {
+        return console.log(`${error} Disconnect`);
+    }
+}
+
+module.exports = { connect, disconnect };

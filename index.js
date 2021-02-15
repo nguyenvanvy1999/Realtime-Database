@@ -2,17 +2,17 @@ const express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
     server = require('http').createServer(app),
-    mongo = require('./config/setting/mongo/index'),
+    { connect } = require('./config/setting/mongo/index'),
     morgan = require('morgan'),
     cors = require('cors'),
     flash = require('connect-flash'),
+    { success, error, info, warning } = require('log-symbols'),
     serverConfig = require('./config/constant/server'),
     UserRouter = require('./routers/user')(),
     DataRouter = require('./routers/data')(),
     FileRouter = require('./routers/file')(),
     DeviceRouter = require('./routers/device')();
 // ________________________________________________
-mongo.connectMongo();
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -37,12 +37,20 @@ app.use('/user', UserRouter);
 app.use('/data', DataRouter);
 app.use('/file', FileRouter);
 app.use('/device', DeviceRouter);
+app.get('/', (req, res) => res.status(200).send('Welcome!'));
 // ________________________________________________
-server.listen(serverConfig.port, serverConfig.host, () => {
-    console.log(
-        'server on: http://' + serverConfig.host + ':' + serverConfig.port
-    );
-});
+
+async function startServer() {
+    try {
+        await connect();
+        await server.listen(serverConfig.port);
+        console.log(`${success} http://${serverConfig.host}:${serverConfig.port}`);
+    } catch (err) {
+        console.log(`${error} http://${serverConfig.host}:${serverConfig.port}`);
+    }
+}
+
+startServer();
 // ________________________________________________
 const socketFunction = require('./sockets/index').socketFunction;
 const io = require('socket.io')(server);
