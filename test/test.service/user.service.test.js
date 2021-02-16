@@ -86,6 +86,25 @@ describe('UserService', () => {
             expect(result).to.equal(null);
         });
     });
+    describe('search user', () => {
+        //FIXME: error
+        describe('search by email', () => {
+            it('true => return user', async() => {
+                const result = await UserService.search(admin);
+                //expect(JSON.stringify(result)).eql(JSON.stringify(admin)); //search return an array
+            });
+            it('false => return null', async() => {
+                const test = {
+                    email: 'admin',
+                    username: undefined,
+                };
+                const result = await UserService.search(test);
+            });
+            it('null => return all user', async() => {});
+        });
+        describe('search by username', async() => {});
+        describe('all user', async() => {});
+    });
 });
 afterEach(async() => await clearData());
 after(async() => await closeDatabase());

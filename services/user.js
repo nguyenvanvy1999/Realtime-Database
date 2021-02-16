@@ -50,14 +50,20 @@ async function deleteUserByEmail(email) {
 }
 async function search(user) {
     try {
-        const email = user.email || '';
-        const username = user.username || '';
-        return User.find({
-            $and: [
-                { email: { $regex: email, $options: 'i' } },
-                { username: { $regex: username, $options: 'i' } },
-            ],
-        });
+        //FIXME:error
+        if (user.email && user.username)
+            return await User.find({
+                $and: [
+                    { email: { $regex: user.email, $options: 'i' } },
+                    { username: { $regex: user.username, $options: 'i' } },
+                ],
+            });
+        if (user.email)
+            return await User.find({ email: { $regex: user.email, $options: 'i' } });
+        if (user.username)
+            return await User.find({
+                username: { $regex: user.username, $options: 'i' },
+            });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
