@@ -6,14 +6,14 @@ const faker = require('faker'),
 async function seedUser() {
     try {
         let items = [];
-        items.push({
-            email: faker.internet.email(),
-            username: faker.internet.userName(),
-            password: '1234', //for test
-        });
+        for (let i = 0; i < 10; i++)
+            items.push({
+                email: faker.internet.email(),
+                username: faker.internet.userName(),
+                password: '1234', //for test
+            });
         await seeder.connect(mongoConfig.host);
         const count = User.countDocuments();
-        console.log(count);
         await seeder.loadModels(['../../models/user']);
         await seeder.populateModels(items);
     } catch (error) {}
