@@ -1,4 +1,7 @@
+require('dotenv').config();
+const path = require('path');
 const fileConfig = {
-    path: 'E:/Nodejs/Realtime-Database/uploads/',
+    path: path.join(__dirname, '../../uploads'),
 };
+
 module.exports = fileConfig;
