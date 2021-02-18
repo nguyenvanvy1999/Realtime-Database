@@ -43,7 +43,7 @@ app.get('/', (req, res) => res.status(200).send('Welcome!'));
 async function startServer() {
     try {
         await connect();
-        await server.listen(serverConfig.port);
+        await server.listen(process.env.PORT);
         console.log(`${success} http://${serverConfig.host}:${serverConfig.port}`);
     } catch (err) {
         console.log(`${error} http://${serverConfig.host}:${serverConfig.port}`);
