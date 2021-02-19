@@ -1,5 +1,5 @@
 const nodeMailer = require('nodemailer'),
-    mailConfig = require('../config/constant/mail').mailConfig,
+    mailConfig = require('../config/constant/mail').mailConfig(),
     mailOption = require('../config/constant/mail').mailOption,
     { APIError } = require('./error');
 

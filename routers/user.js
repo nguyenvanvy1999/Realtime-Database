@@ -12,14 +12,10 @@ module.exports = () => {
     router.post('/signup', Celebrate.user.signup, UserController.postSignUp);
     router.route('/search').get(Celebrate.user.search, UserMiddleware.checkRole, UserController.searchUser);
     router
-        .route('/') //get user (User Profile)
-        .get(Celebrate.user.token, JwtMiddleware.isAuth, UserController.getUserProfile);
-    router
-        .route('/') //edit user
-        .patch(Celebrate.user.editProfile, JwtMiddleware.isAuth, UserMiddleware.checkEditUser, UserController.editUser);
-    router
-        .route('/') //delete user
-        .delete(Celebrate.user.token, JwtMiddleware.isAuth, UserController.deleteUser);
+        .route('/')
+        .get(Celebrate.user.token, JwtMiddleware.isAuth, UserController.getUserProfile) //user profile
+        .patch(Celebrate.user.editProfile, JwtMiddleware.isAuth, UserMiddleware.checkEditUser, UserController.editUser) //edit user profile
+        .delete(Celebrate.user.token, JwtMiddleware.isAuth, UserController.deleteUser); //delete user
     router
         .route('/verify') // verify account
         .get(Celebrate.user.token, UserController.verifyAccount);
