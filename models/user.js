@@ -6,7 +6,8 @@ const mongoose = require('mongoose'),
 
 const userSchema = new Schema({
     _id: ObjectId,
-    username: { type: String, unique: true, required: true, trim: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true, min: 4 },
     roles: {

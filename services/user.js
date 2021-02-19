@@ -7,7 +7,8 @@ function newUser(user) {
         newUser = {
             _id: mongoose.Types.ObjectId(),
             email: user.email,
-            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
             password: user.password,
             isActive: false,
         };
@@ -33,9 +34,9 @@ async function getUserByEmail(email) {
     }
 }
 
-async function editUser(email, newUsername, newPassword) {
+async function editUser(email, firstName, lastName, newPassword) {
     try {
-        return await User.findOneAndUpdate({ email: email }, { username: newUsername, password: newPassword }, { new: true });
+        return await User.findOneAndUpdate({ email: email }, { firstName: firstName, lastName: lastName, password: newPassword }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
@@ -58,8 +59,7 @@ async function search(user) {
                     { username: { $regex: user.username, $options: 'i' } },
                 ],
             });
-        if (user.email)
-            return await User.find({ email: { $regex: user.email, $options: 'i' } });
+        if (user.email) return await User.find({ email: { $regex: user.email, $options: 'i' } });
         if (user.username)
             return await User.find({
                 username: { $regex: user.username, $options: 'i' },
