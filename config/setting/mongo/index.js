@@ -10,7 +10,7 @@ async function connect() {
         await mongoose.connect(mongoConfig.host, mongoConfig.setting);
         return console.log(`${success} ${mongoConfig.host}`);
     } catch (err) {
-        return console.log(`${error} ${mongoConfig.host}`);
+        return console.log(`${error} Connect Mongo failed`);
     }
 }
 
@@ -19,7 +19,7 @@ async function disconnect() {
         await mongoose.disconnect();
         return console.log(`${success} Disconnect`);
     } catch (err) {
-        return console.log(`${error} Disconnect`);
+        return console.log(`${error} Disconnect Failed`);
     }
 }
 

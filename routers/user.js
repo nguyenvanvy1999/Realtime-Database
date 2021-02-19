@@ -8,45 +8,20 @@ const router = require('express').Router(),
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
-    router
-        .route('/search')
-        .get(
-            JoiValidate.user.token,
-            UserMiddleware.checkRole,
-            UserController.searchUser
-        );
-    router
-        .route('/register')
-        .post(
-            JoiValidate.user.signUp,
-            UserMiddleware.checkRegister,
-            UserController.signUp
-        );
-    router
-        .route('/') //post user (Sign In)
-        .post(JoiValidate.user.signIn, UserController.signIn);
+    router.get('/login', UserController.getSignIn);
+    router.post('/login', UserController.postSignIn);
+    router.get('/signup', UserController.getSignUp);
+    router.post('/signup', UserController.postSignUp);
+    router.route('/search').get(JoiValidate.user.token, UserMiddleware.checkRole, UserController.searchUser);
     router
         .route('/') //get user (User Profile)
-        .get(
-            JoiValidate.user.token,
-            JwtMiddleware.isAuth,
-            UserController.getUserProfile
-        );
+        .get(JoiValidate.user.token, JwtMiddleware.isAuth, UserController.getUserProfile);
     router
         .route('/') //edit user
-        .patch(
-            JoiValidate.user.editUser,
-            JwtMiddleware.isAuth,
-            UserMiddleware.checkEditUser,
-            UserController.editUser
-        );
+        .patch(JoiValidate.user.editUser, JwtMiddleware.isAuth, UserMiddleware.checkEditUser, UserController.editUser);
     router
         .route('/') //delete user
-        .delete(
-            JoiValidate.user.token,
-            JwtMiddleware.isAuth,
-            UserController.deleteUser
-        );
+        .delete(JoiValidate.user.token, JwtMiddleware.isAuth, UserController.deleteUser);
     router
         .route('/verify') // verify account
         .get(JoiValidate.user.token, UserController.verifyAccount);
