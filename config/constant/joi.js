@@ -1,10 +1,10 @@
-const joi = require('joi');
-const custom = require('../setting/joi/custom');
+const joi = require('joi'),
+    custom = require('../setting/joi/custom');
 
 const joiConfig = {
     general: {
-        string: joi.string(),
-        _id: custom.joiOID.objectId(),
+        string: joi.string().required(),
+        _id: custom.joiOID.objectId().required(),
     },
     user: {
         email: joi

@@ -1,5 +1,5 @@
-const Joi = require('joi');
-const jsonwebtoken = require('jsonwebtoken');
+const Joi = require('joi'),
+    jsonwebtoken = require('jsonwebtoken');
 
 const joiOID = Joi.extend({
     type: 'objectId',
@@ -9,11 +9,7 @@ const joiOID = Joi.extend({
     validate(value, helpers) {
         const objIdPattern = /^[0-9a-fA-F]{24}$/;
         const isValid = (value) => {
-            return (
-                Boolean(value) &&
-                !Array.isArray(value) &&
-                objIdPattern.test(String(value))
-            );
+            return Boolean(value) && !Array.isArray(value) && objIdPattern.test(String(value));
         };
         if (!isValid(value)) return { value, errors: helpers.error('invalid') };
     },
@@ -26,8 +22,7 @@ const joiJWT = Joi.extend({
     },
     validate(value, helpers) {
         const jwtPattern = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/;
-        if (!jwtPattern.test(String(value)))
-            return { value, errors: helpers.error('invalid') };
+        if (!jwtPattern.test(String(value))) return { value, errors: helpers.error('invalid') };
         const decoded = jsonwebtoken.decode(value);
         if (!decoded) return { value, errors: helpers.error('invalid') };
     },

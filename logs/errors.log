@@ -1,0 +1,52 @@
+[2021-02-19 16:15:18] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:21] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:30] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:39] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:39] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:40] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:40] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:41] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:41] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:41] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:15:45] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 16:17:54] [[31merror[39m] TypeError: Cannot read property 'password' of null
+    at postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:23:70)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 19:16:57] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+[2021-02-19 19:17:58] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 19:18:23] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 19:19:07] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+[2021-02-19 19:23:47] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-19 19:24:15] [[31merror[39m] celebrate request validation failed
+[2021-02-19 19:24:23] [[31merror[39m] celebrate request validation failed
+[2021-02-19 19:24:50] [[31merror[39m] celebrate request validation failed

@@ -9,7 +9,8 @@ const express = require('express'),
     path = require('path'),
     { success, error, info, warning } = require('log-symbols'),
     session = require('express-session'),
-    cookieParser = require('cookie-parser');
+    cookieParser = require('cookie-parser'),
+    { handleError } = require('./middleware/error');
 /**
  * Config and Routers
  */
@@ -53,6 +54,8 @@ app.use('/data', DataRouter);
 app.use('/file', FileRouter);
 app.use('/device', DeviceRouter);
 app.get('/', (req, res) => res.json('hello world'));
+
+app.use(handleError);
 /**
  * Start Server
  */

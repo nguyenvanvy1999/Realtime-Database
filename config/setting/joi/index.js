@@ -1,60 +1,84 @@
-const joi = require('joi');
-const joiConfig = require('../../constant/joi');
+const joi = require('joi'),
+    joiConfig = require('../../constant/joi'),
+    { Segments } = require('celebrate');
 
-const joiSchema = {
+const celebrateSchema = {
     user: {
-        signUpSchema: joi.object({
-            email: joiConfig.user.email,
-            username: joiConfig.user.username,
-            password: joiConfig.user.password,
-        }),
-        signInSchema: joi.object({
-            email: joiConfig.user.email,
-            password: joiConfig.user.password,
-        }),
-        editUserSchema: joi.object({
-            token: joiConfig.user.token,
-            username: joiConfig.user.username,
-            password: joiConfig.user.password,
-        }),
-        tokenSchema: joi
-            .object({
-                headers: joi.object({ token: joiConfig.user.token }).unknown(true),
-            })
-            .unknown(true),
+        login: {
+            [Segments.BODY]: { email: joiConfig.user.email, password: joiConfig.user.password },
+        },
+        signup: {
+            [Segments.BODY]: {
+                email: joiConfig.user.email,
+                firstName: joiConfig.general.string,
+                lastName: joiConfig.general.string,
+                password: joiConfig.user.password,
+                confirmPassword: joiConfig.user.password,
+            },
+        },
+        search: {
+            [Segments.BODY]: {}, //FIXME:
+        },
+        editProfile: {
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+            [Segments.BODY]: {
+                firstName: joiConfig.general.string,
+                lastName: joiConfig.general.string,
+            },
+        },
+        editPassword: {
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+            [Segments.BODY]: {
+                password: joiConfig.user.password,
+                confirmPassword: joiConfig.user.password,
+            },
+        },
+        forgotPassword: {
+            [Segments.BODY]: {},
+        }, //FIXME:
+        token: {
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+        },
     },
     device: {
-        getDevice: joi
-            .object({
-                headers: joi.object({ token: joiConfig.user.token }).unknown(true),
-                body: joi
-                    .object({
-                        type: joiConfig.general.string,
-                        model: joiConfig.general.string,
-                        name: joiConfig.general.string,
-                        deviceID: joiConfig.general.string,
-                    })
-                    .unknown(false),
-            })
-            .unknown(true),
-        deviceID: joiConfig.general._id.required(),
+        getDevice: {
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+            [Segments.BODY]: {
+                type: joiConfig.general.string,
+                model: joiConfig.general.string,
+                name: joiConfig.general.string,
+                deviceID: joiConfig.general.string,
+            },
+        },
+        deviceID: {
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+            [Segments.PARAMS]: { deviceID: joiConfig.general._id },
+        },
     },
     zone: {
         newZone: {
-            token: joiConfig.user.token,
-            description: joiConfig.general.string,
-            name: joiConfig.general.string.required(),
-            deviceID: joiConfig.general._id.required(),
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+            [Segments.BODY]: {
+                description: joiConfig.general.string,
+                name: joiConfig.general.string,
+                deviceID: joiConfig.general._id,
+            },
         },
         one: {
-            zoneID: joiConfig.general._id.required(),
-            deviceID: joiConfig.general._id.required(),
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+            [Segments.BODY]: {
+                zoneID: joiConfig.general._id,
+                deviceID: joiConfig.general._id,
+            },
         },
         many: {
-            zoneID: joiConfig.general._id.required(),
-            devicesID: joi.array().items(joiConfig.general._id.required()),
+            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+            [Segments.BODY]: {
+                zoneID: joiConfig.general._id.required(),
+                devicesID: joi.array().items(joiConfig.general._id.required()),
+            },
         },
     },
 };
 
-module.exports = joiSchema;
+module.exports = celebrateSchema;

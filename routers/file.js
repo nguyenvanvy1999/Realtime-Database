@@ -7,12 +7,7 @@ const router = require('express').Router(),
 
 module.exports = () => {
     router.route('/').post(JwtMiddleware.isAuth, UploadController.uploadFiles);
-    router
-        .route('/list')
-        .get(multer().none(), JwtMiddleware.isAuth, UploadController.getListFiles);
-    router
-        .route('/')
-        .get(multer().none(), JwtMiddleware.isAuth, UploadController.download);
-    router.use(handleError);
+    router.route('/list').get(multer().none(), JwtMiddleware.isAuth, UploadController.getListFiles);
+    router.route('/').get(multer().none(), JwtMiddleware.isAuth, UploadController.download);
     return router;
 };

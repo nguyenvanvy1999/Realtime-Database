@@ -4,28 +4,27 @@ const router = require('express').Router(),
     { handleError } = require('../middleware/error'),
     UserMiddleware = require('../middleware/user'),
     multer = require('multer'),
-    JoiValidate = require('../middleware/joi');
+    Celebrate = require('../middleware/validate');
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
-    router.post('/login', UserController.postSignIn);
-    router.post('/signup', UserController.postSignUp);
-    router.route('/search').get(JoiValidate.user.token, UserMiddleware.checkRole, UserController.searchUser);
+    router.post('/login', Celebrate.user.login, UserController.postSignIn);
+    router.post('/signup', Celebrate.user.signup, UserController.postSignUp);
+    router.route('/search').get(Celebrate.user.search, UserMiddleware.checkRole, UserController.searchUser);
     router
         .route('/') //get user (User Profile)
-        .get(JoiValidate.user.token, JwtMiddleware.isAuth, UserController.getUserProfile);
+        .get(Celebrate.user.token, JwtMiddleware.isAuth, UserController.getUserProfile);
     router
         .route('/') //edit user
-        .patch(JoiValidate.user.editUser, JwtMiddleware.isAuth, UserMiddleware.checkEditUser, UserController.editUser);
+        .patch(Celebrate.user.editProfile, JwtMiddleware.isAuth, UserMiddleware.checkEditUser, UserController.editUser);
     router
         .route('/') //delete user
-        .delete(JoiValidate.user.token, JwtMiddleware.isAuth, UserController.deleteUser);
+        .delete(Celebrate.user.token, JwtMiddleware.isAuth, UserController.deleteUser);
     router
         .route('/verify') // verify account
-        .get(JoiValidate.user.token, UserController.verifyAccount);
+        .get(Celebrate.user.token, UserController.verifyAccount);
     router
         .route('/refresh') //refresh token
-        .get(JoiValidate.user.token, UserController.refreshToken);
-    router.use(handleError);
+        .get(Celebrate.user.token, UserController.refreshToken);
     return router;
 };

@@ -1,11 +1,8 @@
 node_modules/
 .idea/
 .vs/
-.github/
 .vscode/
 uploads/
 .settings/
-helpers/errors.log
 trash/
 test.js
-logs/
