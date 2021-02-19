@@ -6,9 +6,10 @@ const express = require('express'),
     morgan = require('morgan'),
     cors = require('cors'),
     flash = require('connect-flash'),
-    handlebars = require('express-handlebars'),
     path = require('path'),
-    { success, error, info, warning } = require('log-symbols');
+    { success, error, info, warning } = require('log-symbols'),
+    session = require('express-session'),
+    cookieParser = require('cookie-parser');
 /**
  * Config and Routers
  */
@@ -26,7 +27,14 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(cookieParser('secret'));
+app.use(session({ cookie: { maxAge: 60000 }, secret: 'secret', resave: true, saveUninitialized: false }));
 app.use(flash());
+app.use(function(req, res, next) {
+    res.locals.message = req.flash();
+    next();
+});
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
@@ -36,13 +44,6 @@ app.use((req, res, next) => {
     }
     next();
 });
-/**
- * Set view engine
- */
-app.engine(`hbs`, handlebars({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources', 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
 /**
  * Express router
@@ -51,7 +52,7 @@ app.use('/user', UserRouter);
 app.use('/data', DataRouter);
 app.use('/file', FileRouter);
 app.use('/device', DeviceRouter);
-app.get('/', (req, res) => res.render('home'));
+app.get('/', (req, res) => res.json('hello world'));
 /**
  * Start Server
  */

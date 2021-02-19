@@ -8,9 +8,7 @@ const router = require('express').Router(),
 // ________________________________________________
 module.exports = () => {
     router.use(multer().none());
-    router.get('/login', UserController.getSignIn);
     router.post('/login', UserController.postSignIn);
-    router.get('/signup', UserController.getSignUp);
     router.post('/signup', UserController.postSignUp);
     router.route('/search').get(JoiValidate.user.token, UserMiddleware.checkRole, UserController.searchUser);
     router

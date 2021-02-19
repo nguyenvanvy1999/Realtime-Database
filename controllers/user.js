@@ -9,14 +9,11 @@ const UserService = require('./../services/user.js'),
     mailOption = require('../config/constant/mail').mailOption;
 // ________________________________________________
 
-function getSignIn(req, res) {
-    res.render('./user/login/');
-}
 async function postSignIn(req, res, next) {
     try {
         const { email, password } = req.body;
         const user = await UserService.getUserByEmail(email);
-        if (!user) throw new APIError({ message: 'Email wrong' });
+        if (!user) throw new APIError({ message: 'Email wrong !' });
         const isPassword = await bcryptHelper.compare(password, user.password);
         if (!isPassword) throw new APIError({ message: 'Password wrong' });
         const token = await jwtHelper.returnToken(user);
@@ -26,9 +23,6 @@ async function postSignIn(req, res, next) {
     }
 }
 
-function getSignUp(req, res) {
-    res.render('./user/signup/');
-}
 async function postSignUp(req, res, next) {
     try {
         const newUser = UserService.newUser(req.query);
@@ -119,9 +113,7 @@ async function searchUser(req, res, next) {
 }
 // ________________________________________________
 module.exports = {
-    getSignIn,
     postSignIn,
-    getSignUp,
     postSignUp,
     editUser,
     deleteUser,
