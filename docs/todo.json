@@ -1,4 +1,4 @@
 {
-    "FIXME": ["user.service and user.service.test", "joiSchema", "celebrate"],
-    "TODO": ["mocks user data", "add function forgot password"]
+	"FIXME": ["user.service and user.service.test", "joiSchema", "celebrate"],
+	"TODO": ["mocks user data", "add function forgot password", "search user", "search device"]
 }
