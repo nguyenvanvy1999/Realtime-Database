@@ -23,4 +23,12 @@ async function checkRole(req, res, next) {
         next(error);
     }
 }
-module.exports = { checkRegister, checkRole };
+
+function isAuth(req, res, next) {
+    if (req.isAuthenticated()) {
+        console.log(req.user);
+        return next();
+    }
+    next(new APIError({ message: 'Please login' }));
+}
+module.exports = { checkRegister, checkRole, isAuth };

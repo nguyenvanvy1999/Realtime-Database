@@ -7,16 +7,13 @@ const UserService = require('./../services/user.js'),
     jwtConfig = require('../config/constant/jwt'),
     mailConfig = require('../config/constant/mail').mailConfig,
     mailOption = require('../config/constant/mail').mailOption,
-    User = require('../models/user');
+    User = require('../models/user'),
+    passport = require('passport');
 // ________________________________________________
 
 async function postSignIn(req, res, next) {
     try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user) throw new APIError({ message: 'Email wrong !' });
-        const isPassword = await bcryptHelper.compare(password, user.password);
-        if (!isPassword) throw new APIError({ message: 'Password wrong' });
+        const user = req.user;
         const token = await jwtHelper.returnToken(user);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(token);
     } catch (error) {
@@ -88,12 +85,7 @@ async function deleteUser(req, res, next) {
 }
 async function getUserProfile(req, res, next) {
     try {
-        const { email } = req.user;
-        const user = await User.findOne({ email });
-        if (user === null) {
-            throw new APIError({ message: 'Not Found User' });
-        }
-        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(user);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(req.user);
     } catch (error) {
         next(error);
     }

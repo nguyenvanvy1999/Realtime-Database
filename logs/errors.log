@@ -55,3 +55,96 @@
     at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
     at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:137:13)
     at isAuth (E:\Nodejs\Realtime-Database\middleware\jwt.js:9:9)
+[2021-02-20 19:19:48] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+[2021-02-20 19:38:45] [[31merror[39m] APIError: Cannot read property '_id' of undefined
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at Object.returnToken (E:\Nodejs\Realtime-Database\helpers\jwt.js:40:15)
+    at async postSignIn (E:\Nodejs\Realtime-Database\controllers\user.js:20:23)
+[2021-02-20 19:46:07] [[31merror[39m] Email wrong
+[2021-02-20 19:46:50] [[31merror[39m] APIError: Email wrong
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at Strategy._verify (E:\Nodejs\Realtime-Database\middleware\passport.js:13:30)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-20 19:48:19] [[31merror[39m] APIError: Email wrong
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at Strategy._verify (E:\Nodejs\Realtime-Database\middleware\passport.js:13:30)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-20 19:48:26] [[31merror[39m] APIError: Password wrong
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at Strategy._verify (E:\Nodejs\Realtime-Database\middleware\passport.js:15:36)
+[2021-02-20 19:56:14] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+[2021-02-20 19:57:04] [[31merror[39m] Error: celebrate request validation failed
+    at E:\Nodejs\Realtime-Database\node_modules\celebrate\lib\celebrate.js:95:19
+[2021-02-20 19:57:11] [[31merror[39m] ReferenceError: APIError is not defined
+    at exports.isAuthenticated (E:\Nodejs\Realtime-Database\config\setting\passport\index.js:6:5)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:137:13)
+[2021-02-20 20:00:35] [[31merror[39m] APIError: Please login
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at isAuth (E:\Nodejs\Realtime-Database\middleware\user.js:32:10)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:137:13)
+[2021-02-20 20:02:22] [[31merror[39m] APIError: Please login
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at isAuth (E:\Nodejs\Realtime-Database\middleware\user.js:32:10)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:275:10)
+    at multerMiddleware (E:\Nodejs\Realtime-Database\node_modules\multer\lib\make-middleware.js:18:41)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:317:13)
+    at E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:284:7
+    at Function.process_params (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:275:10)
+[2021-02-20 20:05:24] [[31merror[39m] APIError: Please login
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at isAuth (E:\Nodejs\Realtime-Database\middleware\user.js:32:10)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:275:10)
+    at multerMiddleware (E:\Nodejs\Realtime-Database\node_modules\multer\lib\make-middleware.js:18:41)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:317:13)
+    at E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:284:7
+    at Function.process_params (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:275:10)
+[2021-02-20 20:09:45] [[31merror[39m] APIError: Please login
+    at new BaseError (E:\Nodejs\Realtime-Database\helpers\error.js:8:15)
+    at new APIError (E:\Nodejs\Realtime-Database\helpers\error.js:14:9)
+    at isAuth (E:\Nodejs\Realtime-Database\middleware\user.js:32:10)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:275:10)
+    at multerMiddleware (E:\Nodejs\Realtime-Database\node_modules\multer\lib\make-middleware.js:18:41)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:317:13)
+    at E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:284:7
+    at Function.process_params (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\index.js:275:10)
+[2021-02-20 20:10:59] [[31merror[39m] Incorrect password
+[2021-02-20 20:12:11] [[31merror[39m] Incorrect password
+[2021-02-20 20:12:11] [[31merror[39m] Incorrect password
+[2021-02-20 20:13:28] [[31merror[39m] Incorrect email
+[2021-02-20 20:13:34] [[31merror[39m] Incorrect password

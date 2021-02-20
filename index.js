@@ -10,7 +10,8 @@ const express = require('express'),
     { success, error, info, warning } = require('log-symbols'),
     session = require('express-session'),
     cookieParser = require('cookie-parser'),
-    { handleError } = require('./middleware/error');
+    { handleError } = require('./middleware/error'),
+    passport = require('passport');
 /**
  * Config and Routers
  */
@@ -29,13 +30,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser('secret'));
-app.use(session({ cookie: { maxAge: 60000 }, secret: 'secret', resave: true, saveUninitialized: false }));
+app.use(
+    session({
+        cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
+        cookie: { secure: false }, //no https
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: false,
+    })
+);
+//app.set('trust proxy', 1) // trust first proxy if https
 app.use(flash());
-app.use(function(req, res, next) {
-    res.locals.message = req.flash();
-    next();
-});
-
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
@@ -45,7 +50,14 @@ app.use((req, res, next) => {
     }
     next();
 });
+
 app.use('/uploads', express.static('uploads'));
+/**
+ * Config passport
+ */
+require('./middleware/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 /**
  * Express router
  */

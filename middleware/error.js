@@ -9,10 +9,7 @@ function handleNotFoundPage(req, res) {
 function handleError(err, req, res, next) {
     logger.error(err);
     if (!errorHandler.isTrustedError(err)) {
-        return res.status(HTTP_STATUS_CODE.ERROR.BAD_REQUEST).send({
-            message: 'Something was wrong. Please contact me to fix. Thank you!',
-            err: err.message,
-        });
+        return res.status(HTTP_STATUS_CODE.ERROR.BAD_REQUEST).send({ message: err.message });
     }
     if (err.name === 'MongoError' && err.code === 11000) {
         let [_, collection, field, value] = err.message.match(
