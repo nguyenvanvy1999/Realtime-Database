@@ -26,37 +26,6 @@ async function insert(newUser) {
     }
 }
 
-async function getUserByEmail(email) {
-    try {
-        if (!email) return null;
-        return await User.findOne({ email });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
-
-async function editUser(email, user) {
-    try {
-        return await User.findOneAndUpdate({ email }, user, { new: true });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
-async function editPassword(email, password) {
-    try {
-        return await User.findOneAndUpdate({ email }, { password }, { new: true });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
-
-async function deleteUserByEmail(email) {
-    try {
-        return await User.findOneAndDelete({ email });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
 async function search(user) {
     try {
         //FIXME:error
@@ -76,21 +45,6 @@ async function search(user) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-async function activeAccount(email) {
-    try {
-        return await User.findOneAndUpdate({ email }, { isActive: true }, { new: true });
-    } catch (error) {
-        throw new APIError({ message: error.message, errors: error });
-    }
-}
+
 // ________________________________________________
-module.exports = {
-    newUser,
-    insert,
-    getUserByEmail,
-    editUser,
-    editPassword,
-    deleteUserByEmail,
-    activeAccount,
-    search,
-};
+module.exports = { newUser, insert, search };

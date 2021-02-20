@@ -26,29 +26,23 @@ async function getDeviceUser(user, device) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-async function link(user, device) {
+async function link(user, deviceID) {
     try {
-        if (device.length === 1)
-            return await Device.findOneAndUpdate({ deviceID: device }, { user: user }, { new: true });
-        return await Device.updateMany({ deviceID: device }, { user: user }, { new: true });
+        if (device.length === 1) return await Device.findOneAndUpdate({ deviceID }, { user }, { new: true });
+        return await Device.updateMany({ deviceID }, { user }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
-async function unLink(device) {
+async function unLink(deviceID) {
     try {
         if (device.length === 1) {
-            return await Device.findOneAndUpdate({ deviceID: device }, { user: null }, { new: true });
+            return await Device.findOneAndUpdate({ deviceID }, { user: null }, { new: true });
         }
-        return await Device.updateMany({ deviceID: device }, { user: null }, { new: true });
+        return await Device.updateMany({ deviceID }, { user: null }, { new: true });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }
 }
 
-module.exports = {
-    getDeviceUser,
-    getDeviceAdmin,
-    link,
-    unLink,
-};
+module.exports = { getDeviceUser, getDeviceAdmin, link, unLink };
