@@ -50,3 +50,8 @@
 [2021-02-19 19:24:15] [[31merror[39m] celebrate request validation failed
 [2021-02-19 19:24:23] [[31merror[39m] celebrate request validation failed
 [2021-02-19 19:24:50] [[31merror[39m] celebrate request validation failed
+[2021-02-20 10:36:02] [[31merror[39m] TypeError: Cannot read property 'data' of undefined
+    at checkEditUser (E:\Nodejs\Realtime-Database\middleware\user.js:6:42)
+    at Layer.handle [as handle_request] (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\Nodejs\Realtime-Database\node_modules\express\lib\router\route.js:137:13)
+    at isAuth (E:\Nodejs\Realtime-Database\middleware\jwt.js:9:9)

@@ -6,13 +6,14 @@ const UserService = require('./../services/user.js'),
     mailHelper = require('../helpers/mailer'),
     jwtConfig = require('../config/constant/jwt'),
     mailConfig = require('../config/constant/mail').mailConfig,
-    mailOption = require('../config/constant/mail').mailOption;
+    mailOption = require('../config/constant/mail').mailOption,
+    User = require('../models/user');
 // ________________________________________________
 
 async function postSignIn(req, res, next) {
     try {
         const { email, password } = req.body;
-        const user = await UserService.getUserByEmail(email);
+        const user = await User.findOne({ email });
         if (!user) throw new APIError({ message: 'Email wrong !' });
         const isPassword = await bcryptHelper.compare(password, user.password);
         if (!isPassword) throw new APIError({ message: 'Password wrong' });
@@ -25,7 +26,7 @@ async function postSignIn(req, res, next) {
 
 async function postSignUp(req, res, next) {
     try {
-        const newUser = UserService.newUser(req.query);
+        const newUser = UserService.newUser(req.body);
         const token = await jwtHelper.generateToken(newUser, jwtConfig.VERIFY.SECRET, jwtConfig.VERIFY.LIFE);
         const text = {
             message: mailOption.text,
@@ -43,29 +44,43 @@ async function verifyAccount(req, res, next) {
     try {
         const token = req.body.token || req.query.token || req.header['token'];
         const decoded = await jwtHelper.verifyToken(token, jwtConfig.VERIFY.SECRET);
-        await UserService.activeAccount(decoded.data.email);
+        await User.findOneAndUpdate({ email: decoded.data.email }, { isActive: true });
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Active successfully !' });
     } catch (error) {
         next(error);
     }
 }
 
-async function editUser(req, res, next) {
+async function editUserProfile(req, res, next) {
     try {
-        const { email } = req.jwtDecoded.data;
-        const { firstName, lastName } = req.query;
-        const newPassword = await bcryptHelper.hash(req.query.password);
-        const newUser = await UserService.editUser(email, firstName, lastName, newPassword);
+        const { email } = req.user;
+        const { firstName, lastName } = req.body;
+        const newUser = await User.findOneAndUpdate({ email }, { firstName, lastName }, { new: true });
         const token = await jwtHelper.returnToken(newUser);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ token });
     } catch (error) {
         next(error);
     }
 }
+
+async function editPassword(req, res, next) {
+    try {
+        const { email } = req.user;
+        let { password } = req.body;
+        const user = await User.findOne({ email });
+        const isExits = await bcryptHelper.compare(password, user.password); //check new password has been change?
+        if (isExits) throw new APIError({ message: 'Password has exits.Please choose new password' });
+        password = await bcryptHelper.hash(password);
+        await User.findOneAndUpdate({ email }, { password });
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Password has been update');
+    } catch (error) {
+        next(error);
+    }
+}
 async function deleteUser(req, res, next) {
     try {
-        const email = req.body.email || req.jwtDecoded.data.email;
-        UserService.deleteUserByEmail(email);
+        const { email } = req.user;
+        await User.findOneAndDelete({ email });
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Delete Successfully!');
     } catch (error) {
         next(error);
@@ -73,8 +88,8 @@ async function deleteUser(req, res, next) {
 }
 async function getUserProfile(req, res, next) {
     try {
-        const email = req.jwtDecoded.data.email;
-        const user = await UserService.getUserByEmail(email);
+        const { email } = req.user;
+        const user = await User.findOne({ email });
         if (user === null) {
             throw new APIError({ message: 'Not Found User' });
         }
@@ -115,7 +130,8 @@ async function searchUser(req, res, next) {
 module.exports = {
     postSignIn,
     postSignUp,
-    editUser,
+    editUserProfile,
+    editPassword,
     deleteUser,
     getUserProfile,
     refreshToken,

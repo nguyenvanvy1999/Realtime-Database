@@ -10,17 +10,14 @@ module.exports = () => {
     router.use(multer().none());
     router.post('/login', Celebrate.user.login, UserController.postSignIn);
     router.post('/signup', Celebrate.user.signup, UserController.postSignUp);
-    router.route('/search').get(Celebrate.user.search, UserMiddleware.checkRole, UserController.searchUser);
+    router.get('/search', Celebrate.user.search, UserMiddleware.checkRole, UserController.searchUser); //FIXME:
     router
         .route('/')
         .get(Celebrate.user.token, JwtMiddleware.isAuth, UserController.getUserProfile) //user profile
-        .patch(Celebrate.user.editProfile, JwtMiddleware.isAuth, UserMiddleware.checkEditUser, UserController.editUser) //edit user profile
+        .patch(Celebrate.user.editProfile, JwtMiddleware.isAuth, UserController.editUserProfile) //edit user profile
         .delete(Celebrate.user.token, JwtMiddleware.isAuth, UserController.deleteUser); //delete user
-    router
-        .route('/verify') // verify account
-        .get(Celebrate.user.token, UserController.verifyAccount);
-    router
-        .route('/refresh') //refresh token
-        .get(Celebrate.user.token, UserController.refreshToken);
+    router.get('/verify', Celebrate.user.token, UserController.verifyAccount);
+    router.get('refresh/', Celebrate.user.token, UserController.refreshToken);
+    router.post('/password', Celebrate.user.editPassword, JwtMiddleware.isAuth, UserController.editPassword);
     return router;
 };

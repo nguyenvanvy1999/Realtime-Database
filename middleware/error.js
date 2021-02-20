@@ -3,10 +3,11 @@ const { errorHandler, APIError } = require('../helpers/error'),
     HTTP_STATUS_CODE = require('../config/constant/http');
 
 function handleNotFoundPage(req, res) {
-    return res.status(404).json({ message: 'Page not found' });
+    return res.status(HTTP_STATUS_CODE.ERROR.NOT_FOUND).json({ message: 'Page not found' });
 }
 
 function handleError(err, req, res, next) {
+    logger.error(err);
     if (!errorHandler.isTrustedError(err)) {
         return res.status(HTTP_STATUS_CODE.ERROR.BAD_REQUEST).send({
             message: 'Something was wrong. Please contact me to fix. Thank you!',

@@ -13,7 +13,7 @@ async function uploadFiles(req, res, next) {
                 message: 'Please choose a file or check your file type',
             });
         }
-        const user = req.jwtDecoded.data;
+        const user = req.user;
         const files = req.files;
         const data = DataService.newFileData(user, files);
         await DataService.insert(data);
@@ -27,7 +27,7 @@ async function uploadFiles(req, res, next) {
 
 function getListFiles(req, res, next) {
     try {
-        const { email } = req.jwtDecoded.data;
+        const { email } = req.user;
         const dir = `${fileConfig.path}${email}`;
         fs.readdir(dir, function(err, files) {
             if (err) {
@@ -49,7 +49,7 @@ function getListFiles(req, res, next) {
 
 function download(req, res, next) {
     try {
-        const { email } = req.jwtDecoded.data;
+        const { email } = req.user;
         const { name } = req.body;
         const dir = `${fileConfig.path}${email}/${name}`;
         if (!fs.existsSync(dir)) {

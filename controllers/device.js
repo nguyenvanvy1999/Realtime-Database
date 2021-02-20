@@ -4,11 +4,9 @@ const DeviceService = require('../services/device'),
 
 async function getDeviceUser(req, res, next) {
     try {
-        const user = req.jwtDecoded.data._id;
-        const result = await DeviceService.getDeviceUser(user, req.body);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ length: result.length, result: result });
+        const user_id = req.user._id;
+        const result = await DeviceService.getDeviceUser(user_id, req.body);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ length: result.length, result: result });
     } catch (error) {
         next(error);
     }
@@ -16,9 +14,7 @@ async function getDeviceUser(req, res, next) {
 async function getDeviceAdmin(req, res, next) {
     try {
         const result = await DeviceService.getDeviceAdmin(req.body);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ length: result.length, result: result });
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ length: result.length, result: result });
     } catch (error) {
         next(error);
     }
@@ -26,11 +22,9 @@ async function getDeviceAdmin(req, res, next) {
 
 async function linkDevice(req, res, next) {
     try {
-        const user = req.jwtDecoded.data._id;
-        const result = await DeviceService.link(user, req.body);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Active device successfully', result: result });
+        const user_id = req.user._id;
+        const result = await DeviceService.link(user_id, req.body);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Active device successfully', result: result });
     } catch (error) {
         next(error);
     }
@@ -39,9 +33,7 @@ async function linkDevice(req, res, next) {
 async function unLinkDevice(req, res, next) {
     try {
         const result = await DeviceService.unLink(req.body);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Un Active device successfully', result: result });
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Un Active device successfully', result: result });
     } catch (error) {
         next(error);
     }

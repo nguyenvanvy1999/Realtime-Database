@@ -3,7 +3,7 @@ const DataService = require('../services/data'),
     { APIError } = require('../helpers/error');
 async function getDataByUser(req, res, next) {
     try {
-        let user = req.jwtDecoded.data;
+        const user = req.user;
         const dataDocuments = await DataService.getDataByUser(user._id);
         if (dataDocuments.length === 0) {
             throw new APIError({ message: 'No data found' });
@@ -15,7 +15,7 @@ async function getDataByUser(req, res, next) {
 }
 async function getDataByDevice(req, res, next) {
     try {
-        let deviceID = req.body.deviceID;
+        const { deviceID } = req.body;
         if (!deviceID) {
             throw new APIError({ message: 'Please choose device to get data' });
         }
@@ -27,33 +27,27 @@ async function getDataByDevice(req, res, next) {
 }
 async function deleteDataByUser(req, res, next) {
     try {
-        const user = req.jwtDecoded.data;
-        let result = await DataService.deleteDataByUser(user._id);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Delete success' });
+        const user = req.user;
+        await DataService.deleteDataByUser(user._id);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Delete success' });
     } catch (error) {
         next(error);
     }
 }
 async function deleteDataByDevice(req, res, next) {
     try {
-        const deviceID = req.body.deviceID;
-        let result = await DataService.deleteDataByDevice(deviceID);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Delete success' });
+        const { deviceID } = req.body;
+        await DataService.deleteDataByDevice(deviceID);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Delete success' });
     } catch (error) {
         next(error);
     }
 }
 async function deleteOneData(req, res, next) {
     try {
-        const dataID = req.body.dataID;
-        let result = await DataService.deleteOneData(dataID);
-        return res
-            .status(HTTP_STATUS_CODE.SUCCESS.OK)
-            .send({ message: 'Delete success' });
+        const { dataID } = req.body;
+        await DataService.deleteOneData(dataID);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Delete success' });
     } catch (error) {
         next(error);
     }

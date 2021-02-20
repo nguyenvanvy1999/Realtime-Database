@@ -7,7 +7,8 @@ async function generateToken(user, secretSignature, tokenLife) {
         const userData = {
             _id: user._id,
             email: user.email,
-            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
             roles: user.roles,
         };
         return await jwt.sign({ data: userData }, secretSignature, {
@@ -29,16 +30,8 @@ async function verifyToken(token, secretKey) {
 
 async function returnToken(user) {
     try {
-        const accessToken = await generateToken(
-            user,
-            jwtConfig.ACCESS.SECRET,
-            jwtConfig.ACCESS.LIFE
-        );
-        const refreshToken = await generateToken(
-            user,
-            jwtConfig.REFRESH.SECRET,
-            jwtConfig.REFRESH.LIFE
-        );
+        const accessToken = await generateToken(user, jwtConfig.ACCESS.SECRET, jwtConfig.ACCESS.LIFE);
+        const refreshToken = await generateToken(user, jwtConfig.REFRESH.SECRET, jwtConfig.REFRESH.LIFE);
         return {
             accessToken: accessToken,
             refreshToken: refreshToken,
