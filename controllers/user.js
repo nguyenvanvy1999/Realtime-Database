@@ -3,12 +3,9 @@ const UserService = require('./../services/user.js'),
     { APIError } = require('../helpers/error'),
     bcryptHelper = require('../helpers/bcrypt'),
     HTTP_STATUS_CODE = require('../config/constant/http'),
-    mailHelper = require('../helpers/mailer'),
+    { sendMail, verifyEmail, resetPasswordMail } = require('../helpers/mailer'),
     jwtConfig = require('../config/constant/jwt'),
-    mailConfig = require('../config/constant/mail').mailConfig,
-    mailOption = require('../config/constant/mail').mailOption,
-    User = require('../models/user'),
-    passport = require('passport');
+    User = require('../models/user');
 // ________________________________________________
 
 async function postSignIn(req, res, next) {
@@ -25,13 +22,9 @@ async function postSignUp(req, res, next) {
     try {
         const newUser = UserService.newUser(req.body);
         const token = await jwtHelper.generateToken(newUser, jwtConfig.VERIFY.SECRET, jwtConfig.VERIFY.LIFE);
-        const text = {
-            message: mailOption.text,
-            token: token,
-        };
-        const newMail = mailHelper.newMailOption(mailConfig.auth.user, req.body.email, mailOption.subject, text);
-        await mailHelper.sendMail(newMail);
         await UserService.insert(newUser);
+        const config = verifyEmail(token, req);
+        await sendMail(config);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Check your email and verify account!' });
     } catch (error) {
         next(error);
@@ -69,6 +62,8 @@ async function editPassword(req, res, next) {
         if (isExits) throw new APIError({ message: 'Password has exits.Please choose new password' });
         password = await bcryptHelper.hash(password);
         await User.findOneAndUpdate({ email }, { password });
+        const config = resetPasswordMail(req.user);
+        await sendMail(config);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Password has been update');
     } catch (error) {
         next(error);
