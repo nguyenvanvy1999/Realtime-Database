@@ -41,6 +41,7 @@ app.use(
 );
 //app.set('trust proxy', 1) // trust first proxy if https
 app.use(flash());
+//CORS config
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
