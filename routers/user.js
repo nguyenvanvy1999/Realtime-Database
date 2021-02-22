@@ -17,7 +17,11 @@ module.exports = () => {
         .get(UserMiddleware.isAuth, UserController.getUserProfile) //user profile
         .patch(Celebrate.user.editProfile, JwtMiddleware.isAuth, UserController.editUserProfile) //edit user profile
         .delete(Celebrate.user.token, JwtMiddleware.isAuth, UserController.deleteUser); //delete user
-    router.get('/verify', Celebrate.user.token, UserController.verifyAccount);
+    router
+        .route('/forgot')
+        .get(Celebrate.user.getForgetPassword, UserController.getForgotPassword)
+        .post(Celebrate.user.postForgotPassword, UserController.postForgotPassword);
+    router.post('/verify/:token', Celebrate.user.verifyAccount, UserController.verifyAccount); //send token to query
     router.get('refresh/', Celebrate.user.token, UserController.refreshToken);
     router.post('/password', Celebrate.user.editPassword, JwtMiddleware.isAuth, UserController.editPassword);
     return router;

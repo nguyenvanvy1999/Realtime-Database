@@ -32,7 +32,7 @@ async function postSignUp(req, res, next) {
 }
 async function verifyAccount(req, res, next) {
     try {
-        const token = req.body.token || req.query.token || req.header['token'];
+        const token = req.query.token;
         const decoded = await jwtHelper.verifyToken(token, jwtConfig.VERIFY.SECRET);
         await User.findOneAndUpdate({ email: decoded.data.email }, { isActive: true });
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ message: 'Active successfully !' });
@@ -65,6 +65,33 @@ async function editPassword(req, res, next) {
         const config = resetPasswordMail(req.user);
         await sendMail(config);
         return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Password has been update');
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getForgotPassword(req, res, next) {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne(email);
+        if (!user) throw new APIError({ message: 'No user found!' });
+        const token = await jwtHelper.generateToken(user, jwtConfig.PASSWORD.SECRET);
+        const config = forgotPasswordMail(token, req);
+        await sendMail(config);
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Check your mail to generate new password');
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function postForgotPassword(req, res, next) {
+    try {
+        const token = req.query.token;
+        let { password } = req.body;
+        password = await bcryptHelper.hash(password);
+        const decoded = await jwtHelper.verifyToken(token, jwtConfig.PASSWORD.SECRET);
+        await User.findOneAndUpdate({ email: decoded.data.email }, { password });
+        return res.status(HTTP_STATUS_CODE.SUCCESS.OK).send('Success ! Please login to using');
     } catch (error) {
         next(error);
     }
@@ -119,6 +146,8 @@ module.exports = {
     postSignUp,
     editUserProfile,
     editPassword,
+    getForgotPassword,
+    postForgotPassword,
     deleteUser,
     getUserProfile,
     refreshToken,

@@ -34,8 +34,14 @@ const celebrateSchema = {
                 confirmPassword: joi.string().valid(joi.ref('password')).required(),
             },
         },
-        forgotPassword: {
-            [Segments.HEADERS]: joi.object({ token: joiConfig.user.token }).unknown(),
+        verifyAccount: {
+            [Segments.QUERY]: joiConfig.user.token,
+        },
+        getForgotPassword: {
+            [Segments.BODY]: { email: joiConfig.user.email },
+        },
+        postForgotPassword: {
+            [Segments.QUERY]: joiConfig.user.token,
             [Segments.BODY]: {
                 password: joiConfig.user.password,
                 confirmPassword: joi.string().valid(joi.ref('password')).required(),

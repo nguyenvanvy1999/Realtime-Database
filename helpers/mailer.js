@@ -35,12 +35,11 @@ function resetPasswordMail(user) {
     return mailOptions;
 }
 
-function forgotPasswordMail(user, req) {
-    const token = user.passwordResetToken;
+function forgotPasswordMail(token, req) {
     const mailOptions = {
         to: user.email,
         from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
+        subject: 'Reset your password on DataCenter',
         text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
 	Please click on the following link, or paste this into your browser to complete the process:\n\n
 	http://${req.headers.host}/reset/${token}\n\n
