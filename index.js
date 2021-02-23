@@ -11,7 +11,9 @@ const express = require('express'),
     session = require('express-session'),
     cookieParser = require('cookie-parser'),
     { handleError } = require('./middleware/error'),
-    passport = require('passport');
+    passport = require('passport'),
+    cluster = require('cluster'),
+    os = require('os');
 /**
  * Config and Routers
  */
@@ -72,9 +74,25 @@ app.use(handleError);
 /**
  * Start Server
  */
+
+// if (cluster.isMaster) {
+//     console.log(`Master ${process.pid} is running`);
+//     // Fork workers.
+//     for (let i = 0; i < numCPUs; i++) {
+//         cluster.fork();
+//     }
+//     cluster.on('exit', (worker, code, signal) => {
+//         console.log(`worker ${worker.process.pid} died`);
+//     });
+// } else {
+//     // Workers can share any TCP connection
+//     // In this case it is an HTTP server
+//     app.listen(serverConfig.port);
+//     console.log(`Worker ${process.pid} started`);
+// }
 async function startServer() {
     try {
-        await connect();
+        connect();
         await app.listen(serverConfig.port);
         console.log(`${success} http://${serverConfig.host}:${serverConfig.port}`);
     } catch (err) {

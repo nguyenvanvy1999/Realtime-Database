@@ -28,19 +28,11 @@ async function insert(newUser) {
 
 async function search(user) {
     try {
-        //FIXME:error
-        if (user.email && user.username)
-            return await User.find({
-                $and: [
-                    { email: { $regex: user.email, $options: 'i' } },
-                    { username: { $regex: user.username, $options: 'i' } },
-                ],
-            });
-        if (user.email) return await User.find({ email: { $regex: user.email, $options: 'i' } });
-        if (user.username)
-            return await User.find({
-                username: { $regex: user.username, $options: 'i' },
-            });
+        const { firstName, lastName, email } = user;
+        if (email) return await User.find({ email: { $regex: email, $option: 'i' } });
+        return await User.find({
+            $and: [{ firstName: { $regex: firstName, $option: 'i' } }, { lastName: { $regex: lastName, $option: 'i' } }],
+        });
     } catch (error) {
         throw new APIError({ message: error.message, errors: error });
     }

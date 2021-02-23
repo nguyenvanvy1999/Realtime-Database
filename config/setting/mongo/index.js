@@ -1,17 +1,30 @@
 const mongoose = require('mongoose'),
     mongoConfig = require('../../constant/mongo'),
-    { success, error, info, warning } = require('log-symbols');
+    { Mockgoose } = require('mockgoose'),
+    { success, error } = require('log-symbols');
+require('dotenv').config();
 
-// ________________________________________________
-
-async function connect() {
-    try {
-        mongoose.Promise = global.Promise;
-        await mongoose.connect(mongoConfig.host, mongoConfig.setting);
-        return console.log(`${success} ${mongoConfig.host}`);
-    } catch (err) {
-        return console.log(`${error} Connect Mongo failed`);
-    }
+function connect() {
+    return new Promise((resolve, reject) => {
+        if (process.env.DEBUG === true) {
+            const mockgoose = new Mockgoose(mongoose);
+            mockgoose.helper.setDbVersion('4.4.3');
+            mockgoose
+                .prepareStorage()
+                .then(function() {
+                    mongoose.connect(mongoConfig.host, (err, res) => {
+                        if (err) return reject(err);
+                        resolve(console.log(`${success} ${mongoConfig.host}`));
+                    });
+                })
+                .catch(reject);
+        } else {
+            mongoose.connect(mongoConfig.host, mongoConfig.setting, (err, res) => {
+                if (err) return reject(err);
+                resolve(console.log(`${success} ${mongoConfig.host}`));
+            });
+        }
+    });
 }
 
 async function disconnect() {

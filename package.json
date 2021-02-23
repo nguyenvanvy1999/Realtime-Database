@@ -39,6 +39,7 @@
         "faker": "^5.4.0",
         "jest": "^26.6.3",
         "mocha": "^8.2.1",
+        "mockgoose": "^8.0.4",
         "mongodb-memory-server": "^6.9.3",
         "mongoose-seed": "^0.6.0",
         "morgan": "^1.10.0",

@@ -2,7 +2,7 @@ const { expect, should } = require('chai'),
     assert = require('assert'),
     mongoose = require('mongoose'),
     UserService = require('../../services/user'),
-    User = require('../../models/user'), { seedAdmin, seedUser } = require('../config/seed'), { connect, clearData, closeDatabase } = require('../config/database'),
+    User = require('../../models/user'), { seedAdmin, seedUser } = require('../mocks/seed'), { connect, clearData, closeDatabase } = require('../config/database'),
     bcryptHelper = require('../../helpers/bcrypt'), { APIError } = require('../../helpers/error');
 
 before(async() => await connect());
