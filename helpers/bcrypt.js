@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt'),
 	{ APIError } = require('./error'),
-	salt = require('../config/index').salt;
+	{ get } = require('../config/index');
 async function hash(password) {
 	try {
-		return await bcrypt.hash(password, salt);
+		return await bcrypt.hash(password, get('SALT'));
 	} catch (error) {
 		throw new APIError({ message: error.message, errors: error });
 	}

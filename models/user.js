@@ -2,7 +2,7 @@ const mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	ObjectId = Schema.Types.ObjectId,
 	bcrypt = require('bcrypt'),
-	salt = require('../config/index').salt;
+	{ get } = require('../config/index');
 
 const userSchema = new Schema(
 	{
@@ -29,7 +29,7 @@ const userSchema = new Schema(
 userSchema.pre('save', async function (next) {
 	const user = this;
 	if (user.isModified('password')) {
-		user.password = await bcrypt.hash(user.password, salt);
+		user.password = await bcrypt.hash(user.password, get('SALT'));
 	}
 	next();
 });
