@@ -2,26 +2,26 @@
  * Required modules
  */
 const express = require('express'),
-    { connect } = require('./config/setting/mongo/index'),
-    morgan = require('morgan'),
-    cors = require('cors'),
-    flash = require('connect-flash'),
-    path = require('path'),
-    { success, error, info, warning } = require('log-symbols'),
-    session = require('express-session'),
-    cookieParser = require('cookie-parser'),
-    { handleError } = require('./middleware/error'),
-    passport = require('passport'),
-    cluster = require('cluster'),
-    os = require('os');
+	{ connect } = require('./config/mongo'),
+	morgan = require('morgan'),
+	cors = require('cors'),
+	flash = require('connect-flash'),
+	path = require('path'),
+	{ success, error } = require('log-symbols'),
+	session = require('express-session'),
+	cookieParser = require('cookie-parser'),
+	{ handleError } = require('./middleware/error'),
+	passport = require('passport'),
+	{ get } = require('./config'),
+	cluster = require('cluster'),
+	os = require('os');
 /**
  * Config and Routers
  */
-const serverConfig = require('./config/constant/server'),
-    UserRouter = require('./routers/user')(),
-    DataRouter = require('./routers/data')(),
-    FileRouter = require('./routers/file')(),
-    DeviceRouter = require('./routers/device')();
+const UserRouter = require('./routers/user')(),
+	DataRouter = require('./routers/data')(),
+	FileRouter = require('./routers/file')(),
+	DeviceRouter = require('./routers/device')();
 /**
  * Express config
  */
@@ -33,25 +33,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser('secret'));
 app.use(
-    session({
-        cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
-        cookie: { secure: false }, //no https
-        secret: 'secret',
-        resave: true,
-        saveUninitialized: false,
-    })
+	session({
+		cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
+		cookie: { secure: false }, //no https
+		secret: 'secret',
+		resave: true,
+		saveUninitialized: false,
+	})
 );
 //app.set('trust proxy', 1) // trust first proxy if https
 app.use(flash());
 //CORS config
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
-    if (req.method === 'OPTIONS') {
-        req.headers('Access-Control-Allow-Methods', 'PUT,POST,PATH,DELETE,GET');
-        return res.status(200).json({});
-    }
-    next();
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
+	if (req.method === 'OPTIONS') {
+		req.headers('Access-Control-Allow-Methods', 'PUT,POST,PATH,DELETE,GET');
+		return res.status(200).json({});
+	}
+	next();
 });
 
 app.use('/uploads', express.static('uploads'));
@@ -90,15 +90,16 @@ app.use(handleError);
 //     app.listen(serverConfig.port);
 //     console.log(`Worker ${process.pid} started`);
 // }
-async function startServer() {
-    try {
-        connect();
-        await app.listen(serverConfig.port);
-        console.log(`${success} http://${serverConfig.host}:${serverConfig.port}`);
-    } catch (err) {
-        console.log(`${error} Connect server failed`);
-        throw Error(err);
-    }
+
+function startServer() {
+	try {
+		connect();
+		app.listen(get('PORT'));
+		console.log(`${success} http://${get('URL')}:${get('PORT')}`);
+	} catch (err) {
+		console.log(`${error} Connect server failed`);
+		throw Error(err);
+	}
 }
 startServer();
 /**
