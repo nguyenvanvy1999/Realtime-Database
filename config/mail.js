@@ -1,8 +1,9 @@
 const nodemailerSendgrid = require('nodemailer-sendgrid'),
 	{ get } = require('./index');
 
-const grid = get('SENDGRID_API_KEY'); //check if has using grid_api_mail
-const mailConfig = () => {
+//check if has using grid_api_mail
+function mailConfig() {
+	const grid = get('SENDGRID_API_KEY');
 	let transportConfig;
 	if (grid) {
 		transportConfig = nodemailerSendgrid({
@@ -18,6 +19,6 @@ const mailConfig = () => {
 		};
 	}
 	return transportConfig;
-};
+}
 
 module.exports = { mailConfig };

@@ -1,11 +1,8 @@
-const { readSecret } = require('../../config/jwt'),
+const { readSecret, jwtConfig } = require('../../config/jwt'),
 	fs = require('fs'),
 	path = require('path'),
-	{ expect, should } = require('chai'),
-	assert = require('assert'),
-	{ parse } = require('dotenv'),
-	{ stringify } = require('envfile'),
-	rimraf = require('rimraf');
+	{ expect } = require('chai'),
+	assert = require('assert');
 
 let access;
 const fileTest = path.join(__dirname, '../../config/key/access.txt');
@@ -14,7 +11,7 @@ describe('Test return JWT secret', () => {
 		access = readSecret('access');
 	});
 	after(() => fs.writeFileSync(fileTest, access));
-	describe('Read file', () => {
+	describe(' Test read secret key', () => {
 		it('True => return access key', () => {
 			expect(readSecret('access')).equal(fs.readFileSync(fileTest, 'utf-8'));
 		});
@@ -25,6 +22,15 @@ describe('Test return JWT secret', () => {
 		it('if no file  => throw new Error', () => {
 			fs.unlinkSync(fileTest);
 			assert.throws(() => readSecret('access'), Error);
+		});
+	});
+	describe('Test jwtConfig', () => {
+		it('jwtConfig should defined', () => {
+			expect(jwtConfig).to.exist;
+		});
+		it('Time of secret is true', () => {
+			expect(jwtConfig.LONG_TIME).equal(86400);
+			expect(jwtConfig.SHORT_TIME).equal(900);
 		});
 	});
 });
