@@ -21,4 +21,4 @@ const jwtConfig = {
 	SHORT_TIME: 900, //15 minutes
 	LONG_TIME: 86400,
 };
-module.exports = jwtConfig;
+module.exports = { jwtConfig, readSecret };

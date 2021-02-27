@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken'),
-	jwtConfig = require('../config/jwt'),
+	{ jwtConfig } = require('../config/jwt'),
 	{ APIError } = require('./error');
 
 async function generateToken(user, secretSignature, tokenLife) {

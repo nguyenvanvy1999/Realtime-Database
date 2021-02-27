@@ -3,7 +3,7 @@ const UserService = require('./../services/user.js'),
 	{ APIError } = require('../helpers/error'),
 	bcryptHelper = require('../helpers/bcrypt'),
 	{ sendMail, verifyEmail, resetPasswordMail } = require('../helpers/mailer'),
-	jwtConfig = require('../config/jwt'),
+	{ jwtConfig } = require('../config/jwt'),
 	User = require('../models/user');
 // ________________________________________________
 

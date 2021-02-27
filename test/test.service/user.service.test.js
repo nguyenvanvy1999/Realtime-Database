@@ -15,7 +15,7 @@ beforeEach(async () => {
 	admin = await seedAdmin();
 });
 
-describe('UserService', () => {
+describe('Test UserService', () => {
 	describe('new user and insert to DB', () => {
 		it('true => save user to DB', async () => {
 			const mockUser = {

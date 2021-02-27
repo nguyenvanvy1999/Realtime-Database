@@ -1,5 +1,5 @@
 const jwtHelper = require('../helpers/jwt'),
-	jwtConfig = require('../config/jwt');
+	{ jwtConfig } = require('../config/jwt');
 
 async function isAuth(req, res, next) {
 	try {
