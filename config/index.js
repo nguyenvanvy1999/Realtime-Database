@@ -23,9 +23,8 @@ function checkEnv(envConfig) {
 			SMTP_PASSWORD: joi.string(),
 			SENDGRID_API_KEY: joi.string(),
 			WEBTOKEN_SECRET_KEY: joi.string(),
-			WEBTOKEN_EXPIRATION_TIME: joi.number().default(1800),
-			UPLOAD: joi.string().valid('upload', 'uploads').default('uploads'),
-			SALT: joi.number().required().min(4),
+			WEBTOKEN_EXP: joi.number().default(1800),
+			SALT: joi.number().min(4).max(15).default(5),
 		})
 		.or('SMTP_USER', 'SENDGRID_API_KEY')
 		.and('SMTP_USER', 'SMTP_PASSWORD');
@@ -37,7 +36,8 @@ function checkEnv(envConfig) {
 function get(key) {
 	let config = parse(fs.readFileSync('.env'));
 	config = checkEnv(config);
-	config.PATH = path.join(__dirname, '../', config.UPLOAD);
+	config.PATH = path.join(__dirname, '../', 'uploads');
+	fs.mkdirSync(config.PATH, { recursive: true });
 	return config[key];
 }
 
