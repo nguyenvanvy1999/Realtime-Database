@@ -6,9 +6,7 @@ function mailConfig() {
 	const grid = get('SENDGRID_API_KEY');
 	let transportConfig;
 	if (grid) {
-		transportConfig = nodemailerSendgrid({
-			apiKey: grid,
-		});
+		transportConfig = nodemailerSendgrid({ apiKey: grid });
 	} else {
 		transportConfig = {
 			service: 'gmail',

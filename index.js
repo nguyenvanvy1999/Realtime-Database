@@ -2,7 +2,7 @@
  * Required modules
  */
 const express = require('express'),
-	{ connect } = require('./config/mongo'),
+	{ open } = require('./config/mongo'),
 	morgan = require('morgan'),
 	cors = require('cors'),
 	flash = require('connect-flash'),
@@ -93,7 +93,7 @@ app.use(handleError);
 
 function startServer() {
 	try {
-		connect();
+		open();
 		app.listen(get('PORT'));
 		console.log(`${success} http://${get('URL')}:${get('PORT')}`);
 	} catch (err) {

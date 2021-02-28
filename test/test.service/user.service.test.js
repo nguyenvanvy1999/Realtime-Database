@@ -4,11 +4,11 @@ const { expect, should } = require('chai'),
 	UserService = require('../../services/user'),
 	User = require('../../models/user'),
 	{ seedAdmin, seedUser, seedMany } = require('../mocks/seed'),
-	{ connect, clearData, closeDatabase } = require('../config/database'),
+	{ open, clearData, close } = require('../../config/mongo'),
 	bcryptHelper = require('../../helpers/bcrypt'),
 	{ APIError } = require('../../helpers/error');
 
-before(async () => await connect());
+before(async () => await open());
 let user, admin;
 beforeEach(async () => {
 	user = await seedUser();
@@ -59,4 +59,4 @@ describe('Test UserService', () => {
 	// });
 });
 afterEach(async () => await clearData());
-after(async () => await closeDatabase());
+after(async () => await close());
