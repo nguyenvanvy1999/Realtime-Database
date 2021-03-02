@@ -108,3 +108,9 @@ startServer();
 const socketFunction = require('./sockets/index').socketFunction;
 const io = require('socket.io')(server);
 io.on('connection', socketFunction);
+
+/**
+ *
+ */
+
+module.exports = app;

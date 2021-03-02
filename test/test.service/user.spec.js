@@ -8,12 +8,12 @@ const { expect, should } = require('chai'),
 	bcryptHelper = require('../../helpers/bcrypt'),
 	{ APIError } = require('../../helpers/error');
 
-before(async () => await open());
 let user, admin;
 beforeEach(async () => {
 	user = await seedUser();
 	admin = await seedAdmin();
 });
+afterEach(async () => await clearData());
 
 describe('Test UserService', () => {
 	describe('new user and insert to DB', () => {
@@ -40,9 +40,25 @@ describe('Test UserService', () => {
 		});
 	});
 	// describe('search user', () => {
-	// 	//FIXME: error
 	// 	describe('search by email', () => {
 	// 		it('true => return user', async () => {
+	// 			//Search using name
+	// 			User.find({
+	// 				$expr: {
+	// 					$regexMatch: { input: { $concat: ['$firstName', '', '$lastName'], regex: 'text here', option: 'i' } },
+	// 				},
+	// 			});
+	// 			User.aggregate([
+	// 				{ $project: { name: { $concat: ['$firstName', ' ', '$lastName'] } } },
+	// 				{ $match: { name: { $regex: /text here/i } } },
+	// 			]);
+	// 			User.aggregate([
+	// 				{ $project: { name: { $concat: ['$firstName', ' ', '$lastName'] } } }, //stage1
+	// 				{ $match: { name: { $regex: 'text here', $options: 'i' } } }, //stage2
+	// 			]);
+	// 			User.find({
+	// 				$or: [{ firstName: reg }, { lastName: reg }],
+	// 			});
 	// 			const result = await UserService.search(admin);
 	// 		});
 	// 		it('false => return null', async () => {
@@ -58,5 +74,3 @@ describe('Test UserService', () => {
 	// 	describe('all user', async () => {});
 	// });
 });
-afterEach(async () => await clearData());
-after(async () => await close());

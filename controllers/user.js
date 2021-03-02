@@ -4,7 +4,8 @@ const UserService = require('./../services/user.js'),
 	bcryptHelper = require('../helpers/bcrypt'),
 	{ sendMail, verifyEmail, resetPasswordMail } = require('../helpers/mailer'),
 	{ jwtConfig } = require('../config/jwt'),
-	User = require('../models/user');
+	User = require('../models/user'),
+	{ get } = require('../config/index.js');
 // ________________________________________________
 
 async function postSignIn(req, res, next) {
@@ -20,8 +21,9 @@ async function postSignIn(req, res, next) {
 async function postSignUp(req, res, next) {
 	try {
 		const newUser = UserService.newUser(req.body);
-		const token = await jwtHelper.generateToken(newUser, jwtConfig.VERIFY, jwtConfig.SHORT_TIME);
 		await UserService.insert(newUser);
+		if (get('DEBUG')) return res.status(200).send({ message: 'Check your email and verify account!' }); //if debug => no send mail
+		const token = await jwtHelper.generateToken(newUser, jwtConfig.VERIFY, jwtConfig.SHORT_TIME);
 		const config = verifyEmail(token, req);
 		await sendMail(config);
 		return res.status(200).send({ message: 'Check your email and verify account!' });

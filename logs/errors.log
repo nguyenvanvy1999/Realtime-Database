@@ -148,3 +148,96 @@
 [2021-02-20 20:12:11] [[31merror[39m] Incorrect password
 [2021-02-20 20:13:28] [[31merror[39m] Incorrect email
 [2021-02-20 20:13:34] [[31merror[39m] Incorrect password
+[2021-03-02 14:45:35] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 14:47:01] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 14:47:22] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 14:48:00] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 14:56:55] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 14:58:50] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:00:10] [[31merror[39m] TypeError: Cannot read property 'email' of undefined
+    at verifyEmail (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/mailer.js:16:16)
+    at postSignUp (/Users/nguyenvanvy/Desktop/Realtime-Database/controllers/user.js:25:18)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:00:59] [[31merror[39m] TypeError: Cannot read property 'email' of undefined
+    at verifyEmail (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/mailer.js:16:16)
+    at postSignUp (/Users/nguyenvanvy/Desktop/Realtime-Database/controllers/user.js:26:18)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:01:54] [[31merror[39m] APIError: Unauthorized
+    at new BaseError (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/error.js:8:15)
+    at new APIError (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/error.js:14:9)
+    at sendMail (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/mailer.js:10:9)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+    at async postSignUp (/Users/nguyenvanvy/Desktop/Realtime-Database/controllers/user.js:27:3)
+[2021-03-02 15:02:41] [[31merror[39m] APIError: Invalid login: 535-5.7.8 Username and Password not accepted. Learn more at
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials t17sm20288490pgk.25 - gsmtp
+    at new BaseError (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/error.js:8:15)
+    at new APIError (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/error.js:14:9)
+    at sendMail (/Users/nguyenvanvy/Desktop/Realtime-Database/helpers/mailer.js:10:9)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+    at async postSignUp (/Users/nguyenvanvy/Desktop/Realtime-Database/controllers/user.js:27:3)
+[2021-03-02 15:20:40] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:23:10] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:25:45] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:37:42] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:40:42] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:40:42] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:42:29] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:42:29] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:43:25] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:43:25] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:44:39] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:52:31] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:52:31] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:52:51] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:53:02] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:53:11] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:53:11] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-03-02 15:53:55] [[31merror[39m] Error: celebrate request validation failed
+    at /Users/nguyenvanvy/Desktop/Realtime-Database/node_modules/celebrate/lib/celebrate.js:95:19
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)

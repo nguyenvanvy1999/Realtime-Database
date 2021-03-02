@@ -38,10 +38,7 @@ const joiJWT = Joi.extend({
 const joiConfig = {
 	string: joi.string().required(),
 	_id: joiOID.objectId().required(),
-	email: joi
-		.string()
-		.email({ minDomainSegments: 2, tlds: { allow: ['vn', 'com', 'net'] } })
-		.required(),
+	email: joi.string().email().required(),
 	username: joi.string().alphanum().min(4).max(20).required(),
 	password: joi
 		.string()

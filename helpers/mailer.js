@@ -13,7 +13,7 @@ async function sendMail(setting) {
 
 function verifyEmail(token, req) {
 	const mailOptions = {
-		to: req.user.email,
+		to: req.email,
 		from: 'nguyenvanvy1999@gmail.com',
 		subject: 'Please verify your email address on DataCenter',
 		text: `Thank you for registering with DataCenter.\n\n
