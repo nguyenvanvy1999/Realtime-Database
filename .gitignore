@@ -8,3 +8,5 @@ trash/
 test.js
 
 .DS_Store
+
+logs/

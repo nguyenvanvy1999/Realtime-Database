@@ -27,7 +27,7 @@ const UserRouter = require('./routers/user')(),
  */
 const app = express();
 const server = require('http').Server(app);
-app.use(morgan('dev'));
+if (!get('DEBUG')) app.use(morgan('dev')); //don't log when test
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

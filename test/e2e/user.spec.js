@@ -26,17 +26,37 @@ after(async () => {
 });
 describe('Test User E2E', () => {
 	describe('/POST signup', () => {
+		const body = { ...dataFaker.signup, confirmPassword: dataFaker.signup.password };
 		it('OK => Create new user and send verify mail', async () => {
-			const body = { ...dataFaker.signup, confirmPassword: dataFaker.signup.password };
 			const result = await chai.request(app).post('/user/signup').send(body);
 			expect(result.statusCode).equal(200);
 			const user = await User.findOne({ email: body.email });
 			expect([user.email, user.firstName, user.lastName]).eql([body.email, body.firstName, body.lastName]);
 		});
 		it('Validate data failed => return APIError', async () => {
-			const body = dataFaker.signup;
-			const result = await chai.request(app).post('/user/signup').send(body);
-			expect(result.statusCode).equal(500);
+			//
+			let result = []; //array of result.body
+			let bodyErr = []; //array of test case
+			for (const index in body) {
+				let clone = Object.assign({}, body);
+				delete clone[index];
+				bodyErr.push(clone);
+			} //missing a value
+			let test = Object.assign({}, body);
+			test.email = 'test123';
+			bodyErr.push(test); //email failed
+			test = Object.assign({}, body);
+			test.password = test.confirmPassword = '1';
+			bodyErr.push(test); //password < 4
+			for (let i = 0; i < bodyErr.length; i++) {
+				const result = await await chai.request(app).post('/user/signup').send(bodyErr[i]);
+				expect(result.statusCode).equal(500);
+				expect(result.body.name).equal('APIError');
+			}
+		});
+		it('Email has been exist => return APIError', async () => {
+			const result = await chai.request(app).post('/user/signup').send(body); //Email has ben exist
+			expect(result.statusCode).equal(400);
 			expect(result.body.name).equal('APIError');
 		});
 	});

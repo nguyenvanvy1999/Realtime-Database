@@ -40,11 +40,7 @@ const joiConfig = {
 	_id: joiOID.objectId().required(),
 	email: joi.string().email().required(),
 	username: joi.string().alphanum().min(4).max(20).required(),
-	password: joi
-		.string()
-		.regex(/^[a-zA-Z0-9]{3,30}$/)
-		.min(4)
-		.required(), //FIXME: none !@#
+	password: joi.string().min(4).required(),
 	role: joi.string().valid('Admin', 'User'),
 	token: joiJWT.jwt().required(),
 };

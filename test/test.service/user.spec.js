@@ -8,14 +8,8 @@ const { expect, should } = require('chai'),
 	bcryptHelper = require('../../helpers/bcrypt'),
 	{ APIError } = require('../../helpers/error');
 
-let user, admin;
-beforeEach(async () => {
-	user = await seedUser();
-	admin = await seedAdmin();
-});
-afterEach(async () => await clearData());
-
 describe('Test UserService', () => {
+	afterEach(async () => await clearData());
 	describe('new user and insert to DB', () => {
 		it('true => save user to DB', async () => {
 			const mockUser = {
