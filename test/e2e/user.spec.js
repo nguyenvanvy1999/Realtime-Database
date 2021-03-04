@@ -46,11 +46,9 @@ describe('Test User E2E', () => {
 				delete clone[index];
 				bodyErr.push(clone);
 			} //missing a value
-			let test = Object.assign({}, body);
-			test.email = 'test123';
+			let test = { ...body, email: '123' };
 			bodyErr.push(test); //email failed
-			test = Object.assign({}, body);
-			test.password = test.confirmPassword = '1';
+			test = { ...body, password: '123', confirmPassword: '123' };
 			bodyErr.push(test); //password < 4
 			for (let i = 0; i < bodyErr.length; i++) {
 				const result = await chai.request(app).post('/user/signup').send(bodyErr[i]);
@@ -66,17 +64,17 @@ describe('Test User E2E', () => {
 		});
 	});
 	describe('Test POST/ login', () => {
-		let admin;
+		let admin, body;
 		beforeEach(async () => {
 			admin = await seedAdmin();
-		});
-		afterEach(async () => await clearData());
-		it('If true => return token', async () => {
-			//const admin = await seedAdmin();
-			const body = {
+			body = {
 				email: admin.email,
 				password: 'password',
 			};
+		});
+
+		afterEach(async () => await clearData());
+		it('If true => return token', async () => {
 			const result = await chai.request(app).post('/user/login').send(body);
 			expect(result.statusCode).equal(200);
 			expect(result.body).to.have.property('accessToken');
@@ -84,20 +82,14 @@ describe('Test User E2E', () => {
 		});
 		it('Validate data failed => return APIError', async () => {
 			let bodyErr = [];
-			const body = {
-				email: admin.email,
-				password: 'password',
-			};
 			for (const index in body) {
 				let clone = Object.assign({}, body);
 				delete clone[index];
 				bodyErr.push(clone);
 			} //missing a value
-			let test = Object.assign({}, body);
-			test.email = 'test123';
+			let test = { ...body, email: 'test123' };
 			bodyErr.push(test); //email failed
-			test = Object.assign({}, body);
-			test.password = test.confirmPassword = '1';
+			test = { ...body, password: '12' };
 			bodyErr.push(test); //password < 4
 			for (let i = 0; i < bodyErr.length; i++) {
 				const result = await chai.request(app).post('/user/login').send(bodyErr[i]);
@@ -106,21 +98,31 @@ describe('Test User E2E', () => {
 			}
 		});
 		it('Email wrong => return APIError', async () => {
-			const body = {
-				email: 'wrongemail@example.com',
-				password: 'password',
-			};
-			const result = await chai.request(app).post('/user/login').send(body);
+			const bodyErr = { ...body, email: 'wrongemail@example.com' };
+			const result = await chai.request(app).post('/user/login').send(bodyErr);
 			expect(result.statusCode).equal(500);
 			expect(result.body.name).equal('APIError');
 		});
 		it('Password wrong => return APIError', async () => {
-			const body = {
-				email: admin.email,
-				password: 'wrongpassword',
-			};
-			const result = await chai.request(app).post('/user/login').send(body);
+			const bodyErr = { ...body, password: 'wrongpassword' };
+			const result = await chai.request(app).post('/user/login').send(bodyErr);
 			expect(result.statusCode).equal(500);
+			expect(result.body.name).equal('APIError');
+		});
+	});
+	describe('Test GET / (user profile)', () => {
+		it('Is login => return user profile', async () => {
+			const admin = await await seedAdmin();
+			const body = { email: admin.email, password: 'password' };
+			const login = await chai.request(app).post('/user/login').send(body);
+			const cookie = login.headers['set-cookie'].pop().split(';')[0]; //get cookie and save
+			const result = await chai.request(app).get('/user').set('Cookie', cookie); //send cookie to auth
+			const { roles, email, firstName, lastName, isActive, _id } = admin;
+			expect({ ...result.body }).eql({ roles, email, firstName, lastName, isActive, _id: _id.toString() });
+		});
+		it('No login => return APIError', async () => {
+			const result = await chai.request(app).get('/user');
+			expect(result.statusCode).equal(400);
 			expect(result.body.name).equal('APIError');
 		});
 	});
