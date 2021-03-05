@@ -25,7 +25,7 @@ after(async () => {
 	fs.writeFileSync('.env', stringify(env));
 });
 describe('Test User E2E', () => {
-	describe('/POST signup', () => {
+	describe('POST /signup', () => {
 		const body = {
 			email: 'seeduser@example.com',
 			firstName: faker.name.firstName(),
@@ -63,7 +63,7 @@ describe('Test User E2E', () => {
 			expect(result.body.name).equal('APIError');
 		});
 	});
-	describe('Test POST/ login', () => {
+	describe('POST /login', () => {
 		let admin, body;
 		beforeEach(async () => {
 			admin = await seedAdmin();
@@ -110,7 +110,7 @@ describe('Test User E2E', () => {
 			expect(result.body.name).equal('APIError');
 		});
 	});
-	describe('Test GET / (user profile)', () => {
+	describe('GET / (user profile)', () => {
 		it('Is login => return user profile', async () => {
 			const admin = await await seedAdmin();
 			const body = { email: admin.email, password: 'password' };
@@ -122,6 +122,50 @@ describe('Test User E2E', () => {
 		});
 		it('No login => return APIError', async () => {
 			const result = await chai.request(app).get('/user');
+			expect(result.statusCode).equal(400);
+			expect(result.body.name).equal('APIError');
+		});
+	});
+	describe('PATH / (edit user profile)', () => {
+		let admin, token;
+		beforeEach(async () => {
+			admin = await seedAdmin();
+			const body = {
+				email: admin.email,
+				password: 'password',
+			};
+			login = await chai.request(app).post('/user/login').send(body);
+			token = login.body.accessToken;
+		});
+		it('Is true => edit user profile', async () => {
+			const body = {
+				firstName: 'Nguyen',
+				lastName: 'Van Vy',
+			};
+			const result = await chai.request(app).patch('/user').set('token', token).send(body);
+			expect(result.statusCode).equal(200);
+			expect(result.body).to.have.property('accessToken');
+			expect(result.body).to.have.property('refreshToken');
+			const user = await User.findOne({ email: admin.email });
+			expect([user.firstName, user.lastName]).eql([body.firstName, body.lastName]);
+		});
+		it('Validate error => return APIError', async () => {
+			const bodyErr = [];
+			let test = { firstName: 'Nguyen' };
+			bodyErr.push(test);
+			test = { lastName: 'Van Vy' };
+			bodyErr.push(test);
+			for (let i = 0; i < bodyErr.length; i++) {
+				const result = await chai.request(app).patch('/user').set('token', token).send(bodyErr[i]);
+				expect(result.statusCode).equal(500);
+				expect(result.body.name).equal('APIError');
+			}
+		});
+		it('If token error => throw new APIError', async () => {
+			const body = { firstName: 'Nguyen', lastName: 'Van Vy' };
+			const errToken =
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+			const result = await chai.request(app).patch('/user').set('token', errToken).send(body);
 			expect(result.statusCode).equal(400);
 			expect(result.body.name).equal('APIError');
 		});

@@ -48,7 +48,7 @@ async function editUserProfile(req, res, next) {
 		const { firstName, lastName } = req.body;
 		const newUser = await User.findOneAndUpdate({ email }, { firstName, lastName }, { new: true });
 		const token = await jwtHelper.returnToken(newUser);
-		return res.status(200).send({ token });
+		return res.status(200).send(token);
 	} catch (error) {
 		next(error);
 	}
