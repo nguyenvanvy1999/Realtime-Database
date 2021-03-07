@@ -10,3 +10,7 @@ test.js
 .DS_Store
 
 logs/
+._.DS_Store
+._mongo.js
+._user.js
+._index.js

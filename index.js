@@ -6,15 +6,12 @@ const express = require('express'),
 	morgan = require('morgan'),
 	cors = require('cors'),
 	flash = require('connect-flash'),
-	path = require('path'),
 	{ success, error } = require('log-symbols'),
 	session = require('express-session'),
 	cookieParser = require('cookie-parser'),
-	{ handleError } = require('./middleware/error'),
+	{ handleError, handleNotFoundPage } = require('./middleware/error'),
 	passport = require('passport'),
-	{ get } = require('./config'),
-	cluster = require('cluster'),
-	os = require('os');
+	{ get } = require('./config');
 /**
  * Config and Routers
  */
@@ -68,28 +65,11 @@ app.use('/user', UserRouter);
 app.use('/data', DataRouter);
 app.use('/file', FileRouter);
 app.use('/device', DeviceRouter);
-app.get('/', (req, res) => res.json('hello world'));
-
+app.use(handleNotFoundPage);
 app.use(handleError);
 /**
  * Start Server
  */
-
-// if (cluster.isMaster) {
-//     console.log(`Master ${process.pid} is running`);
-//     // Fork workers.
-//     for (let i = 0; i < numCPUs; i++) {
-//         cluster.fork();
-//     }
-//     cluster.on('exit', (worker, code, signal) => {
-//         console.log(`worker ${worker.process.pid} died`);
-//     });
-// } else {
-//     // Workers can share any TCP connection
-//     // In this case it is an HTTP server
-//     app.listen(serverConfig.port);
-//     console.log(`Worker ${process.pid} started`);
-// }
 
 function startServer() {
 	try {

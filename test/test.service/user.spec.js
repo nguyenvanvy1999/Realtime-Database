@@ -9,7 +9,6 @@ const { expect, should } = require('chai'),
 	{ APIError } = require('../../helpers/error');
 
 describe('Test UserService', () => {
-	afterEach(async () => await clearData());
 	describe('new user and insert to DB', () => {
 		it('true => save user to DB', async () => {
 			const mockUser = {
