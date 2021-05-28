@@ -59,5 +59,36 @@ function download(req, res, next) {
 		next(error);
 	}
 }
+function streamVideo(req, res, next) {
+	try {
+		const { name } = req.params;
+		const videoPath = path.join(__dirname, '../../public/video/', name + '.mp4');
+		if (!fs.existsSync(videoPath)) throw new HttpException(404, 'File not found');
+		const stat = fs.statSync(videoPath);
+		const total = stat.size;
+		if (req.headers.range) {
+			const range = req.headers.range;
+			const parts = range.replace(/bytes=/, '').split('-');
+			const partialStart = parts[0];
+			const partialEnd = parts[1];
+			const start = parseInt(partialStart, 10);
+			const end = partialEnd ? parseInt(partialEnd, 10) : total - 1;
+			const chunkSize = end - start + 1;
+			const file = fs.createReadStream(videoPath, { start, end });
+			res.writeHead(206, {
+				'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+				'Accept-Ranges': 'bytes',
+				'Content-Length': chunkSize,
+				'Content-Type': 'video/mp4',
+			});
+			file.pipe(res);
+		} else {
+			res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'video/mp4' });
+			fs.createReadStream(videoPath).pipe(res);
+		}
+	} catch (error) {
+		next(error);
+	}
+}
 
 module.exports = { uploadFiles, getListFiles, download };

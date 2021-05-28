@@ -14,3 +14,6 @@ logs/
 ._mongo.js
 ._user.js
 ._index.js
+._passport.js
+._validate.js
+._joi.js
